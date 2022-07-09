@@ -16,7 +16,7 @@ library(wordcloud2)
 # Define UI for application that draws a histogram
 shinyUI(
   fluidPage(
-    #theme = "sketchy.css",
+    # theme = "sketchy.css",
     
     titlePanel(title="ProjectName"),
     
@@ -57,7 +57,7 @@ shinyUI(
                        br(),
                        br(),
                        
-                       tags$img(),
+                       tags$img(src="ruizhi.jpg",width=100,height=100),
                        br(),
                        p("Ruizhi Xu"),
                        br(),
