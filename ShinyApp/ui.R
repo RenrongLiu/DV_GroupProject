@@ -12,13 +12,15 @@ library(shinydashboard)
 library(bslib)
 library(formattable)
 library(wordcloud2)
+library(shinyDarkmode)
 
 # Define UI for application that draws a histogram
 shinyUI(
   dashboardPage(
     
     dashboardHeader(title="ProjectName"),
-    
+
+    # Dashboard siderbar #########
     dashboardSidebar(
       sidebarMenu(
         menuItem("Home", tabName = "home", icon=icon("home")),
@@ -32,10 +34,11 @@ shinyUI(
     dashboardBody(
       
       tabItems(
-        
+        # home page ##########
         tabItem(tabName = "home",
                 h2("Home Page"),
                 fluidRow(
+                  # Spotify API Intro###########
                        box(
                          width=6,
                          title="About Spotify API",
@@ -49,6 +52,7 @@ shinyUI(
                          tags$iframe()
                        ),
                        
+                  # Project intro ##########
                        box(
                          width=6,
                          title="About the Project",
@@ -59,7 +63,7 @@ shinyUI(
                        )
                 )
                 ),
-        
+        #Trend page########
         tabItem(tabName = "trend",
                 h2(" Audio Features of TOP 10 Items on Spotify in Year:"),
                 selectInput("trendYear", label=NULL, choices = c(2012:2022)),
@@ -71,7 +75,7 @@ shinyUI(
                                width=4,
                                status = "primary",
                                radioButtons("artRB", label="Please select the feature:",
-                                            choices = list("energy", "instrumentalness", "danceability",
+                                            choices = list("energy", "acousticness", "danceability",
                                                            "liveness", "loudness", "speechiness",
                                                            "valence", "common key"),
                                             selected = "0"),
@@ -96,7 +100,7 @@ shinyUI(
                                width=4,
                                status = "primary",
                                radioButtons("albRB", label="Please select the feature:",
-                                            choices = list("energy", "instrumentalness", "danceability",
+                                            choices = list("energy", "acousticness", "danceability",
                                                            "liveness", "loudness", "speechiness",
                                                            "valence", "common key"),
                                             selected = "0"),
@@ -121,7 +125,7 @@ shinyUI(
                                width=4,
                                status = "primary",
                                radioButtons("traRB", label="Please select the feature:",
-                                            choices = list("energy", "instrumentalness", "danceability",
+                                            choices = list("energy", "acousticness", "danceability",
                                                            "liveness", "loudness", "speechiness",
                                                            "valence", "common key"),
                                             selected = "0"),
@@ -140,7 +144,7 @@ shinyUI(
                                solidHeader = TRUE,
                                collapsible = TRUE))
                 )),
-        
+        # Artist page##########
         tabItem(tabName = "artist",
                 tabsetPanel(
                   tabPanel("Artist Search",
@@ -181,13 +185,13 @@ shinyUI(
                                                    choices = list("Tracks", "Albums"),
                                                    selected = "0"),
                                       selectInput("featByX", label="Feature on the X-axis",
-                                                  choices = list("energy", "instrumentalness", "danceability",
+                                                  choices = list("energy", "acousticness", "danceability",
                                                                  "liveness", "loudness", "speechiness",
-                                                                 "valence", "common key")),
+                                                                 "valence")),
                                       selectInput("featByY", label="Feature on the Y-axis",
-                                                  choices = list("energy", "instrumentalness", "danceability",
+                                                  choices = list("energy", "acousticness", "danceability",
                                                                  "liveness", "loudness", "speechiness",
-                                                                 "valence", "common key"))),
+                                                                 "valence"))),
                                
                                column(9, plotOutput("artFeatScatter", height="400px"))
                            )),
@@ -206,11 +210,46 @@ shinyUI(
                              column(9, plotOutput("albComp", height = "400px"))
                            ))
                 )),
-        
-        tabItem(tabName = "user"),
-        
+        #user page ###########
+        tabItem(tabName = "user",
+                h3("Your customized profile"),
+                
+                tabsetPanel(
+                  tabPanel("Your Favorites",
+                           box(width=12,
+                               title="Top 10 Songs",
+                               status="primary",
+                               solidHeader = TRUE,
+                               collapsible = TRUE,
+                               formattableOutput("topTra")),
+                           
+                           box(width=12,
+                               title="Top 5 Artists",
+                               status="primary",
+                               solidHeader = TRUE,
+                               collapsible = TRUE,
+                               formattableOutput("topArt"),
+                               
+                           fixedRow(
+                             width=12,
+                             column(6,
+                                    wordcloud2Output("userFavGen")),
+                             column(6,
+                                    plotOutput("userTraFeat"))
+                           ))),
+                  
+                  tabPanel("Recommendation",
+                           box(width=12,
+                               title="Your Customized Recommendation",
+                               status="primary",
+                               solidHeader = TRUE,
+                               collapsible = TRUE,
+                               formattableOutput("recTra"))
+                )
+                )),
+        #About us ############
         tabItem(tabName = "us",
-                h3("Authors")
+                h3("Authors"),
                 
                 box(
                   width = 12,
