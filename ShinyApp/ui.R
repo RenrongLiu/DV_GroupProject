@@ -12,29 +12,33 @@ library(shinydashboard)
 library(bslib)
 library(formattable)
 library(wordcloud2)
-library(shinyDarkmode)
 
 # Define UI for application that draws a histogram
 shinyUI(
+  
   dashboardPage(
-    
+    skin="black",
+  
     dashboardHeader(title="ProjectName"),
 
-    # Dashboard siderbar #########
-    dashboardSidebar(
-      sidebarMenu(
-        menuItem("Home", tabName = "home", icon=icon("home")),
-        menuItem("Spotify Trend", tabName = "trend", icon=icon("chart-line")),
-        menuItem("Artist Analysis", tabName = "artist", icon=icon("microphone")),
-        menuItem("User Profile", tabName = "user", icon=icon("user-circle")),
-        menuItem("About Us", tabName = "us", icon=icon("paperclip"))
-      )
-    ),
+    #################### Dashboard siderbar ####################
+      dashboardSidebar(
+        tags$head(includeCSS("custom.css")),
+        sidebarMenu(
+          class="sidebar accordion",
+          menuItem("Home", tabName = "home", icon=icon("home")),
+          hr(class="sidebar-hr-gradient"),
+          menuItem("Spotify Trends", tabName = "trend", icon=icon("chart-line")),
+          menuItem("Artist Analysis", tabName = "artist", icon=icon("microphone")),
+          menuItem("User Profile", tabName = "user", icon=icon("user-circle")),
+          hr(class="sidebar-hr-gradient"),
+          menuItem("About Us", tabName = "us", icon=icon("paperclip"))
+        )
+      ),
     
     dashboardBody(
-      
       tabItems(
-        # home page ##########
+        #################### home page####################
         tabItem(tabName = "home",
                 h2("Home Page"),
                 fluidRow(
@@ -63,9 +67,16 @@ shinyUI(
                        )
                 )
                 ),
-        #Trend page########
-        tabItem(tabName = "trend",
-                h2(" Audio Features of TOP 10 Items on Spotify in Year:"),
+        
+        #################### Trend page ####################
+        tabItem(
+          tabName = "trend",
+          div(
+            class="top-container",
+            h2("Trends at Spotify", class="trends-h2")
+          ),
+         
+                selectInput("trendYear", label=NULL, choices = c(2012:2022)),
                 selectInput("trendYear", label=NULL, choices = c(2012:2022)),
                 
                 tabsetPanel(
