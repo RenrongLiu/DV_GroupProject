@@ -158,7 +158,7 @@ shinyUI(
                                  title="Artist's genre",
                                  status="primary",
                                  solidHeader = TRUE,
-                                 wordcloud2Output("genreCloud", height = "400px")),
+                                 plotOutput("genreCloud", height = "400px")),
                              
                              box(width = 6,
                                  title="Artist's Most Common Keys",
@@ -233,12 +233,27 @@ shinyUI(
                            fixedRow(
                              width=12,
                              column(6,
-                                    wordcloud2Output("userFavGen")),
+                                    plotOutput("userFavGen")),
                              column(6,
                                     plotOutput("userTraFeat"))
                            ))),
                   
                   tabPanel("Recommendation",
+                           fixedRow(
+                             box(
+                              width=4,
+                              radioButtons("seedSel", 
+                                            label="Get recomendations from my:",
+                                            choices = list("Favorite tracks",
+                                                          "Favorite artists",
+                                                          "Favorite genres"))
+                           ),
+                           
+                            box(
+                              width = 8,
+                              textOutput("favSeed")
+                            )),
+                           
                            box(width=12,
                                title="Your Customized Recommendation",
                                status="primary",
