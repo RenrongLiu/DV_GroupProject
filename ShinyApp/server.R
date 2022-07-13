@@ -8,10 +8,25 @@
 #
 
 library(shiny)
+library(spotifyr)
+library(tidyverse)
+library(wordcloud)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
   
-  #darkmode(label = "⏳")
+  access_token <- get_spotify_access_token()
+  top_track <- get_my_top_artists_or_tracks("tracks", limit=10)
+  
+  ######## Spotify Trend ############
+  
+  
+  
+  ######## Artist Analysis ############
+  
+  
+  
+  ######## User Profile ##############
 
-    })
+  
+})
