@@ -7,12 +7,10 @@
 #    http://shiny.rstudio.com/
 #
 
-<<<<<<< HEAD
 library(shiny)
 library(spotifyr)
 library(tidyverse)
 library(wordcloud)
-=======
 library(tidyverse)
 library(spotifyr)
 library(dplyr)
@@ -25,15 +23,19 @@ library(RColorBrewer)
 library(fmsb)
 library(magick)
 library(rsvg)
->>>>>>> 3bfabdd4030dde026e59d63cebdecef38b4f8b04
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output,session) {
   
-  Sys.setenv(SPOTIFY_CLIENT_ID = '11145821abf14ce68d1603eeb196bfeb')
-  Sys.setenv(SPOTIFY_CLIENT_SECRET = '39b301de43af4b2ab68564731669181a')
   access_token <- get_spotify_access_token()
   
+ 
+  
+  ######## Spotify Trend ############
+  
+  
+  
+  ######## Artist Analysis ############ 
   
   data=reactive({input$button
      return(get_artist_audio_features(isolate(input$artSearch)))})
@@ -161,12 +163,7 @@ shinyServer(function(input, output,session) {
   
   access_token <- get_spotify_access_token()
   top_track <- get_my_top_artists_or_tracks("tracks", limit=10)
-  
-  ######## Spotify Trend ############
-  
-  
-  
-  ######## Artist Analysis ############
+
   
   
   
