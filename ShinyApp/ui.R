@@ -169,7 +169,7 @@ shinyUI(
                                  title="Artist's image",
                                  status="primary",
                                  solidHeader = TRUE,
-                                 plotOutput("artimage", height = "400px")),
+                                 plotOutput("artimage")),
                              
                              box(width = 6,
                                  title="Artist's Most Common Keys",

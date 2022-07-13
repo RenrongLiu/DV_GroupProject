@@ -23,10 +23,13 @@ library(RColorBrewer)
 library(fmsb)
 library(magick)
 library(rsvg)
+library(gtools)
+library(cowplot)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output,session) {
-  
+  Sys.setenv(SPOTIFY_CLIENT_ID = '11145821abf14ce68d1603eeb196bfeb')
+  Sys.setenv(SPOTIFY_CLIENT_SECRET = '39b301de43af4b2ab68564731669181a')
   access_token <- get_spotify_access_token()
   
  
@@ -46,10 +49,10 @@ shinyServer(function(input, output,session) {
       geom_bar()+theme_classic()+theme(axis.text.x=element_blank(), axis.ticks.x = element_blank(),legend.title = element_blank())+
       labs(title="Distribution of songs located in different key mode",caption ="Data from Sporitfy",x="key mode",y="number of songs")})
   
-  output$artimage<-renderImage({data=data()
+  output$artimage<-renderPlot({
+    data=data()
     get_artist(data[1,2], authorization = get_spotify_access_token())->artist
-    image_read(artist$images[1,"url"])->pic
-    return(pic)
+    ggdraw() + draw_image(artist$images[1,"url"])
   })
                                
   
@@ -155,8 +158,7 @@ shinyServer(function(input, output,session) {
     
   })
   
-  access_token <- get_spotify_access_token()
-  top_track <- get_my_top_artists_or_tracks("tracks", limit=10)
+
 
   
   
