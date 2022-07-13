@@ -230,14 +230,15 @@ shinyUI(
                                status="primary",
                                solidHeader = TRUE,
                                collapsible = TRUE,
-                               formattableOutput("topTra")),
+                               formattableOutput("topTra"),
+                               style = "overflow-x: scroll;"),
                            
                            box(width=12,
                                title="Top 5 Artists",
                                status="primary",
                                solidHeader = TRUE,
                                collapsible = TRUE,
-                               formattableOutput("topArt"),
+                               formattableOutput("topArt")),
                                
                            fixedRow(
                              width=12,
@@ -245,7 +246,7 @@ shinyUI(
                                     plotOutput("userFavGen")),
                              column(6,
                                     plotOutput("userTraFeat"))
-                           ))),
+                           )),
                   
                   tabPanel("Recommendation",
                            fixedRow(
