@@ -159,8 +159,8 @@ shinyUI(
         tabItem(tabName = "artist",
                 tabsetPanel(
                   tabPanel("Artist Search",
-                           textInput("artSearch", "Please enter the name of an artist:"),
-                           submitButton("Submit"),
+                           textInput("artSearch", "Please enter the name of an artist:","Ariana Grande"),
+                           actionButton("button","Submit"),
                            
                            br(),
                            
@@ -192,16 +192,14 @@ shinyUI(
                                solidHeader = TRUE,
                                
                                column(3,
-                                      radioButtons("featByRB", label="Show features by:",
-                                                   choices = list("Tracks", "Albums"),
-                                                   selected = "0"),
+                                
                                       selectInput("featByX", label="Feature on the X-axis",
                                                   choices = list("energy", "acousticness", "danceability",
-                                                                 "liveness", "loudness", "speechiness",
+                                                                 "liveness", "speechiness",
                                                                  "valence")),
                                       selectInput("featByY", label="Feature on the Y-axis",
                                                   choices = list("energy", "acousticness", "danceability",
-                                                                 "liveness", "loudness", "speechiness",
+                                                                 "liveness", "speechiness",
                                                                  "valence"))),
                                
                                column(9, plotOutput("artFeatScatter", height="400px"))
@@ -215,8 +213,8 @@ shinyUI(
                              solidHeader = TRUE,
                              
                              column(3,
-                                    selectInput("album1", "Select the first album:", choice=c(1,2)),
-                                    selectInput("album2", "select the second album:", choice=c(1,2))),
+                                    selectInput("album1", "Select the first album:", choice=""),
+                                    selectInput("album2", "select the second album:", choice="")),
                              
                              column(9, plotOutput("albComp", height = "400px"))
                            ))
