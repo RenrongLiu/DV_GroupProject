@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Splash&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Splash&display=swap');
 
 .main-sidebar{
   background-color: #12001c;
@@ -18,18 +18,32 @@
   position:relative;
   padding:0;
   margin:0;
+  margin-bottom:50px;
   width:100%;
-  height:7rem;
+  height:6rem;
 }
 
 .trends-h2{
-  width:100%;
-  font-size: 5rem;
+  position:absolute;
+  top:30%;
+  left:30%;
+  font-size:2rem;
+  padding: 0;
   margin:auto;
   color:#fff;
-  font-family: "Splash", cursive;
+  font-family: "Press Start 2P", cursive;
 }  
-
+.trends-slider{
+  position:absolute;
+  top:70%;
+  left:30%;
+  font-size:0.5rem;
+  font-family: "Press Start 2P", cursive;
+  margin:0 0 35px 0;
+}
+.body{
+  font-family: "Press Start 2P", cursive;
+}
 .content{
   padding-bottom:50%;
   margin:0;

@@ -12,6 +12,8 @@ library(shinydashboard)
 library(bslib)
 library(formattable)
 library(wordcloud2)
+library(shinythemes)
+library(shinyWidgets)
 
 # Define UI for application that draws a histogram
 shinyUI(
@@ -73,11 +75,24 @@ shinyUI(
           tabName = "trend",
           div(
             class="top-container",
-            h2("Trends at Spotify", class="trends-h2")
+            strong("Trends at Spotify", class="trends-h2"),
+            div(
+              class="trends-slider",
+              noUiSliderInput(
+                inputId="trendYear",
+                label="",
+                value=c(2013,2021),
+                min=2013,
+                max=2021,
+                step=1,
+                width="400px",
+                height="10px",
+                color="#000000",
+                format=wNumbFormat(decimals=0)
+              )
+            )
           ),
-         
-                selectInput("trendYear", label=NULL, choices = c(2012:2022)),
-                selectInput("trendYear", label=NULL, choices = c(2012:2022)),
+            
                 
                 tabsetPanel(
                   tabPanel("Artists",
