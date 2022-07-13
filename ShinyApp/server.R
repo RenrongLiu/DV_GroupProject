@@ -29,8 +29,8 @@ library(DT)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output,session) {
-  Sys.setenv(SPOTIFY_CLIENT_ID = '11145821abf14ce68d1603eeb196bfeb')
-  Sys.setenv(SPOTIFY_CLIENT_SECRET = '39b301de43af4b2ab68564731669181a')
+  Sys.setenv(SPOTIFY_CLIENT_ID = 'd340106f00af4dd6addae953a3b12f1d')
+  Sys.setenv(SPOTIFY_CLIENT_SECRET = '329d27b0e97f42918c8649b50bf5eefe')
   access_token <- get_spotify_access_token()
   
  
@@ -161,12 +161,33 @@ shinyServer(function(input, output,session) {
     
   })
   
-
-
-  
-  
   
   ######## User Profile ##############
+  
+  output$topTra <- renderFormattable({
+    
+    top_track <- get_my_top_artists_or_tracks(type="tracks", limit=10)
+    
+    top10_tra <- top_track %>% 
+      select(name, album.name, id, artists) %>% 
+      unnest() %>% 
+      select(name, name1, album.name,id) %>% 
+      rename(Song = name) %>% 
+      rename(Artist = name1) %>% 
+      rename(Album = album.name)
+    
+    id <- top10_tra %>% pull(id)
+    audio_feat <- get_track_audio_features(id) %>% 
+      select(c("energy", "acousticness", "danceability","liveness", 
+               "speechiness", "valence", "id"))
+    
+    df <- top10_tra %>% 
+      left_join(audio_feat, by="id") %>% 
+      filter(!duplicated(id)) %>% 
+      select(-id)
+    
+    formattable(df)
+  })
 
   
 })
