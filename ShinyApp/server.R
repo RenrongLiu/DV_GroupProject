@@ -25,6 +25,7 @@ library(magick)
 library(rsvg)
 library(gtools)
 library(cowplot)
+library(DT)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output,session) {
@@ -55,7 +56,9 @@ shinyServer(function(input, output,session) {
     ggdraw() + draw_image(artist$images[1,"url"])
   })
                                
-  
+  output$table<-renderDT({data=data()
+                            data[,c("danceability","energy","speechiness","acousticness","liveness","valence")]->audio_table
+                            return(datatable(audio_table, rownames=data[,"track_id"]))})
 
   output$artFeatSum<-renderPlot({
     data=data()

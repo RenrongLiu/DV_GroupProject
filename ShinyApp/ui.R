@@ -167,13 +167,13 @@ shinyUI(
                            fluidRow(
                              box(width = 6,
                                  title="Artist's image",
-                                 status="primary",
+                                 status="info",
                                  solidHeader = TRUE,
                                  plotOutput("artimage")),
                              
                              box(width = 6,
                                  title="Artist's Most Common Keys",
-                                 status="primary",
+                                 status="info",
                                  solidHeader = TRUE,
                                  plotOutput("artKeyBar", height = "400px"))
                            )),
@@ -181,14 +181,17 @@ shinyUI(
                   tabPanel("Feature Summary",
                            box(width = 12,
                                title="Audio Feature Summary",
-                               status="primary",
+                               status="info",
                                solidHeader = TRUE,
                                collapsible = TRUE,
-                               plotOutput("artFeatSum", height = "400px")),
+                               column(12,
+                               plotOutput("artFeatSum", height = "400px"))),
+                            
+                           
                            
                            box(width = 12,
                                title="Let's take a closer look",
-                               status="primary",
+                               status="info",
                                solidHeader = TRUE,
                                
                                column(3,
@@ -209,14 +212,27 @@ shinyUI(
                            box(
                              width = 12,
                              title="Feature Differences Between Two Albums",
-                             status="primary",
+                             status="info",
                              solidHeader = TRUE,
+                            
                              
                              column(3,
                                     selectInput("album1", "Select the first album:", choice=""),
                                     selectInput("album2", "select the second album:", choice="")),
                              
                              column(9, plotOutput("albComp", height = "400px"))
+                           )),
+                  tabPanel("Datatable",
+                           box(
+                             width=12,
+                             title="Data table of audio features",
+                             status="info",
+                             solidHeader=TRUE,
+                             column(12,
+                                    h5("note: row name is the track id"),
+                                    dataTableOutput("table")
+                                    )
+                             
                            ))
                 )),
         #user page ###########
