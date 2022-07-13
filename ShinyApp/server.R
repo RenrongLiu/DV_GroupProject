@@ -37,20 +37,14 @@ shinyServer(function(input, output,session) {
       geom_bar()+theme_classic()+theme(axis.text.x=element_blank(), axis.ticks.x = element_blank(),legend.title = element_blank())+
       labs(title="Distribution of songs located in different key mode",caption ="Data from Sporitfy",x="key mode",y="number of songs")})
   
-  output$genreCloud<-renderPlot({ data_pop<-get_artist_top_tracks(
-    data()[1,2],
-    market = "US",
-    authorization = get_spotify_access_token(),
-    include_meta_info = FALSE
-  )
-  data_pop[,c(9,10)]->data_pop
-  frequency=round(data_pop$popularity**2,0)
-  wordcloud(words = data_pop$name,
-            freq = frequency,
-            random.order=FALSE,
-            min.freq = 10,
-            maxWords=500,
-            ordered.colors=TRUE)})
+  output$artimage<-renderImage({data=data()
+    get_artist(data[1,2], authorization = get_spotify_access_token())->artist
+    image_read(artist$images[1,"url"])->pic
+    return(pic)
+  })
+                               
+  
+
   output$artFeatSum<-renderPlot({
     data=data()
     data[,c("danceability","energy","speechiness","acousticness","liveness","valence")]->data_spider

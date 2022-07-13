@@ -166,10 +166,10 @@ shinyUI(
                            
                            fluidRow(
                              box(width = 6,
-                                 title="Artist's genre",
+                                 title="Artist's image",
                                  status="primary",
                                  solidHeader = TRUE,
-                                 plotOutput("genreCloud", height = "400px")),
+                                 plotOutput("artimage", height = "400px")),
                              
                              box(width = 6,
                                  title="Artist's Most Common Keys",
