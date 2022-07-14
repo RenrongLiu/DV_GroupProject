@@ -230,7 +230,7 @@ shinyUI(
                              solidHeader=TRUE,
                              column(12,
                                     h5("note: row name is the track id"),
-                                    dataTableOutput("table")
+                                    DT::dataTableOutput("table")
                                     )
                              
                            ))
