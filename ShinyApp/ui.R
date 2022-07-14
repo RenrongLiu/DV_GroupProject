@@ -312,18 +312,21 @@ shinyUI(
                   tabPanel("Your Favorites",
                            box(width=12,
                                title="Top 10 Songs",
-                               status="primary",
+                               status="success",
+                               background = "black",
                                solidHeader = TRUE,
                                collapsible = TRUE,
                                formattableOutput("topTra"),
                                style = "overflow-x: scroll;"),
                            
                            box(width=12,
-                               title="Top 5 Artists",
-                               status="primary",
-                               solidHeader = TRUE,
-                               collapsible = TRUE,
-                               formattableOutput("topArt")),
+                               status="success",
+                               background = "black",
+                               fixedRow(
+                                 valueBoxOutput("favArt1"),
+                                 valueBoxOutput("favArt2"),
+                                 valueBoxOutput("favArt3")
+                               )),
                                
                            fixedRow(
                              width=12,
@@ -351,7 +354,8 @@ shinyUI(
                            
                            box(width=12,
                                title="Your Customized Recommendation",
-                               status="primary",
+                               status="success",
+                               background = "black",
                                solidHeader = TRUE,
                                collapsible = TRUE,
                                formattableOutput("recTra"))
