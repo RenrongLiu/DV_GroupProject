@@ -60,7 +60,8 @@ shinyUI(
                     width=6,
                     title="About the Project",
                     solidHeader = TRUE,
-                    status="primary",
+                    status="success",
+                    background="black",
                     collapsible = TRUE,
                     p("Spotify is one of the most popular audio streaming platforms, which including millions of subscribers. We are applying musical audio features analysis for the popular tracks on Spotify. The audio features can be seperated to different categories such as the mood, properties, and context. We mainly using danceability, energy, valence, sppechiness, liveness, and acousticness those six features to analysis the tracks.  "),
                     p("Our application has three major components:  "),
@@ -216,13 +217,13 @@ shinyUI(
                                       selectInput("featByX", label="Feature on the X-axis",
                                                   choices = list("energy", "acousticness", "danceability",
                                                                  "liveness", "speechiness",
-                                                                 "valence")),
+                                                                 "valence"),selected="liveness"),
                                       selectInput("featByY", label="Feature on the Y-axis",
                                                   choices = list("energy", "acousticness", "danceability",
                                                                  "liveness", "speechiness",
-                                                                 "valence"))),
+                                                                 "valence"),selected="energy")),
                                
-                               column(9, plotOutput("artFeatScatter", height="400px"))
+                               column(9, plotlyOutput("artFeatScatter", height="400px"))
                            )),
                   
                   tabPanel("Album Feature Comparison",
