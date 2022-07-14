@@ -158,12 +158,15 @@ shinyUI(
             status="success",
             background = "black",
           ),
-          box(
-            title="Most Common Key",
-            status="success",
-            background = "black",
-            plotOutput("trendKey",height="400px"),
-            width=12
+          
+          fluidRow(
+            box(
+              title="Most Common Key",
+              status="success",
+              background = "black",
+              plotOutput("trendKey",height="400px"),
+              width=12
+            )
           ),
         ),
         # Artist page##########
@@ -205,55 +208,63 @@ shinyUI(
                                plotOutput("artFeatSum", height = "400px"))),
                             
                            
+                           fluidRow(
+                             box(width = 12,
+                                 title="Let's take a closer look",
+                                 status="success",
+                                 background="black",
+                                 solidHeader = TRUE,
+                                 
+                                 column(3,
+                                        
+                                        selectInput("featByX", label="Feature on the X-axis",
+                                                    choices = list("energy", "acousticness", "danceability",
+                                                                   "liveness", "speechiness",
+                                                                   "valence"),selected="liveness"),
+                                        selectInput("featByY", label="Feature on the Y-axis",
+                                                    choices = list("energy", "acousticness", "danceability",
+                                                                   "liveness", "speechiness",
+                                                                   "valence"),selected="energy")),
+                                 
+                                 column(9, plotlyOutput("artFeatScatter", height="400px"))
+                             )
+                           )
+),
+                  
+                  tabPanel("Album Feature Comparison",
                            
-                           box(width = 12,
-                               title="Let's take a closer look",
+                           fluidRow(                           
+                             box(
+                               width = 12,
+                               title="Feature Differences Between Two Albums",
                                status="success",
                                background="black",
                                solidHeader = TRUE,
                                
-                               column(3,
-                                
-                                      selectInput("featByX", label="Feature on the X-axis",
-                                                  choices = list("energy", "acousticness", "danceability",
-                                                                 "liveness", "speechiness",
-                                                                 "valence"),selected="liveness"),
-                                      selectInput("featByY", label="Feature on the Y-axis",
-                                                  choices = list("energy", "acousticness", "danceability",
-                                                                 "liveness", "speechiness",
-                                                                 "valence"),selected="energy")),
                                
-                               column(9, plotlyOutput("artFeatScatter", height="400px"))
-                           )),
-                  
-                  tabPanel("Album Feature Comparison",
-                           box(
-                             width = 12,
-                             title="Feature Differences Between Two Albums",
-                             status="success",
-                             background="black",
-                             solidHeader = TRUE,
-                            
-                             
-                             column(3,
-                                    selectInput("album1", "Select the first album:", choice=""),
-                                    selectInput("album2", "select the second album:", choice="")),
-                             
-                             column(9, plotOutput("albComp", height = "400px"))
-                           )),
-                  tabPanel("Datatable",
-                           box(
-                             width=12,
-                             title="Data table of audio features",
-                             status="success",
-                             background="black",
-                             solidHeader=TRUE,
-                             column(12,
-                                    h5("note: row name is the track id"),
-                                    DT::dataTableOutput("table")
-                                    )
-                             
+                               column(3,
+                                      selectInput("album1", "Select the first album:", choice=""),
+                                      selectInput("album2", "select the second album:", choice="")),
+                               
+                               column(9, plotOutput("albComp", height = "400px"))
                            ))
+),
+                  tabPanel("Datatable",
+                           fluidRow(
+                             box(
+                               width=12,
+                               title="Data table of audio features",
+                               status="success",
+                               background="black",
+                               solidHeader=TRUE,
+                               column(12,
+                                      h5("note: row name is the track id"),
+                                      DT::dataTableOutput("table")
+                               )
+                               
+                             )
+                           )
+)
                 )),
         #user page ###########
         tabItem(tabName = "user",
