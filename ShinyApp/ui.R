@@ -30,11 +30,17 @@ shinyUI(
           class="sidebar accordion",
           menuItem("Home", tabName = "home", icon=icon("home")),
           hr(class="sidebar-hr-gradient"),
-          menuItem("Spotify Trends", tabName = "trend", icon=icon("chart-line")),
+          menuItem(
+            "Spotify Trends", tabName = "trend", icon=icon("chart-line"),
+            menuItem("Artists",tabName="TrendArtists", icon=icon("users")),
+            menuItem("Tracks",tabName="TrendTracks", icon=icon("music")),
+            menuItem("Albums",tabName="TrendAlbums", icon=icon("file"))
+          ),
           menuItem("Artist Analysis", tabName = "artist", icon=icon("microphone")),
           menuItem("User Profile", tabName = "user", icon=icon("user-circle")),
           hr(class="sidebar-hr-gradient"),
-          menuItem("About Us", tabName = "us", icon=icon("paperclip"))
+          menuItem("About Us", tabName = "us", icon=icon("paperclip")),
+          menuItem("Reference", tabName = "reference", icon=icon("book"))
         )
       ),
     
@@ -77,10 +83,13 @@ shinyUI(
         
         #################### Trend page ####################
         tabItem(
-          tabName = "trend",
+          tabName = "TrendArtists",
           div(
             class="top-container",
-            strong("Trends at Spotify", class="trends-h2"),
+            strong("Trends at Spotify: Artists", class="trends-h2")
+          ),
+          div(
+            class="top-container2",
             div(
               class="trends-slider",
               noUiSliderInput(
@@ -96,85 +105,41 @@ shinyUI(
                 format=wNumbFormat(decimals=0)
               )
             )
-          ),
             
-                
-                tabsetPanel(
-                  tabPanel("Artists",
-                           fixedRow(
-                             box(
-                               width=4,
-                               status = "primary",
-                               radioButtons("artRB", label="Please select the feature:",
-                                            choices = list("energy", "acousticness", "danceability",
-                                                           "liveness", "loudness", "speechiness",
-                                                           "valence", "common key"),
-                                            selected = "0"),
-                               
-                             ),
-                             
-                             box(
-                               width=8,
-                               plotOutput("trendArt", height = "400px")
-                             )
-                           ),
-                           
-                           box(width=12,
-                               title="Who is in TOP 10 Artists",
-                               status="primary",
-                               solidHeader = TRUE,
-                               collapsible = TRUE)),
-                  
-                  tabPanel("Albums",
-                           fixedRow(
-                             box(
-                               width=4,
-                               status = "primary",
-                               radioButtons("albRB", label="Please select the feature:",
-                                            choices = list("energy", "acousticness", "danceability",
-                                                           "liveness", "loudness", "speechiness",
-                                                           "valence", "common key"),
-                                            selected = "0"),
-                               
-                             ),
-                             
-                             box(
-                               width=8,
-                               plotOutput("trendAlb", height = "400px")
-                             )
-                           ),
-                           
-                           box(width=12,
-                               title="Which are TOP 10 Albums",
-                               status="primary",
-                               solidHeader = TRUE,
-                               collapsible = TRUE)),
-                  
-                  tabPanel("Tracks",
-                           fixedRow(
-                             box(
-                               width=4,
-                               status = "primary",
-                               radioButtons("traRB", label="Please select the feature:",
-                                            choices = list("energy", "acousticness", "danceability",
-                                                           "liveness", "loudness", "speechiness",
-                                                           "valence", "common key"),
-                                            selected = "0"),
-                               
-                             ),
-                             
-                             box(
-                               width=8,
-                               plotOutput("trendTra", height = "400px")
-                             )
-                           ),
-                           
-                           box(width=12,
-                               title="Which are TOP 10 Songs",
-                               status="primary",
-                               solidHeader = TRUE,
-                               collapsible = TRUE))
-                )),
+          ),
+          box(
+            fluidRow(
+              column(4,
+                     checkboxGroupButtons(
+                       inputId = "trendFeatures",
+                       label = "Musical Features",
+                       choices = c("Energy", "Acousticness", "danceability",
+                                   "liveness", "loudness", "speechiness",
+                                   "valence"),
+                       checkIcon = list(
+                         yes = tags$i(class = "fa fa-check-square", 
+                                      style = "color: black"),
+                         no = tags$i(class = "fa fa-square-o", 
+                                     style = "color: black")),
+                       direction = "vertical"
+                     )
+                     ),
+              column(8,
+                     plotOutput("trendFeatures",height="400px")
+                     )
+            ),
+            title="Musical Features Trend",
+            status="success",
+            background = "black",
+          ),
+          box(
+            title="Most Common Key",
+            status="success",
+            background = "black",
+            plotOutput("trendKey",height="400px"),
+            width=12
+          ),
+        ),
         # Artist page##########
         tabItem(tabName = "artist",
                 div(
@@ -268,24 +233,27 @@ shinyUI(
         tabItem(tabName = "user",
                 div(
                   class="top-container",
-                  strong("Your Customized Profile", class="user-h2")),
+                  strong("Your Customized Profile", class="trends-h2")),
 
                 tabsetPanel(
                   tabPanel("Your Favorites",
                            box(width=12,
                                title="Top 10 Songs",
-                               status="primary",
+                               status="success",
+                               background = "black",
                                solidHeader = TRUE,
                                collapsible = TRUE,
                                formattableOutput("topTra"),
                                style = "overflow-x: scroll;"),
                            
                            box(width=12,
-                               title="Top 5 Artists",
-                               status="primary",
-                               solidHeader = TRUE,
-                               collapsible = TRUE,
-                               formattableOutput("topArt")),
+                               status="success",
+                               background = "black",
+                               fixedRow(
+                                 valueBoxOutput("favArt1"),
+                                 valueBoxOutput("favArt2"),
+                                 valueBoxOutput("favArt3")
+                               )),
                                
                            fixedRow(
                              width=12,
@@ -313,7 +281,8 @@ shinyUI(
                            
                            box(width=12,
                                title="Your Customized Recommendation",
-                               status="primary",
+                               status="success",
+                               background = "black",
                                solidHeader = TRUE,
                                collapsible = TRUE,
                                formattableOutput("recTra"))
@@ -387,7 +356,24 @@ shinyUI(
                   collapsed = TRUE,
                   tags$img(),
                   p()
-                ))
+                )),
+        tabItem(tabName = "reference",
+                div(
+                  class="top-container",
+                  strong("References", class="trends-h2")),
+                box(
+                  status="success",
+                  background = "black",
+                  tags$ol(
+                    tags$li(a(" R Shiny", href="https://shiny.rstudio.com/")),
+                    tags$li(a("Font Awesome icon 4",href="https://fontawesome.com/v4/icons/")),
+                    tags$li(a("Google Fonts",href="https://fonts.google.com/?category=Display"))
+                  )
+                  
+                  
+                  
+                )
+        )
         
       )
       
