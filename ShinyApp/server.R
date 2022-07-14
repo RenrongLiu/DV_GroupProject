@@ -28,6 +28,7 @@ library(cowplot)
 library(DT)
 library(shinythemes)
 library(shinyWidgets)
+library(plotly)
 
 # Function to authenticate user's id and secret
 # This part of code is originate from a blog on towardDataScience written by Azaan Barlas:

@@ -14,6 +14,7 @@ library(formattable)
 library(wordcloud2)
 library(shinythemes)
 library(shinyWidgets)
+library(plotly)
 
 # Define UI for application that draws a histogram
 shinyUI(
