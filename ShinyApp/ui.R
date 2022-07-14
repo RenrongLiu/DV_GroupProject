@@ -337,11 +337,10 @@ shinyUI(
                            align = "left",
                            height = 200
                          )),
-                  column(
-                    width = 9,
-                    p("I am Yikai Jin from BARM, and it is nice to meet all of you in the Data Visualization class. The following is a little information about me."),
-                    p("I finished my bachelor's degree in Statistics and Applied Mathematics at the University of Wisconsin- Madison in 2019. With the covid-19 coming suddenly,  I deferred my offer of BARM in the year 2020, and use one year to work as an IT consultant, and my attending projects are mainly about IT Governance and IT regulation, and also I did much research on AIOPs during the year. I pursuing my master's degree at JHU to improve my business understanding and data analytics.")
-                  )
+                  column(width = 9,
+                         p("I am Yikai Jin from BARM, and it is nice to meet all of you in the Data Visualization class. The following is a little information about me."),
+                         p("I finished my bachelor's degree in Statistics and Applied Mathematics at the University of Wisconsin- Madison in 2019. With the covid-19 coming suddenly,  I deferred my offer of BARM in the year 2020, and use one year to work as an IT consultant, and my attending projects are mainly about IT Governance and IT regulation, and also I did much research on AIOPs during the year. I pursuing my master's degree at JHU to improve my business understanding and data analytics.")
+                         )
                 ),
                 
                 box(
