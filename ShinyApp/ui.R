@@ -30,7 +30,12 @@ shinyUI(
           class="sidebar accordion",
           menuItem("Home", tabName = "home", icon=icon("home")),
           hr(class="sidebar-hr-gradient"),
-          menuItem("Spotify Trends", tabName = "trend", icon=icon("chart-line")),
+          menuItem(
+            "Spotify Trends", tabName = "trend", icon=icon("chart-line"),
+            menuItem("Artists",tabName="TrendArtists", icon=icon("users")),
+            menuItem("Tracks",tabName="TrendTracks", icon=icon("music")),
+            menuItem("Albums",tabName="TrendAlbums", icon=icon("file"))
+          ),
           menuItem("Artist Analysis", tabName = "artist", icon=icon("microphone")),
           menuItem("User Profile", tabName = "user", icon=icon("user-circle")),
           hr(class="sidebar-hr-gradient"),
@@ -98,121 +103,44 @@ shinyUI(
             )
           ),
           
-          
-          fluidRow(
-            column(1),
-            column(
-              width=4,
-              fluidRow(
-                radioGroupButtons(
-                  inputId = "trendType",
-                  label = "",
-                  choices = c("Artists", "Albums", "Tracks"),
-                  checkIcon = list(
-                    yes = tags$i(class = "fa fa-circle", 
-                                 style = "color: black"),
-                    no = tags$i(class = "fa fa-circle-o", 
-                                style = "color: black")),
-                  direction="vertical"
-                )
-              ),
-              fluidRow(
-                checkboxGroupButtons(
-                  inputId = "trendFeatures",
-                  label = "Musical Features",
-                  choices = c("energy", "acousticness", "danceability",
-                              "liveness", "loudness", "speechiness",
-                              "valence", "common key"),
-                  checkIcon = list(
-                    yes = tags$i(class = "fa fa-check-square", 
-                                 style = "color: black"),
-                    no = tags$i(class = "fa fa-square-o", 
-                                style = "color: black")),
-                  direction = "vertical"
-                )
-              )
+          sidebarPanel(
+            class="trends-sidebar",
+            radioGroupButtons(
+              inputId = "trendType",
+              label = "Select Type: ",
+              choices = c("Artists", "Albums", "Tracks"),
+              checkIcon = list(
+                yes = tags$i(class = "fa fa-circle", 
+                             style = "color: black"),
+                no = tags$i(class = "fa fa-circle-o", 
+                            style = "color: black")),
+              direction="vertical"
             ),
-            column(8)
-            
+            checkboxGroupButtons(
+              inputId = "trendFeatures",
+              label = "Musical Features",
+              choices = c("energy", "acousticness", "danceability",
+                          "liveness", "loudness", "speechiness",
+                          "valence", "common key"),
+              checkIcon = list(
+                yes = tags$i(class = "fa fa-check-square", 
+                             style = "color: black"),
+                no = tags$i(class = "fa fa-square-o", 
+                            style = "color: black")),
+              direction = "vertical"
+            ),
+            width=4
           ),
-          
-                
-                tabsetPanel(
-                  tabPanel("Artists",
-                           fixedRow(
-                             box(
-                               width=4,
-                               status = "success",
-                               radioButtons("artRB", label="Please select the feature:",
-                                            choices = list("energy", "acousticness", "danceability",
-                                                           "liveness", "loudness", "speechiness",
-                                                           "valence", "common key"),
-                                            selected = "0"),
-                               
-                             ),
-                             
-                             box(
-                               width=8,
-                               plotOutput("trendArt", height = "400px")
-                             )
-                           ),
-                           
-                           box(width=12,
-                               title="Who is in TOP 10 Artists",
-                               status="primary",
-                               solidHeader = TRUE,
-                               collapsible = TRUE)),
-                  
-                  tabPanel("Albums",
-                           fixedRow(
-                             box(
-                               width=4,
-                               status = "primary",
-                               radioButtons("albRB", label="Please select the feature:",
-                                            choices = list("energy", "acousticness", "danceability",
-                                                           "liveness", "loudness", "speechiness",
-                                                           "valence", "common key"),
-                                            selected = "0"),
-                               
-                             ),
-                             
-                             box(
-                               width=8,
-                               plotOutput("trendAlb", height = "400px")
-                             )
-                           ),
-                           
-                           box(width=12,
-                               title="Which are TOP 10 Albums",
-                               status="primary",
-                               solidHeader = TRUE,
-                               collapsible = TRUE)),
-                  
-                  tabPanel("Tracks",
-                           fixedRow(
-                             box(
-                               width=4,
-                               status = "primary",
-                               radioButtons("traRB", label="Please select the feature:",
-                                            choices = list("energy", "acousticness", "danceability",
-                                                           "liveness", "loudness", "speechiness",
-                                                           "valence", "common key"),
-                                            selected = "0"),
-                               
-                             ),
-                             
-                             box(
-                               width=8,
-                               plotOutput("trendTra", height = "400px")
-                             )
-                           ),
-                           
-                           box(width=12,
-                               title="Which are TOP 10 Songs",
-                               status="primary",
-                               solidHeader = TRUE,
-                               collapsible = TRUE))
-                )),
+          mainPanel(
+            box(
+              title="Musical Features Trend",
+              status="success",
+              background = "black",
+              plotOutput("trendFeatures",height="400px")
+            ),
+            width=8
+          )
+        ),
         # Artist page##########
         tabItem(tabName = "artist",
                 div(
