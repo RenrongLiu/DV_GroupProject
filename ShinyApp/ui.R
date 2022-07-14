@@ -14,6 +14,7 @@ library(formattable)
 library(wordcloud2)
 library(shinythemes)
 library(shinyWidgets)
+library(plotly)
 
 # Define UI for application that draws a histogram
 shinyUI(
@@ -54,6 +55,19 @@ shinyUI(
                   strong("Home Page", class="trends-h2")),
                 
                 fluidRow(
+                  # Project intro ##########
+                  box(
+                    width=6,
+                    title="About the Project",
+                    solidHeader = TRUE,
+                    status="primary",
+                    collapsible = TRUE,
+                    p("Spotify is one of the most popular audio streaming platforms, which including millions of subscribers. We are applying musical audio features analysis for the popular tracks on Spotify. The audio features can be seperated to different categories such as the mood, properties, and context. We mainly using danceability, energy, valence, sppechiness, liveness, and acousticness those six features to analysis the tracks.  "),
+                    p("Our application has three major components:  "),
+                    p("Spotify Trends:You can explore the top artists, tracks, and albums from year 2013 to 2021, and comparing the musical features trends among the songs. The page will provide you the overall idea of the musical feature taste transformation in the time duration."),
+                    p("Artist Analysis: You can serch for your interested artists to see his or her image and the artists’ most common keys in the songs. To further learn your searched artist, audio feature summary will be provided with six components (danceability, energy, valence, sppechiness, liveness, and acousticness), and you can learn the artists’ songs and albums from different musical features. At last, this page includes the album comparision for the artist, you are welcome to choose two of the album from your searching artist to compare the overall musical features in the songs. "),
+                    p("User Profile: The other interactive part in our project is understanding your Spotify list. We need your permission to link your Spotify account, and to give your summary of the top 10 songs, top 3 singers from you listening history. In addition, we would based on your favorite tracks, artists and genres to provide some cusomized recommendation, and it can provide advisory for your music. ")
+                  ),
                   # Spotify API Intro###########
                        box(
                          width=6,
@@ -62,22 +76,33 @@ shinyUI(
                          status="success",
                          background="black",
                          collapsible = TRUE,
-                         p("Put Spotify API intro here"),
+                         p("Technically, we using Spotify API to accesses user related data as the main data sources for our project. The Spotify’s Web API can dicover music, manage the labrary, control audio playbacks. We mainly get information such as albms, artist, tracks, and users from Spotify’s Web API. "),
                          br(),
                          # put video here, following the format:
                          # tags$iframe(width="560", height="315", src="https://www.youtube.com/embed/T1-k7VYwsHg", frameborder="0", allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture", allowfullscreen=NA)
                          tags$iframe()
-                       ),
-                       
-                  # Project intro ##########
-                       box(
-                         width=6,
-                         title="About the Project",
-                         solidHeader = TRUE,
-                         status="primary",
-                         collapsible = TRUE,
-                         p("Put project description here")
                        )
+                  ),
+                
+                box(width=12,
+                  column(6,
+                         h3("Get your Spotify access token here:"),
+                         textInput("spotifyId", "Client ID: ", ""),
+                         textInput("spotifySec", "Client Secret: ", ""),
+                         actionButton("valid", "Validate"),
+                         textOutput("valMessage")),
+                  
+                  column(6,
+                         h2("Instructions"),
+                         br(),
+                         h6("Step 1: Go to https://developer.spotify.com/dashboard/ and login with your Spotify information"),
+                         h6("Step 2: Create an app with name and description temp, then find the client ID and Client Secret"),
+                         h6("Step 3: Copy and paste the ID and Secret into the designated dialog boxes, and click validate."),
+                         h6("Step 4: Allow spotify to authenticate your account"),
+                         h6("Now you should be good to go! Click one of the tabs above and learn more about your music")
+                         # h6("Step 4: When prompted with the message are you ..., make sure to click NOT YOU and login yourself. Now you're good to go! "),
+                         # verbatimTextOutput("txtout"), # generated from the server
+                  )
                 )
                 ),
         
@@ -191,13 +216,13 @@ shinyUI(
                                       selectInput("featByX", label="Feature on the X-axis",
                                                   choices = list("energy", "acousticness", "danceability",
                                                                  "liveness", "speechiness",
-                                                                 "valence")),
+                                                                 "valence"),selected="liveness"),
                                       selectInput("featByY", label="Feature on the Y-axis",
                                                   choices = list("energy", "acousticness", "danceability",
                                                                  "liveness", "speechiness",
-                                                                 "valence"))),
+                                                                 "valence"),selected="energy")),
                                
-                               column(9, plotOutput("artFeatScatter", height="400px"))
+                               column(9, plotlyOutput("artFeatScatter", height="400px"))
                            )),
                   
                   tabPanel("Album Feature Comparison",
@@ -236,7 +261,7 @@ shinyUI(
                   strong("Your Customized Profile", class="trends-h2")),
 
                 tabsetPanel(
-                  tabPanel("Your Favorites",
+                  tabPanel("Top 10 Songs",
                            box(width=12,
                                title="Top 10 Songs",
                                status="success",
@@ -246,22 +271,29 @@ shinyUI(
                                formattableOutput("topTra"),
                                style = "overflow-x: scroll;"),
                            
-                           box(width=12,
+                           fluidRow(
+                             box(width=12,
+                                 status="success",
+                                 #background = "black",
+                                 plotlyOutput("userTraFeat")))
+                         ),
+                  
+                  tabPanel("Favorite Artists",
+                           br(),
+                           fluidRow(
+                             valueBoxOutput("favArt1"),
+                             valueBoxOutput("favArt2"),
+                             valueBoxOutput("favArt3")
+                           ),
+                           
+                           fluidRow(
+                             box(
+                               width=12,
                                status="success",
                                background = "black",
-                               fixedRow(
-                                 valueBoxOutput("favArt1"),
-                                 valueBoxOutput("favArt2"),
-                                 valueBoxOutput("favArt3")
-                               )),
-                               
-                           fixedRow(
-                             width=12,
-                             column(6,
-                                    plotOutput("userFavGen")),
-                             column(6,
-                                    plotOutput("userTraFeat"))
-                           )),
+                               wordcloud2Output("userFavGen"))
+                             )
+                           ),
                   
                   tabPanel("Recommendation",
                            fixedRow(
@@ -383,3 +415,4 @@ shinyUI(
   )
 )
 
+1
