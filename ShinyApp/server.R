@@ -96,17 +96,19 @@ shinyServer(function(input, output,session) {
   
   output$artFeatScatter<-renderPlot({
     data=data()
+    print(input$featByY)
+    print(input$featByX)
     data[,c("danceability","energy","speechiness","acousticness","liveness","valence","album_name")]->data_audio
     data_audio%>%
-      ggplot(mapping=aes(x=as.name(input$featByX),y=as.name(input$featByY),color=album_name)+geom_jitter() +
+      ggplot(mapping=aes_string(x=input$featByX,y=input$featByY,color="album_name"))+geom_jitter() +
       geom_vline(xintercept = 0.5) +
       geom_hline(yintercept = 0.5) +
       scale_x_continuous(limits = c(0, 1)) +
       scale_y_continuous(limits = c(0, 1)) +
       labs(x= input$featByX, y= input$featByY,color="Album name") +
-      ggtitle("Audio features quadrant"))})
+      ggtitle("Audio features quadrant")})
   album=reactive({
-  data()%>%select(album_name)%>%distinct()%>%pull()
+  data()%>%distinct(album_name)%>%pull(album_name)
   })
  
   observe({  updateSelectInput(session=session,"album1",choices = album())
@@ -206,8 +208,10 @@ shinyServer(function(input, output,session) {
                 ))
   })
   
-  artist_name <- get_my_top_artists_or_tracks(limit=3) %>% 
-    pull(name)
+  #artist_name <- get_my_top_artists_or_tracks(limit=3) %>% 
+  #  pull(name)
+  
+  artist_name = c("Taylor Swift", "Justin Bieber", "Justin Timberlake")
   
   output$favArt1 <- renderValueBox({
     
