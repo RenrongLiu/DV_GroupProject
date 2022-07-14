@@ -26,6 +26,10 @@ library(rsvg)
 library(gtools)
 library(cowplot)
 library(DT)
+library(shinythemes)
+library(shinyWidgets)
+
+
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output,session) {

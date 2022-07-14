@@ -53,7 +53,8 @@ shinyUI(
                          width=6,
                          title="About Spotify API",
                          solidHeader = TRUE,
-                         status="primary",
+                         status="success",
+                         background="black",
                          collapsible = TRUE,
                          p("Put Spotify API intro here"),
                          br(),
@@ -227,13 +228,15 @@ shinyUI(
                            fluidRow(
                              box(width = 6,
                                  title="Artist's image",
-                                 status="info",
+                                 status="success",
+                                 background="black",
                                  solidHeader = TRUE,
                                  plotOutput("artimage")),
                              
                              box(width = 6,
                                  title="Artist's Most Common Keys",
-                                 status="info",
+                                 status="success",
+                                 background="black",
                                  solidHeader = TRUE,
                                  plotOutput("artKeyBar", height = "400px"))
                            )),
@@ -241,7 +244,8 @@ shinyUI(
                   tabPanel("Feature Summary",
                            box(width = 12,
                                title="Audio Feature Summary",
-                               status="info",
+                               status="success",
+                               background="black",
                                solidHeader = TRUE,
                                collapsible = TRUE,
                                column(12,
@@ -251,7 +255,8 @@ shinyUI(
                            
                            box(width = 12,
                                title="Let's take a closer look",
-                               status="info",
+                               status="success",
+                               background="black",
                                solidHeader = TRUE,
                                
                                column(3,
@@ -272,7 +277,8 @@ shinyUI(
                            box(
                              width = 12,
                              title="Feature Differences Between Two Albums",
-                             status="info",
+                             status="success",
+                             background="black",
                              solidHeader = TRUE,
                             
                              
@@ -286,7 +292,8 @@ shinyUI(
                            box(
                              width=12,
                              title="Data table of audio features",
-                             status="info",
+                             status="success",
+                             background="black",
                              solidHeader=TRUE,
                              column(12,
                                     h5("note: row name is the track id"),
