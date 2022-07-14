@@ -14,6 +14,7 @@ library(formattable)
 library(wordcloud2)
 library(shinythemes)
 library(shinyWidgets)
+library(plotly)
 
 # Define UI for application that draws a histogram
 shinyUI(
@@ -215,13 +216,13 @@ shinyUI(
                                       selectInput("featByX", label="Feature on the X-axis",
                                                   choices = list("energy", "acousticness", "danceability",
                                                                  "liveness", "speechiness",
-                                                                 "valence")),
+                                                                 "valence"),selected="liveness"),
                                       selectInput("featByY", label="Feature on the Y-axis",
                                                   choices = list("energy", "acousticness", "danceability",
                                                                  "liveness", "speechiness",
-                                                                 "valence"))),
+                                                                 "valence"),selected="energy")),
                                
-                               column(9, plotOutput("artFeatScatter", height="400px"))
+                               column(9, plotlyOutput("artFeatScatter", height="400px"))
                            )),
                   
                   tabPanel("Album Feature Comparison",

@@ -108,27 +108,32 @@ shinyServer(function(input, output,session) {
                title=paste0("Audio features of ",data[1,1])
     ))})
   
-  output$artFeatScatter<-renderPlot({
+  output$artFeatScatter<-renderPlotly({
     data=data()
     print(input$featByY)
     print(input$featByX)
     data[,c("danceability","energy","speechiness","acousticness","liveness","valence","album_name")]->data_audio
-    data_audio%>%
+    scatter<-data_audio%>%
       ggplot(mapping=aes_string(x=input$featByX,y=input$featByY,color="album_name"))+geom_jitter() +
       geom_vline(xintercept = 0.5) +
       geom_hline(yintercept = 0.5) +
       scale_x_continuous(limits = c(0, 1)) +
       scale_y_continuous(limits = c(0, 1)) +
       labs(x= input$featByX, y= input$featByY,color="Album name") +
-      ggtitle("Audio features quadrant")})
+      ggtitle("Audio features quadrant")
+      return(ggplotly(scatter))
+    })
+  
   album=reactive({
   data()%>%distinct(album_name)%>%pull(album_name)
   })
  
-  observe({  updateSelectInput(session=session,"album1",choices = album())
+  observe({  album=album()
+    updateSelectInput(session=session,"album1",choices = album(),selected=album[1])
     
   })
-  observe({   updateSelectInput(session=session,"album2",choices= album())
+  observe({  album=album()
+    updateSelectInput(session=session,"album2",choices= album(),selected=album[3])
     
   })
  
