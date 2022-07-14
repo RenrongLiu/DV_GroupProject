@@ -21,7 +21,7 @@ shinyUI(
   dashboardPage(
     skin="black",
   
-    dashboardHeader(title="ProjectName"),
+    dashboardHeader(title="Project Name"),
 
     #################### Dashboard siderbar ####################
       dashboardSidebar(
@@ -41,8 +41,12 @@ shinyUI(
     dashboardBody(
       tabItems(
         #################### home page####################
+        
         tabItem(tabName = "home",
-                h2("Home Page"),
+                div(
+                  class="top-container",
+                  strong("Home Page", class="trends-h2")),
+                
                 fluidRow(
                   # Spotify API Intro###########
                        box(
@@ -172,6 +176,9 @@ shinyUI(
                 )),
         # Artist page##########
         tabItem(tabName = "artist",
+                div(
+                  class="top-container",
+                  strong("Artist Analysis", class="trends-h2")),
                 tabsetPanel(
                   tabPanel("Artist Search",
                            textInput("artSearch", "Please enter the name of an artist:","Ariana Grande"),
@@ -252,8 +259,10 @@ shinyUI(
                 )),
         #user page ###########
         tabItem(tabName = "user",
-                h3("Your customized profile"),
-                
+                div(
+                  class="top-container",
+                  strong("Your Customized Profile", class="user-h2")),
+
                 tabsetPanel(
                   tabPanel("Your Favorites",
                            box(width=12,
@@ -305,8 +314,9 @@ shinyUI(
                 )),
         #About us ############
         tabItem(tabName = "us",
-                h3("Authors"),
-                
+                div(
+                  class="top-container",
+                  strong("Authors", class="trends-h2")),
                 box(
                   width = 12,
                   title = "Yikai Jin",

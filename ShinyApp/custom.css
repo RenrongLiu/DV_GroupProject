@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Splash&display=swap');
 
+.main-header .logo {
+  font-family: "Press Start 2P", cursive;
+  font-size: 14px;
+}
+
 .main-sidebar{
   background-color: #020d06;
   background-image: linear-gradient(180deg, #020d06 10%, #ffffff 100%);
@@ -33,6 +38,18 @@
   color:#fff;
   font-family: "Press Start 2P", cursive;
 }  
+
+.user-h2{
+  position:absolute;
+  top:30%;
+  left:20%;
+  font-size:2rem;
+  padding: 0;
+  margin:auto;
+  color:#fff;
+  font-family: "Press Start 2P", cursive;
+}  
+
 .trends-slider{
   position:absolute;
   top:70%;
