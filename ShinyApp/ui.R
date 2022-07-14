@@ -86,7 +86,10 @@ shinyUI(
           tabName = "TrendArtists",
           div(
             class="top-container",
-            strong("Trends at Spotify: Artists", class="trends-h2"),
+            strong("Trends at Spotify: Artists", class="trends-h2")
+          ),
+          div(
+            class="top-container2",
             div(
               class="trends-slider",
               noUiSliderInput(
@@ -102,25 +105,15 @@ shinyUI(
                 format=wNumbFormat(decimals=0)
               )
             )
+            
           ),
-          
           sidebarPanel(
             class="trends-sidebar",
-            radioGroupButtons(
-              inputId = "trendType",
-              label = "Select Type: ",
-              choices = c("Artists", "Albums", "Tracks"),
-              checkIcon = list(
-                yes = tags$i(class = "fa fa-circle", 
-                             style = "color: black"),
-                no = tags$i(class = "fa fa-circle-o", 
-                            style = "color: black")),
-              direction="vertical"
-            ),
+            
             checkboxGroupButtons(
               inputId = "trendFeatures",
               label = "Musical Features",
-              choices = c("energy", "acousticness", "danceability",
+              choices = c("Energy", "acousticness", "danceability",
                           "liveness", "loudness", "speechiness",
                           "valence", "common key"),
               checkIcon = list(
@@ -130,16 +123,16 @@ shinyUI(
                             style = "color: black")),
               direction = "vertical"
             ),
-            width=4
+            height=12
           ),
           mainPanel(
             box(
               title="Musical Features Trend",
               status="success",
               background = "black",
-              plotOutput("trendFeatures",height="400px")
+              plotOutput("trendFeatures",height="400px"),
+              width=12
             ),
-            width=8
           )
         ),
         # Artist page##########
@@ -235,7 +228,7 @@ shinyUI(
         tabItem(tabName = "user",
                 div(
                   class="top-container",
-                  strong("Your Customized Profile", class="user-h2")),
+                  strong("Your Customized Profile", class="trends-h2")),
 
                 tabsetPanel(
                   tabPanel("Your Favorites",
@@ -348,7 +341,24 @@ shinyUI(
                   collapsed = TRUE,
                   tags$img(),
                   p()
-                ))
+                )),
+        tabItem(tabName = "reference",
+                div(
+                  class="top-container",
+                  strong("References", class="trends-h2")),
+                box(
+                  status="success",
+                  background = "black",
+                  tags$ol(
+                    tags$li(a(" R Shiny", href="https://shiny.rstudio.com/")),
+                    tags$li(a("Font Awesome icon 4",href="https://fontawesome.com/v4/icons/")),
+                    tags$li(a("Google Fonts",href="https://fonts.google.com/?category=Display"))
+                  )
+                  
+                  
+                  
+                )
+        )
         
       )
       
