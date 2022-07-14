@@ -162,6 +162,36 @@ shinyServer(function(input, output,session) {
   })
   
   
+  
+  ######## User Profile ############ 
+  
+  
+  output$topTra <- renderFormattable({
+    
+    top_track <- get_my_top_artists_or_tracks(type="tracks", limit=10)
+    
+    top10_tra <- top_track %>% 
+      select(name, album.name, id, artists) %>% 
+      unnest() %>% 
+      select(name, name1, album.name,id) %>% 
+      rename(Song = name) %>% 
+      rename(Artist = name1) %>% 
+      rename(Album = album.name)
+    
+    id <- top10_tra %>% pull(id)
+    audio_feat <- get_track_audio_features(id) %>% 
+      select(c("energy", "acousticness", "danceability","liveness", 
+               "speechiness", "valence", "id"))
+    
+    df <- top10_tra %>% 
+      left_join(audio_feat, by="id") %>% 
+      filter(!duplicated(id)) %>% 
+      select(-id)
+    
+    formattable(df)
+  })
+  
+  
 
 
   
