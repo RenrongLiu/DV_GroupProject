@@ -206,6 +206,7 @@ shinyServer(function(input, output,session) {
                 ))
   })
   
+  
   artist_name <- get_my_top_artists_or_tracks(limit=3) %>% 
     pull(name)
   
