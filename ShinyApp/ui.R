@@ -39,7 +39,8 @@ shinyUI(
           menuItem("Artist Analysis", tabName = "artist", icon=icon("microphone")),
           menuItem("User Profile", tabName = "user", icon=icon("user-circle")),
           hr(class="sidebar-hr-gradient"),
-          menuItem("About Us", tabName = "us", icon=icon("paperclip"))
+          menuItem("About Us", tabName = "us", icon=icon("paperclip")),
+          menuItem("Reference", tabName = "reference", icon=icon("book"))
         )
       ),
     
@@ -82,10 +83,10 @@ shinyUI(
         
         #################### Trend page ####################
         tabItem(
-          tabName = "trend",
+          tabName = "TrendArtists",
           div(
             class="top-container",
-            strong("Trends at Spotify", class="trends-h2"),
+            strong("Trends at Spotify: Artists", class="trends-h2"),
             div(
               class="trends-slider",
               noUiSliderInput(
