@@ -46,11 +46,11 @@ authenticate <- function(id, secret) {
 # Define server logic required to draw a histogram
 shinyServer(function(input, output,session) {
   
-  ##### Authentication
+  ##### Authentication ######
   # This part of code is originate from a blog on towardDataScience written by Azaan Barlas:
   # https://towardsdatascience.com/combining-spotify-and-r-an-interactive-rshiny-app-spotify-dashboard-tutorial-af48104cb6e9
   validate <- eventReactive(input$valid, {authenticate(input$spotifyId, input$spotifySec)})
-  output$validate_message <- renderText({ validate() })
+  output$valMessage <- renderText({ validate() })
  
   
   ######## Spotify Trend ############
@@ -59,7 +59,7 @@ shinyServer(function(input, output,session) {
   
   ######## Artist Analysis ############ 
   
-  data=reactive({input$button
+  data=eventReactive(input$button, {
      return(get_artist_audio_features(isolate(input$artSearch)))})
   
   output$artKeyBar<-renderPlot({
@@ -284,6 +284,12 @@ shinyServer(function(input, output,session) {
   })
   
   output$userTraFeat <- renderPlotly({
+    
+    id <- get_my_top_artists_or_tracks("tracks", limit=10) %>% pull(id)
+    
+    audio_feat <- get_track_audio_features(id) %>% 
+      select(c("energy", "acousticness", "danceability","liveness", 
+               "speechiness", "valence", "id"))
     
     avg_feat <- audio_feat[,-7] %>% 
       sapply(mean)
