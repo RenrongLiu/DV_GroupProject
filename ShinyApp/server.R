@@ -180,6 +180,7 @@ shinyServer(function(input, output,session) {
       select(name, name1, album.name,id) %>% 
       rename(Song = name) %>% 
       rename(Artist = name1) %>% 
+      mutate(album.name = paste("《", album.name, "》", spe="")) %>% 
       rename(Album = album.name)
     
     id <- top10_tra %>% pull(id)
@@ -191,11 +192,42 @@ shinyServer(function(input, output,session) {
       left_join(audio_feat, by="id") %>% 
       filter(!duplicated(id)) %>% 
       select(-id)
-    
-    formattable(df)
+
+    formattable(df,
+                align = c(rep("l", 3),rep("r", 6)),
+                list(
+                  'energy' = color_bar("#FA614B"),
+                  'acousticness' = color_bar("#FA614B"),
+                  'danceability' = color_bar("#FA614B"),
+                  'liveness' = color_bar("#FA614B"),
+                  'speechiness' = color_bar("#FA614B"),
+                  'valence' = color_bar("#FA614B")
+                  # area(col = 2:7) ~ color_tile("#DeF7E9", "#71CA97")
+                ))
   })
   
+  artist_name <- get_my_top_artists_or_tracks(limit=3) %>% 
+    pull(name)
   
+  output$favArt1 <- renderValueBox({
+    
+    valueBox(artist_name[1], 
+             "Your Favorite Artist #1", icon=icon("heart"))
+  })
+  
+  output$favArt2 <- renderValueBox({
+    
+    valueBox(artist_name[2], 
+             "Your Favorite Artist #2", icon=icon("heart"),
+             color = "yellow")
+  })
+  
+  output$favArt3 <- renderValueBox({
+    
+    valueBox(artist_name[3], 
+             "Your Favorite Artist #3", icon=icon("heart"),
+             color = "purple")
+  })
 
 
   
