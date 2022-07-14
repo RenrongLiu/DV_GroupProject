@@ -233,7 +233,68 @@ shinyServer(function(input, output,session) {
              "Your Favorite Artist #3", icon=icon("heart"),
              color = "purple")
   })
-
-
+  
+  
+  output$userFavGen <- renderWordcloud2({
+    
+    top_50_track <- get_my_top_artists_or_tracks(type="tracks",
+                                                 limit = 50)
+    
+    artist_id <- top_50_track %>% 
+      select(artists) %>% 
+      unnest(cols=c(artists)) %>% 
+      select(id) %>% 
+      distinct() %>% 
+      pull(id)
+    
+    genres <- get_artists(ids=artist_id) %>% 
+      select(genres)
+    
+    genre_list=list()
+    
+    for (x in genres$genres){
+      genre_list = append(genre_list, x)
+    }
+    
+    freq_genre <- unlist(genre_list) %>% 
+      as_tibble() %>% 
+      group_by(value) %>% 
+      summarise(n=n()) %>% 
+      arrange(desc(n))
+    
+    wordcloud2(freq_genre,
+               size=1.5,
+               backgroundColor = "black",
+               color=brewer.pal(12, "Paired"))
+    
+  })
+  
+  output$userTraFeat <- renderPlotly({
+    
+    avg_feat <- audio_feat[,-7] %>% 
+      sapply(mean)
+    
+    fig <- plot_ly(
+      type = 'scatterpolar',
+      r = avg_feat,
+      theta = colnames(audio_feat)[-7],
+      fill = 'toself',
+      mode="markers"
+    )
+    
+    fig <- fig %>%
+      layout(
+        polar = list(
+          radialaxis = list(
+            visible = T,
+            range = c(0,1)
+          )
+        ),
+        showlegend = F
+      )
+    
+    fig
+  })
+  
   
 })

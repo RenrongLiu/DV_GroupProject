@@ -240,7 +240,7 @@ shinyUI(
                   strong("Your Customized Profile", class="trends-h2")),
 
                 tabsetPanel(
-                  tabPanel("Your Favorites",
+                  tabPanel("Top 10 Songs",
                            box(width=12,
                                title="Top 10 Songs",
                                status="success",
@@ -250,22 +250,29 @@ shinyUI(
                                formattableOutput("topTra"),
                                style = "overflow-x: scroll;"),
                            
-                           box(width=12,
+                           fluidRow(
+                             box(width=12,
+                                 status="success",
+                                 #background = "black",
+                                 plotlyOutput("userTraFeat")))
+                         ),
+                  
+                  tabPanel("Favorite Artists",
+                           br(),
+                           fluidRow(
+                             valueBoxOutput("favArt1"),
+                             valueBoxOutput("favArt2"),
+                             valueBoxOutput("favArt3")
+                           ),
+                           
+                           fluidRow(
+                             box(
+                               width=12,
                                status="success",
                                background = "black",
-                               fixedRow(
-                                 valueBoxOutput("favArt1"),
-                                 valueBoxOutput("favArt2"),
-                                 valueBoxOutput("favArt3")
-                               )),
-                               
-                           fixedRow(
-                             width=12,
-                             column(6,
-                                    plotOutput("userFavGen")),
-                             column(6,
-                                    plotOutput("userTraFeat"))
-                           )),
+                               wordcloud2Output("userFavGen"))
+                             )
+                           ),
                   
                   tabPanel("Recommendation",
                            fixedRow(
