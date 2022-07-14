@@ -78,6 +78,27 @@ shinyUI(
                          collapsible = TRUE,
                          p("Put project description here")
                        )
+                ),
+                
+                box(width=12,
+                  column(6,
+                         h3("Get your Spotify access token here:"),
+                         textInput("spotifyId", "Client ID: ", ""),
+                         textInput("spotifySec", "Client Secret: ", ""),
+                         actionButton("valid", "Validate"),
+                         textOutput("valMessage")),
+                  
+                  column(6,
+                         h2("Instructions"),
+                         br(),
+                         h6("Step 1: Go to https://developer.spotify.com/dashboard/ and login with your Spotify information"),
+                         h6("Step 2: Create an app with name and description temp, then find the client ID and Client Secret"),
+                         h6("Step 3: Copy and paste the ID and Secret into the designated dialog boxes, and click validate."),
+                         h6("Step 4: Allow spotify to authenticate your account"),
+                         h6("Now you should be good to go! Click one of the tabs above and learn more about your music")
+                         # h6("Step 4: When prompted with the message are you ..., make sure to click NOT YOU and login yourself. Now you're good to go! "),
+                         # verbatimTextOutput("txtout"), # generated from the server
+                  )
                 )
                 ),
         

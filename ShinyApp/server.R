@@ -29,14 +29,28 @@ library(DT)
 library(shinythemes)
 library(shinyWidgets)
 
+# Function to authenticate user's id and secret
+# This part of code is originate from a blog on towardDataScience written by Azaan Barlas:
+# https://towardsdatascience.com/combining-spotify-and-r-an-interactive-rshiny-app-spotify-dashboard-tutorial-af48104cb6e9
+authenticate <- function(id, secret) {
+  # authenticate the spotify client stuff
+  Sys.setenv(SPOTIFY_CLIENT_ID = id)
+  Sys.setenv(SPOTIFY_CLIENT_SECRET = secret)
+  
+  access_token <- get_spotify_access_token()
+}
+
+
 
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output,session) {
-  Sys.setenv(SPOTIFY_CLIENT_ID = 'd340106f00af4dd6addae953a3b12f1d')
-  Sys.setenv(SPOTIFY_CLIENT_SECRET = '329d27b0e97f42918c8649b50bf5eefe')
-  access_token <- get_spotify_access_token()
   
+  ##### Authentication
+  # This part of code is originate from a blog on towardDataScience written by Azaan Barlas:
+  # https://towardsdatascience.com/combining-spotify-and-r-an-interactive-rshiny-app-spotify-dashboard-tutorial-af48104cb6e9
+  validate <- eventReactive(input$valid, {authenticate(input$spotifyId, input$spotifySec)})
+  output$validate_message <- renderText({ validate() })
  
   
   ######## Spotify Trend ############
