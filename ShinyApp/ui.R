@@ -96,14 +96,52 @@ shinyUI(
               )
             )
           ),
+          
+          
+          fluidRow(
+            column(1),
+            column(
+              width=4,
+              fluidRow(
+                radioGroupButtons(
+                  inputId = "trendType",
+                  label = "",
+                  choices = c("Artists", "Albums", "Tracks"),
+                  checkIcon = list(
+                    yes = tags$i(class = "fa fa-circle", 
+                                 style = "color: black"),
+                    no = tags$i(class = "fa fa-circle-o", 
+                                style = "color: black")),
+                  direction="vertical"
+                )
+              ),
+              fluidRow(
+                checkboxGroupButtons(
+                  inputId = "trendFeatures",
+                  label = "Musical Features",
+                  choices = c("energy", "acousticness", "danceability",
+                              "liveness", "loudness", "speechiness",
+                              "valence", "common key"),
+                  checkIcon = list(
+                    yes = tags$i(class = "fa fa-check-square", 
+                                 style = "color: black"),
+                    no = tags$i(class = "fa fa-square-o", 
+                                style = "color: black")),
+                  direction = "vertical"
+                )
+              )
+            ),
+            column(8)
             
+          ),
+          
                 
                 tabsetPanel(
                   tabPanel("Artists",
                            fixedRow(
                              box(
                                width=4,
-                               status = "primary",
+                               status = "success",
                                radioButtons("artRB", label="Please select the feature:",
                                             choices = list("energy", "acousticness", "danceability",
                                                            "liveness", "loudness", "speechiness",
