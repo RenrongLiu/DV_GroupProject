@@ -107,33 +107,38 @@ shinyUI(
             )
             
           ),
-          sidebarPanel(
-            class="trends-sidebar",
-            
-            checkboxGroupButtons(
-              inputId = "trendFeatures",
-              label = "Musical Features",
-              choices = c("Energy", "acousticness", "danceability",
-                          "liveness", "loudness", "speechiness",
-                          "valence", "common key"),
-              checkIcon = list(
-                yes = tags$i(class = "fa fa-check-square", 
-                             style = "color: black"),
-                no = tags$i(class = "fa fa-square-o", 
-                            style = "color: black")),
-              direction = "vertical"
+          box(
+            fluidRow(
+              column(4,
+                     checkboxGroupButtons(
+                       inputId = "trendFeatures",
+                       label = "Musical Features",
+                       choices = c("Energy", "Acousticness", "danceability",
+                                   "liveness", "loudness", "speechiness",
+                                   "valence"),
+                       checkIcon = list(
+                         yes = tags$i(class = "fa fa-check-square", 
+                                      style = "color: black"),
+                         no = tags$i(class = "fa fa-square-o", 
+                                     style = "color: black")),
+                       direction = "vertical"
+                     )
+                     ),
+              column(8,
+                     plotOutput("trendFeatures",height="400px")
+                     )
             ),
-            height=12
+            title="Musical Features Trend",
+            status="success",
+            background = "black",
           ),
-          mainPanel(
-            box(
-              title="Musical Features Trend",
-              status="success",
-              background = "black",
-              plotOutput("trendFeatures",height="400px"),
-              width=12
-            ),
-          )
+          box(
+            title="Most Common Key",
+            status="success",
+            background = "black",
+            plotOutput("trendKey",height="400px"),
+            width=12
+          ),
         ),
         # Artist page##########
         tabItem(tabName = "artist",
