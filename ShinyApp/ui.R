@@ -63,6 +63,7 @@ shinyUI(
                     status="success",
                     background="black",
                     collapsible = TRUE,
+                    collapsed = TRUE,
                     p("Spotify is one of the most popular audio streaming platforms, which including millions of subscribers. We are applying musical audio features analysis for the popular tracks on Spotify. The audio features can be seperated to different categories such as the mood, properties, and context. We mainly using danceability, energy, valence, sppechiness, liveness, and acousticness those six features to analysis the tracks.  "),
                     p("Our application has three major components:  "),
                     p("Spotify Trends:You can explore the top artists, tracks, and albums from year 2013 to 2021, and comparing the musical features trends among the songs. The page will provide you the overall idea of the musical feature taste transformation in the time duration."),
@@ -77,6 +78,7 @@ shinyUI(
                          status="success",
                          background="black",
                          collapsible = TRUE,
+                         collapsed = TRUE,
                          p("Technically, we using Spotify API to accesses user related data as the main data sources for our project. The Spotify’s Web API can dicover music, manage the labrary, control audio playbacks. We mainly get information such as albms, artist, tracks, and users from Spotify’s Web API. "),
                          br(),
                          # put video here, following the format:
@@ -85,26 +87,33 @@ shinyUI(
                        )
                   ),
                 
-                box(width=12,
-                  column(6,
-                         h3("Get your Spotify access token here:"),
-                         textInput("spotifyId", "Client ID: ", ""),
-                         textInput("spotifySec", "Client Secret: ", ""),
-                         actionButton("valid", "Validate"),
-                         textOutput("valMessage")),
-                  
-                  column(6,
-                         h2("Instructions"),
-                         br(),
-                         h6("Step 1: Go to https://developer.spotify.com/dashboard/ and login with your Spotify information"),
-                         h6("Step 2: Create an app with name and description temp, then find the client ID and Client Secret"),
-                         h6("Step 3: Copy and paste the ID and Secret into the designated dialog boxes, and click validate."),
-                         h6("Step 4: Allow spotify to authenticate your account"),
-                         h6("Now you should be good to go! Click one of the tabs above and learn more about your music")
-                         # h6("Step 4: When prompted with the message are you ..., make sure to click NOT YOU and login yourself. Now you're good to go! "),
-                         # verbatimTextOutput("txtout"), # generated from the server
+                fluidRow(
+                  box(width=12,
+                      column(6,
+                             h3(strong("Get your Spotify access token here:")),
+                             textInput("spotifyId", "Client ID: ", ""),
+                             textInput("spotifySec", "Client Secret: ", ""),
+                             actionButton("valid", "Validate"),
+                             br(),
+                             br(),
+                             p(strong("If validation successes, you should see your Spotify access token below:")),
+                             wellPanel(textOutput("valMessage"))
+                             ),
+                      
+                      column(6,
+                             h3(strong("Instructions")),
+                             br(),
+                             h6("Step 1: Go to https://developer.spotify.com/dashboard/ and login with your Spotify information"),
+                             h6("Step 2: Create an app with name and description temp, then find the client ID and Client Secret"),
+                             h6("Step 3: Copy and paste the ID and Secret into the designated dialog boxes, and click validate."),
+                             h6("Step 4: Allow spotify to authenticate your account"),
+                             h6("Now you should be good to go! Click one of the tabs above and learn more about your music")
+                             # h6("Step 4: When prompted with the message are you ..., make sure to click NOT YOU and login yourself. Now you're good to go! "),
+                             # verbatimTextOutput("txtout"), # generated from the server
+                      )
                   )
                 )
+
                 ),
         
         #################### Trend page ####################
@@ -266,7 +275,7 @@ shinyUI(
                            )
 )
                 )),
-        #user page ###########
+        #User page ###########
         tabItem(tabName = "user",
                 div(
                   class="top-container",
@@ -274,12 +283,15 @@ shinyUI(
 
                 tabsetPanel(
                   tabPanel("Top 10 Songs",
+                           br(),
                            box(width=12,
                                title="Top 10 Songs",
                                status="success",
                                background = "black",
                                solidHeader = TRUE,
                                collapsible = TRUE,
+                               textOutput("misstra"),
+                               br(),
                                formattableOutput("topTra"),
                                style = "overflow-x: scroll;"),
                            
@@ -291,6 +303,8 @@ shinyUI(
                          ),
                   
                   tabPanel("Favorite Artists",
+                           br(),
+                           textOutput("missArt"),
                            br(),
                            fluidRow(
                              valueBoxOutput("favArt1"),

@@ -43,6 +43,21 @@ authenticate <- function(id, secret) {
 
 
 
+# function to extract desired columns from top track dataframe
+tidy_tracks <- function(df, col_ls = c("name", "album.name", "id", "artists")){
+  tidy_df <- df %>% 
+    select(col_ls) %>% 
+    unnest() %>% 
+    select(name, name1, album.name,id) %>% 
+    rename(song = name) %>% 
+    rename(artist = name1) %>% 
+    mutate(album.name = paste("《", album.name, "》", spe="")) %>% 
+    rename(album = album.name)
+  
+  return(tidy_df)
+}
+
+
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output,session) {
@@ -190,27 +205,42 @@ shinyServer(function(input, output,session) {
   
   
   ######## User Profile ############ 
-  
-  
+
   output$topTra <- renderFormattable({
     
-    top_track <- get_my_top_artists_or_tracks(type="tracks", limit=10)
+    tracks <- get_my_top_artists_or_tracks("tracks", limit=10)
+    top10_track <- tidy_tracks(top10_tra)
+  
     
-    top10_tra <- top_track %>% 
-      select(name, album.name, id, artists) %>% 
-      unnest() %>% 
-      select(name, name1, album.name,id) %>% 
-      rename(Song = name) %>% 
-      rename(Artist = name1) %>% 
-      mutate(album.name = paste("《", album.name, "》", spe="")) %>% 
-      rename(Album = album.name)
+    tryCatch({
+      
+      id <- top10_track %>% pull(id)
+      
+    }, error=function(e){
+      
+      output$misstra <- renderText("Since Spotify doesn't have enough data about you,
+                                   Top 10 songs in 2021 will be displayed. Their 
+                                   audio features will also be used in the following 
+                                   audio feature spider plot.")
+      
+    }, warning=function(w){
+      
+      output$misstra <- renderText("Since Spotify doesn't have enough data about you,
+                                   Top 10 songs in 2021 will be displayed. Their 
+                                   audio features will also be used in the following 
+                                   audio feature spider plot.")
+      
+    })
     
-    id <- top10_tra %>% pull(id)
+    
+    
+    
+    # Get audio features for user's top ten songs
     audio_feat <- get_track_audio_features(id) %>% 
       select(c("energy", "acousticness", "danceability","liveness", 
                "speechiness", "valence", "id"))
     
-    df <- top10_tra %>% 
+    df <- top10_track %>% 
       left_join(audio_feat, by="id") %>% 
       filter(!duplicated(id)) %>% 
       select(-id)
@@ -229,7 +259,7 @@ shinyServer(function(input, output,session) {
   })
   
   
-  #artist_name <- get_my_top_artists_or_tracks(limit=3) %>% 
+  # artist_name <- get_my_top_artists_or_tracks(limit=3) %>% 
   #  pull(name)
   
   artist_name = c("Taylor Swift", "Justin Bieber", "Justin Timberlake")
