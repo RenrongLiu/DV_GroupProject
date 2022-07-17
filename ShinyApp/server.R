@@ -189,10 +189,14 @@ shinyServer(function(input, output,session) {
   
   
   ######## User Profile ############ 
+  
+  top10_tra <- eventReactive(input$valid, {
+    return(get_my_top_artists_or_tracks("tracks", limit=10))
+  })
 
   output$topTra <- renderFormattable({
     
-    tracks <- get_my_top_artists_or_tracks("tracks", limit=10)
+    tracks <- top10_tra()
     
     top10_track <- tracks %>% 
       select(name, album.name, id, artists) %>% 
@@ -262,6 +266,7 @@ shinyServer(function(input, output,session) {
   
   output$missArt <- renderText("Test123.")
   
+  
   output$favArt1 <- renderValueBox({
     
     valueBox(artist_name[1], 
@@ -318,9 +323,25 @@ shinyServer(function(input, output,session) {
     
   })
   
+  
+  top_song=reactive({
+    top10_tra()%>%distinct(name)%>%pull(name)
+  })
+  
+  
+  observe({ 
+    songs = top_song()
+    updateSelectInput(session=session,"topTraList",choices = songs,selected=songs[1])
+  })
+  
+  
+  
   output$userTraFeat <- renderPlotly({
     
-    id <- get_my_top_artists_or_tracks("tracks", limit=10) %>% pull(id)
+    id <- top10_tra() %>% pull(id)
+    song_id <- top10_tra() %>% 
+      filter(name==as.character(input$topTraList)) %>% 
+      pull(id)
     
     audio_feat <- get_track_audio_features(id) %>% 
       select(c("energy", "acousticness", "danceability","liveness", 
@@ -329,14 +350,29 @@ shinyServer(function(input, output,session) {
     avg_feat <- audio_feat[,-7] %>% 
       sapply(mean)
     
+    song_feat <- audio_feat %>% 
+      filter(id == song_id) %>% 
+      select(!id) %>% 
+      as.numeric()
+    
+    #### Song vs average spider plot
     fig <- plot_ly(
       type = 'scatterpolar',
-      r = avg_feat,
-      theta = colnames(audio_feat)[-7],
       fill = 'toself',
-      mode="markers"
-    )
-    
+      mode = "markers"
+    ) 
+    fig <- fig %>%
+      add_trace(
+        r = avg_feat,
+        theta = colnames(audio_feat)[-7],
+        name = 'Average of Top 10 Songs'
+      ) 
+    fig <- fig %>%
+      add_trace(
+        r = song_feat,
+        theta = colnames(audio_feat)[-7],
+        name = input$topTraList
+      ) 
     fig <- fig %>%
       layout(
         polar = list(
@@ -344,11 +380,10 @@ shinyServer(function(input, output,session) {
             visible = T,
             range = c(0,1)
           )
-        ),
-        showlegend = F
+        )
       )
     
-    fig
+    figf %>% layout(title = 'One Song vs. The Average')
   })
   
   

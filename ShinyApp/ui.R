@@ -299,7 +299,14 @@ shinyUI(
                              box(width=12,
                                  status="success",
                                  #background = "black",
-                                 plotlyOutput("userTraFeat")))
+                                 column(3,
+                                        selectInput("topTraList",
+                                                    "Pick a song:",
+                                                    choice="")),
+                                 
+                                 column(9,
+                                        plotlyOutput("userTraFeat"))
+                                 ))
                          ),
                   
                   tabPanel("Favorite Artists",
