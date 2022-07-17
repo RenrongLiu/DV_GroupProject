@@ -193,6 +193,21 @@ shinyServer(function(input, output,session) {
   top10_tra <- eventReactive(input$valid, {
     return(get_my_top_artists_or_tracks("tracks", limit=10))
   })
+  
+  
+  #####################################################################
+  ############ Try to pull top songs' ids #############################
+  # Back up data, in case of user data absent.
+  backup_top_track <- reative({
+    df <- read_csv("songs.csv")
+    df <- df[1:10, ] %>% select(c("name", "artist", "energy", "acousticness", "danceability","liveness", 
+                                  "speechiness", "valence"))
+    return(df)
+  })
+  
+  pull_track_id 
+  
+  #####################################################################
 
   output$topTra <- renderFormattable({
     
@@ -247,6 +262,11 @@ shinyServer(function(input, output,session) {
                   # area(col = 2:7) ~ color_tile("#DeF7E9", "#71CA97")
                 ))
   })
+  
+  #################################################################
+  ################Try to pull favorite artist name ################
+  
+  #################################################################
   
   
   
