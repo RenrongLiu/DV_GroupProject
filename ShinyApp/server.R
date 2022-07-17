@@ -43,22 +43,6 @@ authenticate <- function(id, secret) {
 
 
 
-# function to extract desired columns from top track dataframe
-tidy_tracks <- function(df, col_ls = c("name", "album.name", "id", "artists")){
-  tidy_df <- df %>% 
-    select(col_ls) %>% 
-    unnest() %>% 
-    select(name, name1, album.name,id) %>% 
-    rename(song = name) %>% 
-    rename(artist = name1) %>% 
-    mutate(album.name = paste("《", album.name, "》", spe="")) %>% 
-    rename(album = album.name)
-  
-  return(tidy_df)
-}
-
-
-
 # Define server logic required to draw a histogram
 shinyServer(function(input, output,session) {
   
@@ -209,7 +193,15 @@ shinyServer(function(input, output,session) {
   output$topTra <- renderFormattable({
     
     tracks <- get_my_top_artists_or_tracks("tracks", limit=10)
-    top10_track <- tidy_tracks(top10_tra)
+    
+    top10_track <- tracks %>% 
+      select(name, album.name, id, artists) %>% 
+      unnest() %>% 
+      select(name, name1, album.name,id) %>% 
+      rename(song = name) %>% 
+      rename(artist = name1) %>% 
+      mutate(album.name = paste("《", album.name, "》", spe="")) %>% 
+      rename(album = album.name)
   
     
     tryCatch({
@@ -218,17 +210,11 @@ shinyServer(function(input, output,session) {
       
     }, error=function(e){
       
-      output$misstra <- renderText("Since Spotify doesn't have enough data about you,
-                                   Top 10 songs in 2021 will be displayed. Their 
-                                   audio features will also be used in the following 
-                                   audio feature spider plot.")
+      output$missTra <- renderText("Since Spotify doesn't have enough data about you, Top 10 songs in 2021 will be displayed. Their audio features will also be used in the following audio feature spider plot.")
       
     }, warning=function(w){
       
-      output$misstra <- renderText("Since Spotify doesn't have enough data about you,
-                                   Top 10 songs in 2021 will be displayed. Their 
-                                   audio features will also be used in the following 
-                                   audio feature spider plot.")
+      output$missTra <- renderText("Since Spotify doesn't have enough data about you, Top 10 songs in 2021 will be displayed. Their audio features will also be used in the following audio feature spider plot.")
       
     })
     
@@ -259,10 +245,21 @@ shinyServer(function(input, output,session) {
   })
   
   
-  # artist_name <- get_my_top_artists_or_tracks(limit=3) %>% 
-  #  pull(name)
   
-  artist_name = c("Taylor Swift", "Justin Bieber", "Justin Timberlake")
+  tryCatch({
+    
+    artist_name <- get_my_top_artists_or_tracks(limit=3) %>% pull(name)
+    
+  }, error=function(e){
+    
+    output$missArt <- renderText("Since Spotify doesn't have enough data about you, 3 most popular artists in 2021 will be displayed.")
+    
+  }, warning=function(w){
+    
+    output$missArt <- renderText("Since Spotify doesn't have enough data about you, 3 most popular artists in 2021 will be displayed.")
+    
+  })
+  
   
   output$favArt1 <- renderValueBox({
     
@@ -286,6 +283,7 @@ shinyServer(function(input, output,session) {
   
   
   output$userFavGen <- renderWordcloud2({
+    
     
     top_50_track <- get_my_top_artists_or_tracks(type="tracks",
                                                  limit = 50)

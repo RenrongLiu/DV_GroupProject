@@ -290,7 +290,7 @@ shinyUI(
                                background = "black",
                                solidHeader = TRUE,
                                collapsible = TRUE,
-                               textOutput("misstra"),
+                               textOutput("missTra"),
                                br(),
                                formattableOutput("topTra"),
                                style = "overflow-x: scroll;"),
