@@ -318,6 +318,11 @@ shinyServer(function(input, output,session) {
     
   })
   
+  observe({  
+    songs=top_track %>% distinct(songs) %>% pull()
+    updateSelectInput(session=session,"topTraList",choices = songs,selected=songs[1])
+  })
+  
   output$userTraFeat <- renderPlotly({
     
     id <- get_my_top_artists_or_tracks("tracks", limit=10) %>% pull(id)
