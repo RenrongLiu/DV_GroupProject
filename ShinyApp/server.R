@@ -207,19 +207,19 @@ shinyServer(function(input, output,session) {
     tryCatch({
       
       id <- top10_track %>% pull(id)
+      message <- "test123"
       
     }, error=function(e){
-      
-      output$missTra <- renderText("Since Spotify doesn't have enough data about you, Top 10 songs in 2021 will be displayed. Their audio features will also be used in the following audio feature spider plot.")
+    
+      message <- "Since Spotify doesn't have enough data about you, Top 10 songs in 2021 will be displayed. Their audio features will also be used in the following audio feature spider plot."
       
     }, warning=function(w){
       
-      output$missTra <- renderText("Since Spotify doesn't have enough data about you, Top 10 songs in 2021 will be displayed. Their audio features will also be used in the following audio feature spider plot.")
+      message <- "Since Spotify doesn't have enough data about you, Top 10 songs in 2021 will be displayed. Their audio features will also be used in the following audio feature spider plot."
       
     })
     
-    
-    
+    output$missTra <- renderText(message)
     
     # Get audio features for user's top ten songs
     audio_feat <- get_track_audio_features(id) %>% 
@@ -260,6 +260,7 @@ shinyServer(function(input, output,session) {
     
   })
   
+  output$missArt <- renderText("Test123.")
   
   output$favArt1 <- renderValueBox({
     
