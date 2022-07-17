@@ -28,15 +28,29 @@ library(cowplot)
 library(DT)
 library(shinythemes)
 library(shinyWidgets)
+library(plotly)
+
+# Function to authenticate user's id and secret
+# This part of code is originate from a blog on towardDataScience written by Azaan Barlas:
+# https://towardsdatascience.com/combining-spotify-and-r-an-interactive-rshiny-app-spotify-dashboard-tutorial-af48104cb6e9
+authenticate <- function(id, secret) {
+  # authenticate the spotify client stuff
+  Sys.setenv(SPOTIFY_CLIENT_ID = id)
+  Sys.setenv(SPOTIFY_CLIENT_SECRET = secret)
+  
+  access_token <- get_spotify_access_token()
+}
 
 
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output,session) {
-  Sys.setenv(SPOTIFY_CLIENT_ID = 'd340106f00af4dd6addae953a3b12f1d')
-  Sys.setenv(SPOTIFY_CLIENT_SECRET = '329d27b0e97f42918c8649b50bf5eefe')
-  access_token <- get_spotify_access_token()
   
+  ##### Authentication ######
+  # This part of code is originate from a blog on towardDataScience written by Azaan Barlas:
+  # https://towardsdatascience.com/combining-spotify-and-r-an-interactive-rshiny-app-spotify-dashboard-tutorial-af48104cb6e9
+  validate <- eventReactive(input$valid, {authenticate(input$spotifyId, input$spotifySec)})
+  output$valMessage <- renderText({ validate() })
  
   
   ######## Spotify Trend ############
@@ -45,7 +59,7 @@ shinyServer(function(input, output,session) {
   
   ######## Artist Analysis ############ 
   
-  data=reactive({input$button
+  data=eventReactive(input$button, {
      return(get_artist_audio_features(isolate(input$artSearch)))})
   
   output$artKeyBar<-renderPlot({
@@ -94,25 +108,32 @@ shinyServer(function(input, output,session) {
                title=paste0("Audio features of ",data[1,1])
     ))})
   
-  output$artFeatScatter<-renderPlot({
+  output$artFeatScatter<-renderPlotly({
     data=data()
+    print(input$featByY)
+    print(input$featByX)
     data[,c("danceability","energy","speechiness","acousticness","liveness","valence","album_name")]->data_audio
-    data_audio%>%
-      ggplot(mapping=aes(x=as.name(input$featByX),y=as.name(input$featByY),color=album_name)+geom_jitter() +
+    scatter<-data_audio%>%
+      ggplot(mapping=aes_string(x=input$featByX,y=input$featByY,color="album_name"))+geom_jitter() +
       geom_vline(xintercept = 0.5) +
       geom_hline(yintercept = 0.5) +
       scale_x_continuous(limits = c(0, 1)) +
       scale_y_continuous(limits = c(0, 1)) +
       labs(x= input$featByX, y= input$featByY,color="Album name") +
-      ggtitle("Audio features quadrant"))})
+      ggtitle("Audio features quadrant")
+      return(ggplotly(scatter))
+    })
+  
   album=reactive({
-  data()%>%select(album_name)%>%distinct()%>%pull()
+  data()%>%distinct(album_name)%>%pull(album_name)
   })
  
-  observe({  updateSelectInput(session=session,"album1",choices = album())
+  observe({  album=album()
+    updateSelectInput(session=session,"album1",choices = album(),selected=album[1])
     
   })
-  observe({   updateSelectInput(session=session,"album2",choices= album())
+  observe({  album=album()
+    updateSelectInput(session=session,"album2",choices= album(),selected=album[3])
     
   })
  
@@ -168,27 +189,44 @@ shinyServer(function(input, output,session) {
   
   
   ######## User Profile ############ 
-  
-  
+
   output$topTra <- renderFormattable({
     
-    top_track <- get_my_top_artists_or_tracks(type="tracks", limit=10)
+    tracks <- get_my_top_artists_or_tracks("tracks", limit=10)
     
-    top10_tra <- top_track %>% 
+    top10_track <- tracks %>% 
       select(name, album.name, id, artists) %>% 
       unnest() %>% 
       select(name, name1, album.name,id) %>% 
-      rename(Song = name) %>% 
-      rename(Artist = name1) %>% 
+      rename(song = name) %>% 
+      rename(artist = name1) %>% 
       mutate(album.name = paste("《", album.name, "》", spe="")) %>% 
-      rename(Album = album.name)
+      rename(album = album.name)
+  
     
-    id <- top10_tra %>% pull(id)
+    tryCatch({
+      
+      id <- top10_track %>% pull(id)
+      message <- "test123"
+      
+    }, error=function(e){
+    
+      message <- "Since Spotify doesn't have enough data about you, Top 10 songs in 2021 will be displayed. Their audio features will also be used in the following audio feature spider plot."
+      
+    }, warning=function(w){
+      
+      message <- "Since Spotify doesn't have enough data about you, Top 10 songs in 2021 will be displayed. Their audio features will also be used in the following audio feature spider plot."
+      
+    })
+    
+    output$missTra <- renderText(message)
+    
+    # Get audio features for user's top ten songs
     audio_feat <- get_track_audio_features(id) %>% 
       select(c("energy", "acousticness", "danceability","liveness", 
                "speechiness", "valence", "id"))
     
-    df <- top10_tra %>% 
+    df <- top10_track %>% 
       left_join(audio_feat, by="id") %>% 
       filter(!duplicated(id)) %>% 
       select(-id)
@@ -206,8 +244,23 @@ shinyServer(function(input, output,session) {
                 ))
   })
   
-  artist_name <- get_my_top_artists_or_tracks(limit=3) %>% 
-    pull(name)
+  
+  
+  tryCatch({
+    
+    artist_name <- get_my_top_artists_or_tracks(limit=3) %>% pull(name)
+    
+  }, error=function(e){
+    
+    output$missArt <- renderText("Since Spotify doesn't have enough data about you, 3 most popular artists in 2021 will be displayed.")
+    
+  }, warning=function(w){
+    
+    output$missArt <- renderText("Since Spotify doesn't have enough data about you, 3 most popular artists in 2021 will be displayed.")
+    
+  })
+  
+  output$missArt <- renderText("Test123.")
   
   output$favArt1 <- renderValueBox({
     
@@ -228,7 +281,75 @@ shinyServer(function(input, output,session) {
              "Your Favorite Artist #3", icon=icon("heart"),
              color = "purple")
   })
-
-
+  
+  
+  output$userFavGen <- renderWordcloud2({
+    
+    
+    top_50_track <- get_my_top_artists_or_tracks(type="tracks",
+                                                 limit = 50)
+    
+    artist_id <- top_50_track %>% 
+      select(artists) %>% 
+      unnest(cols=c(artists)) %>% 
+      select(id) %>% 
+      distinct() %>% 
+      pull(id)
+    
+    genres <- get_artists(ids=artist_id) %>% 
+      select(genres)
+    
+    genre_list=list()
+    
+    for (x in genres$genres){
+      genre_list = append(genre_list, x)
+    }
+    
+    freq_genre <- unlist(genre_list) %>% 
+      as_tibble() %>% 
+      group_by(value) %>% 
+      summarise(n=n()) %>% 
+      arrange(desc(n))
+    
+    wordcloud2(freq_genre,
+               size=1.5,
+               backgroundColor = "black",
+               color=brewer.pal(12, "Paired"))
+    
+  })
+  
+  output$userTraFeat <- renderPlotly({
+    
+    id <- get_my_top_artists_or_tracks("tracks", limit=10) %>% pull(id)
+    
+    audio_feat <- get_track_audio_features(id) %>% 
+      select(c("energy", "acousticness", "danceability","liveness", 
+               "speechiness", "valence", "id"))
+    
+    avg_feat <- audio_feat[,-7] %>% 
+      sapply(mean)
+    
+    fig <- plot_ly(
+      type = 'scatterpolar',
+      r = avg_feat,
+      theta = colnames(audio_feat)[-7],
+      fill = 'toself',
+      mode="markers"
+    )
+    
+    fig <- fig %>%
+      layout(
+        polar = list(
+          radialaxis = list(
+            visible = T,
+            range = c(0,1)
+          )
+        ),
+        showlegend = F
+      )
+    
+    fig
+  })
+  
   
 })
