@@ -190,15 +190,23 @@ shinyServer(function(input, output,session) {
   
   ######## User Profile ############ 
   # get user's top 10 songs.
-  top10_tra <- eventReactive(input$valid, {
-    return(get_my_top_artists_or_tracks("tracks", limit=10))
-  })
-  
-  
-  output$topTra <- renderFormattable({
+  top10_track <- eventReactive(input$valid, {
     
-    tracks <- top10_tra()
-  
+    tracks <- get_my_top_artists_or_tracks("tracks", limit=10)
+    
+    # If no top songs, we create a back up list from all-time popular songs
+    if (is.null(tracks) || dim(tracks)[1] == 0 ){
+      songs_at <- read_csv("songs_alltime.csv")
+      names <- songs_at[1:10,] %>% pull(Title)
+      tracks <- data.frame()
+      
+      for (name in names){
+        row = search_spotify(name, type=c("track"))
+        tracks <- rbind(tracks, row[1,])
+      }
+    }
+    
+    # clean up the top song dataframe
     top10_track <- tracks %>% 
       select(name, album.name, id, artists) %>% 
       unnest() %>% 
@@ -208,36 +216,21 @@ shinyServer(function(input, output,session) {
       mutate(album.name = paste("《", album.name, "》", spe="")) %>% 
       rename(album = album.name)
     
-    #####################################################################
-    ############ Try to get final dataframe #############################
-    # if no user's data, we pull a back up file
-    df <- tryCatch({
-      
-      id <- top10_track %>% distinct(id) %>% pull(id)
-      audio_feat <- get_track_audio_features(id) %>% 
-        select(c("energy", "acousticness", "danceability","liveness", 
-                 "speechiness", "valence", "id"))
-      
-      top10_track %>% 
-        left_join(audio_feat, by="id") %>% 
-        select(-id)
-      
-    }, error = function(e){
-      
-      backup <- read_csv("top10_songs_alltime.csv")
-      id <- backup %>% distinct(id) %>% pull(id)
-      audio_feat <- get_track_audio_features(id) %>% 
-        select(c("energy", "acousticness", "danceability","liveness", 
-                 "speechiness", "valence", "id"))
-      
-      df %>% 
-        left_join(audio_feat, by="id") %>% 
-        select(-id)
-      
-    })
+    return(top10_track)
+  })
+  #######################################################################
+  
+  output$topTra <- renderFormattable({
     
-    #####################################################################
+    id <- top10_track() %>% distinct(id) %>% pull(id)
     
+    audio_feat <- get_track_audio_features(id) %>% 
+      select(c("energy", "acousticness", "danceability","liveness", 
+               "speechiness", "valence", "id"))
+    
+    df <- top10_track() %>% 
+      left_join(audio_feat, by="id") %>% 
+      select(-id)
     
     
     # Get audio features for user's top ten songs
@@ -331,25 +324,11 @@ shinyServer(function(input, output,session) {
   })
   
   
-  top_song=reactive({
-    song_name <- tryCatch({
-      
-      top10_tra() %>% distinct(song) %>% pull(song)
-       
-    }, error = function(e){
-      
-      df <- read_csv("top10_songs_alltime.csv")
-      df %>% distinct(song) %>% pull(song)
-      
-    })
-    
-    return(song_name)
-    
-  })
   
   
   observe({ 
-    songs = top_song()
+    tracks = top10_track()
+    songs = tracks %>% distinct(song) %>% pull(song)
     updateSelectInput(session=session,"topTraList",choices = songs,selected=songs[1])
   })
   
@@ -357,12 +336,14 @@ shinyServer(function(input, output,session) {
   
   output$userTraFeat <- renderPlotly({
     
-    id <- top10_tra() %>% pull(id)
-    song_id <- top10_tra() %>% 
+    tracks <- top10_track()
+    ids <- tracks %>% pull(id)
+    
+    song_id <- tracks %>% 
       filter(name==as.character(input$topTraList)) %>% 
       pull(id)
     
-    audio_feat <- get_track_audio_features(id) %>% 
+    audio_feat <- get_track_audio_features(ids) %>% 
       select(c("energy", "acousticness", "danceability","liveness", 
                "speechiness", "valence", "id"))
     
