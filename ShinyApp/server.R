@@ -334,12 +334,12 @@ shinyServer(function(input, output,session) {
   top_song=reactive({
     song_name <- tryCatch({
       
-      top10_tra() %>% distinct(name) %>% pull(name)
+      top10_tra() %>% distinct(song) %>% pull(song)
        
     }, error = function(e){
       
       df <- read_csv("top10_songs_alltime.csv")
-      df %>% distinct(name) %>% pull(name)
+      df %>% distinct(song) %>% pull(song)
       
     })
     
