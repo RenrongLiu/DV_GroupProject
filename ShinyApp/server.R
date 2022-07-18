@@ -343,7 +343,7 @@ shinyServer(function(input, output,session) {
       filter(song==as.character(input$topTraList)) %>% 
       pull(id)
     
-    audio_feat <- tracks %>% 
+    audio_feat <- get_track_audio_features(ids) %>% 
       select(c("energy", "acousticness", "danceability","liveness", 
                "speechiness", "valence", "id"))
     
@@ -383,7 +383,7 @@ shinyServer(function(input, output,session) {
         )
       )
     
-    figf %>% layout(title = 'One Song vs. The Average')
+    fig %>% layout(title = 'One Song vs. The Average')
   })
   
   
