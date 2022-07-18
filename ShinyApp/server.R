@@ -266,23 +266,9 @@ shinyServer(function(input, output,session) {
   #################################################################
   ################Try to pull favorite artist name ################
   
+  artist_name = c("a", "b", "c")
+  
   #################################################################
-  
-  
-  
-  tryCatch({
-    
-    artist_name <- get_my_top_artists_or_tracks(limit=3) %>% pull(name)
-    
-  }, error=function(e){
-    
-    output$missArt <- renderText("Since Spotify doesn't have enough data about you, 3 most popular artists in 2021 will be displayed.")
-    
-  }, warning=function(w){
-    
-    output$missArt <- renderText("Since Spotify doesn't have enough data about you, 3 most popular artists in 2021 will be displayed.")
-    
-  })
   
   
   
