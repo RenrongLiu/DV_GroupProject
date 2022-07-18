@@ -189,30 +189,16 @@ shinyServer(function(input, output,session) {
   
   
   ######## User Profile ############ 
-  
+  # get user's top 10 songs.
   top10_tra <- eventReactive(input$valid, {
     return(get_my_top_artists_or_tracks("tracks", limit=10))
   })
   
   
-  #####################################################################
-  ############ Try to pull top songs' ids #############################
-  # Back up data, in case of user data absent.
-  backup_top_track <- reative({
-    df <- read_csv("songs.csv")
-    df <- df[1:10, ] %>% select(c("name", "artist", "energy", "acousticness", "danceability","liveness", 
-                                  "speechiness", "valence"))
-    return(df)
-  })
-  
-  pull_track_id 
-  
-  #####################################################################
-
   output$topTra <- renderFormattable({
     
     tracks <- top10_tra()
-    
+  
     top10_track <- tracks %>% 
       select(name, album.name, id, artists) %>% 
       unnest() %>% 
@@ -221,34 +207,48 @@ shinyServer(function(input, output,session) {
       rename(artist = name1) %>% 
       mutate(album.name = paste("《", album.name, "》", spe="")) %>% 
       rename(album = album.name)
-  
     
-    tryCatch({
+    #####################################################################
+    ############ Try to get final dataframe #############################
+    # if no user's data, we pull a back up file
+    df <- tryCatch({
       
-      id <- top10_track %>% pull(id)
-      message <- "test123"
+      id <- top10_track %>% distinct(id) %>% pull(id)
+      audio_feat <- get_track_audio_features(id) %>% 
+        select(c("energy", "acousticness", "danceability","liveness", 
+                 "speechiness", "valence", "id"))
       
-    }, error=function(e){
-    
-      message <- "Since Spotify doesn't have enough data about you, Top 10 songs in 2021 will be displayed. Their audio features will also be used in the following audio feature spider plot."
+      top10_track %>% 
+        left_join(audio_feat, by="id") %>% 
+        select(-id)
       
-    }, warning=function(w){
+    }, error = function(e){
       
-      message <- "Since Spotify doesn't have enough data about you, Top 10 songs in 2021 will be displayed. Their audio features will also be used in the following audio feature spider plot."
+      df <- read_csv("top10_songs_alltime.csv")
+      id <- df %>% distinct(id) %>% pull(id)
+      audio_feat <- get_track_audio_features(id) %>% 
+        select(c("energy", "acousticness", "danceability","liveness", 
+                 "speechiness", "valence", "id"))
+      
+      df %>% 
+        left_join(audio_feat, by="id") %>% 
+        select(-id)
       
     })
     
-    output$missTra <- renderText(message)
+    #####################################################################
+    
+    
     
     # Get audio features for user's top ten songs
-    audio_feat <- get_track_audio_features(id) %>% 
-      select(c("energy", "acousticness", "danceability","liveness", 
-               "speechiness", "valence", "id"))
+    #audio_feat <- get_track_audio_features(id) %>% 
+      #select(c("energy", "acousticness", "danceability","liveness", 
+               #"speechiness", "valence", "id"))
     
-    df <- top10_track %>% 
-      left_join(audio_feat, by="id") %>% 
-      filter(!duplicated(id)) %>% 
-      select(-id)
+    #df <- top10_track %>% 
+      #left_join(audio_feat, by="id") %>% 
+      #filter(!duplicated(id)) %>% 
+      #select(-id)
 
     formattable(df,
                 align = c(rep("l", 3),rep("r", 6)),
@@ -310,7 +310,7 @@ shinyServer(function(input, output,session) {
   
   output$userFavGen <- renderWordcloud2({
     
-    
+    # Get user's top 50 songs and their artist
     top_50_track <- get_my_top_artists_or_tracks(type="tracks",
                                                  limit = 50)
     
@@ -321,6 +321,7 @@ shinyServer(function(input, output,session) {
       distinct() %>% 
       pull(id)
     
+    #get artists' genres
     genres <- get_artists(ids=artist_id) %>% 
       select(genres)
     
@@ -330,6 +331,7 @@ shinyServer(function(input, output,session) {
       genre_list = append(genre_list, x)
     }
     
+    # get most frequent genres
     freq_genre <- unlist(genre_list) %>% 
       as_tibble() %>% 
       group_by(value) %>% 
