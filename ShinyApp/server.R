@@ -70,7 +70,7 @@ shinyServer(function(input, output,session) {
     ggplotly(g)
   })
   
-  song_key = read_csv("../data/songs_key.csv",show_col_types = FALSE)
+  songs_key = read_csv("../data/songs_key.csv",show_col_types = FALSE)
   output$songs_key = renderPlot({
     songs_key %>%
       filter(year<=input$songs_years[2] & year >=input$songs_years[1]) %>%

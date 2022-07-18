@@ -122,7 +122,7 @@ shinyUI(
           tabName = "TrendSongs",
           div(
             class="top-container",
-            strong("Trends at Spotify: Artists", class="trends-h2"),
+            strong("Trends at Spotify: Artists", class="trends-h2")
           ),
           div(
             class="top-container2",
@@ -144,18 +144,19 @@ shinyUI(
             a("Data Source",href="https://www.kaggle.com/datasets/paradisejoy/top-hits-spotify-from-20002019")
           ),
           box(
-            plotlyOutput("songs_features_lineplot",height="600px",width="100%"),
+            plotlyOutput("songs_features_lineplot",height="400px",width="100%"),
             title="Musical Features Trend",
             status="success",
             background = "black",
-            width="100%"
+            width="100%",
+            height="500px"
           ),
           box(
-              title="Most Common Key",
-              status="success",
-              background = "black",
-              plotOutput("songs_key",height="600px"),
-              width="100%"
+            title="Most Common Key",
+            status="success",
+            background = "black",
+            plotOutput("songs_key",height="400px",width="100%"),
+            width="100%"
           ),
           box(
             title="Compare Two Years",
@@ -405,6 +406,7 @@ shinyUI(
                   tags$img(),
                   p()
                 )),
+        ######## Reference ###########
         tabItem(tabName = "reference",
                 div(
                   class="top-container",
@@ -424,6 +426,7 @@ shinyUI(
                 )
         )
         
+      ########## end ###########
       )
       
     )
