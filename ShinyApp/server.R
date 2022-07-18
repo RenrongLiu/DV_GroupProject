@@ -379,7 +379,7 @@ shinyServer(function(input, output,session) {
   output$userTraFeat <- renderPlotly({
     
     tracks <- top10_track()
-    ids <- tracks %>% pull(id)
+    ids <- tracks %>% distinct(id) %>% pull(id)
     
     song_id <- tracks %>% 
       filter(song==as.character(input$topTraList)) %>% 
