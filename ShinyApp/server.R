@@ -340,10 +340,10 @@ shinyServer(function(input, output,session) {
     ids <- tracks %>% pull(id)
     
     song_id <- tracks %>% 
-      filter(name==as.character(input$topTraList)) %>% 
+      filter(song==as.character(input$topTraList)) %>% 
       pull(id)
     
-    audio_feat <- get_track_audio_features(ids) %>% 
+    audio_feat <- tracks %>% 
       select(c("energy", "acousticness", "danceability","liveness", 
                "speechiness", "valence", "id"))
     
