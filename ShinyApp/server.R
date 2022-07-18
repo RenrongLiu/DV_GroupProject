@@ -213,27 +213,25 @@ shinyServer(function(input, output,session) {
     # if no user's data, we pull a back up file
     df <- tryCatch({
       
-      id <- top10_track %>% pull(id)
+      id <- top10_track %>% distinct(id) %>% pull(id)
       audio_feat <- get_track_audio_features(id) %>% 
         select(c("energy", "acousticness", "danceability","liveness", 
                  "speechiness", "valence", "id"))
       
       top10_track %>% 
         left_join(audio_feat, by="id") %>% 
-        filter(!duplicated(id)) %>%
         select(-id)
       
     }, error = function(e){
       
       backup <- read_csv("top10_songs_alltime.csv")
-      id <- backup %>% pull(id)
+      id <- backup %>% distinct(id) %>% pull(id)
       audio_feat <- get_track_audio_features(id) %>% 
         select(c("energy", "acousticness", "danceability","liveness", 
                  "speechiness", "valence", "id"))
       
       df %>% 
         left_join(audio_feat, by="id") %>% 
-        filter(!duplicated(id)) %>%
         select(-id)
       
     })
@@ -348,7 +346,19 @@ shinyServer(function(input, output,session) {
   
   
   top_song=reactive({
-    top10_tra()%>%distinct(name)%>%pull(name)
+    song_name <- tryCatch({
+      
+      top10_tra() %>% distinct(name) %>% pull(name)
+       
+    }, error = function(e){
+      
+      df <- read_csv("top10_songs_alltime.csv")
+      df %>% distinct(name) %>% pull(name)
+      
+    })
+    
+    return(song_name)
+    
   })
   
   
