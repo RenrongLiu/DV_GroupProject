@@ -41,7 +41,8 @@ shinyUI(
           menuItem("User Profile", tabName = "user", icon=icon("user-circle")),
           hr(class="sidebar-hr-gradient"),
           menuItem("About Us", tabName = "us", icon=icon("paperclip")),
-          menuItem("Reference", tabName = "reference", icon=icon("book"))
+          menuItem("Reference", tabName = "reference", icon=icon("book")),
+          menuItem("Visit Us (to Github)", icon = icon("send", lib='glyphicon'), href = "https://github.com/RenrongLiu/DV_GroupProject")
         )
       ),
     
@@ -128,11 +129,11 @@ shinyUI(
             div(
               class="trends-slider",
               noUiSliderInput(
-                inputId="trendYear",
+                inputId="songs_years",
                 label="",
-                value=c(2013,2021),
-                min=2013,
-                max=2021,
+                value=c(2000,2019),
+                min=2000,
+                max=2019,
                 step=1,
                 width="400px",
                 height="10px",
@@ -140,17 +141,16 @@ shinyUI(
                 format=wNumbFormat(decimals=0)
               )
             )
-            
           ),
           box(
             fluidRow(
               column(4,
                      checkboxGroupButtons(
-                       inputId = "trendFeatures",
+                       inputId = "songs_features",
                        label = "Musical Features",
-                       choices = c("Energy", "Acousticness", "danceability",
-                                   "liveness", "loudness", "speechiness",
-                                   "valence"),
+                       choices = c("acousticness", "danceability","energy", "instrumentalness",
+                                   "liveness", "speechiness", "valence"),
+                       selected = c("acousticness", "danceability"),
                        checkIcon = list(
                          yes = tags$i(class = "fa fa-check-square", 
                                       style = "color: black"),
@@ -160,12 +160,14 @@ shinyUI(
                      )
                      ),
               column(8,
-                     plotOutput("trendFeatures",height="400px")
+                     textOutput("test1"),
+                     plotOutput("songs_features_lineplot",height="400px",width="800px")
                      )
             ),
             title="Musical Features Trend",
             status="success",
             background = "black",
+            width="100%"
           ),
           
           fluidRow(
