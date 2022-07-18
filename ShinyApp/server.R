@@ -195,7 +195,7 @@ shinyServer(function(input, output,session) {
     tracks <- get_my_top_artists_or_tracks("tracks", limit=10)
     
     # If no top songs, we create a back up list from all-time popular songs
-    if (is.null(tracks) || dim(tracks)[1] == 0 ){
+    if (is.null(tracks) || is.null(dim(tracks))){
       songs_at <- read_csv("songs_alltime.csv")
       names <- songs_at[1:10,] %>% pull(Title)
       tracks <- data.frame()
@@ -207,7 +207,7 @@ shinyServer(function(input, output,session) {
     }
     
     # clean up the top song dataframe
-    top10_track <- tracks %>% 
+    tidy_track <- tracks %>% 
       select(name, album.name, id, artists) %>% 
       unnest() %>% 
       select(name, name1, album.name,id) %>% 
@@ -216,7 +216,7 @@ shinyServer(function(input, output,session) {
       mutate(album.name = paste("《", album.name, "》", spe="")) %>% 
       rename(album = album.name)
     
-    return(top10_track)
+    return(tidy_track)
   })
   #######################################################################
   
