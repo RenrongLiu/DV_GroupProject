@@ -33,8 +33,10 @@ write_csv(songs_key,"data/songs_key.csv")
   
 songs_key %>%
   ggplot(aes(x=year,y=key,color=key))+
-  geom_point(shape="♪",size=4)+
-  scale_y_continuous(breaks=c(0:11),labels=c("A","A#","B","C","C#","D","D#","E","F","F#","G","G#"))
+  geom_point(shape="♪",size=8)+
+  scale_y_continuous(breaks=c(0:11),labels=c("C","C#","D","D#","E","F","F#","G","G#","A","A#","B"))+
+  scale_color_gradient(low = "cyan",high = "red")+
+  theme_light()
 
 table(songs$year)
 song

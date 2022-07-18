@@ -42,7 +42,7 @@ shinyUI(
           hr(class="sidebar-hr-gradient"),
           menuItem("About Us", tabName = "us", icon=icon("paperclip")),
           menuItem("Reference", tabName = "reference", icon=icon("book")),
-          menuItem("Visit Us (to Github)", icon = icon("send", lib='glyphicon'), href = "https://github.com/RenrongLiu/DV_GroupProject")
+          menuItem("Visit Our Github", icon = icon("send", lib='glyphicon'), href = "https://github.com/RenrongLiu/DV_GroupProject")
         )
       ),
     
@@ -122,7 +122,7 @@ shinyUI(
           tabName = "TrendSongs",
           div(
             class="top-container",
-            strong("Trends at Spotify: Artists", class="trends-h2")
+            strong("Trends at Spotify: Artists", class="trends-h2"),
           ),
           div(
             class="top-container2",
@@ -140,25 +140,36 @@ shinyUI(
                 color="#000000",
                 format=wNumbFormat(decimals=0)
               )
-            )
+            ),
+            a("Data Source",href="https://www.kaggle.com/datasets/paradisejoy/top-hits-spotify-from-20002019")
           ),
           box(
-            plotlyOutput("songs_features_lineplot",height="400px",width="100%"),
+            plotlyOutput("songs_features_lineplot",height="600px",width="100%"),
             title="Musical Features Trend",
             status="success",
             background = "black",
             width="100%"
           ),
-          
-          fluidRow(
-            box(
+          box(
               title="Most Common Key",
               status="success",
               background = "black",
-              plotOutput("trendKey",height="400px"),
-              width=12
-            )
+              plotOutput("songs_key",height="600px"),
+              width="100%"
           ),
+          box(
+            title="Compare Two Years",
+            status="success",
+            background = "black",
+            selectInput(
+              inputId =  "songs_year1", 
+              label = "Select Year:",
+              choices = 2000:2019,
+              selected = 2000
+            ),
+            plotOutput("songs_key",height="600px"),
+            width="100%"
+          )
         ),
         # Artist page##########
         tabItem(tabName = "artist",
@@ -399,10 +410,11 @@ shinyUI(
                   class="top-container",
                   strong("References", class="trends-h2")),
                 box(
+                  width="100%",
                   status="success",
                   background = "black",
                   tags$ol(
-                    tags$li(a(" R Shiny", href="https://shiny.rstudio.com/")),
+                    tags$li(a("ggplot2 gradient color (in Chinese) ggplot2 颜色渐变（离散颜色）设置", href="https://www.cnblogs.com/mmtinfo/p/12105987.html")),
                     tags$li(a("Font Awesome icon 4",href="https://fontawesome.com/v4/icons/")),
                     tags$li(a("Google Fonts",href="https://fonts.google.com/?category=Display"))
                   )

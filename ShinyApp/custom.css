@@ -45,8 +45,9 @@
 }
 
 .top-container2{
-  margin:0;
+  margin:0 auto;
   margin-bottom: 1rem;
+  text-align: center;
 }
 .trends-slider{
   font-size:0.5rem;

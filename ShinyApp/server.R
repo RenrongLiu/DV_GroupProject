@@ -65,11 +65,21 @@ shinyServer(function(input, output,session) {
     g= songs %>%
       filter(year<=input$songs_years[2] & year >=input$songs_years[1]) %>%
       ggplot(aes(x=year,y=Score,color=Features))+
-      geom_line()
-      #theme_light()
+      geom_line()+
+      theme_light()
     ggplotly(g)
   })
   
+  song_key = read_csv("../data/songs_key.csv",show_col_types = FALSE)
+  output$songs_key = renderPlot({
+    songs_key %>%
+      filter(year<=input$songs_years[2] & year >=input$songs_years[1]) %>%
+      ggplot(aes(x=year,y=key,color=key))+
+      geom_point(shape="♪",size=8)+
+      scale_y_continuous(breaks=c(0:11),labels=c("C","C#","D","D#","E","F","F#","G","G#","A","A#","B"))+
+      scale_color_gradient(low = "cyan",high = "red")+
+      theme_light()
+  })
   
   ######## Artist Analysis ############ 
   
