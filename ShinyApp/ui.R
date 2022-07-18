@@ -34,7 +34,7 @@ shinyUI(
           menuItem(
             "Spotify Trends", tabName = "trend", icon=icon("chart-line"),
             menuItem("Artists",tabName="TrendArtists", icon=icon("users")),
-            menuItem("Tracks",tabName="TrendTracks", icon=icon("music")),
+            menuItem("Songs",tabName="TrendSongs", icon=icon("music")),
             menuItem("Albums",tabName="TrendAlbums", icon=icon("file"))
           ),
           menuItem("Artist Analysis", tabName = "artist", icon=icon("microphone")),
@@ -117,9 +117,9 @@ shinyUI(
 
                 ),
         
-        #################### Trend page ####################
+        #################### Trend page - Songs ####################
         tabItem(
-          tabName = "TrendArtists",
+          tabName = "TrendSongs",
           div(
             class="top-container",
             strong("Trends at Spotify: Artists", class="trends-h2")
@@ -143,27 +143,7 @@ shinyUI(
             )
           ),
           box(
-            fluidRow(
-              column(4,
-                     checkboxGroupButtons(
-                       inputId = "songs_features",
-                       label = "Musical Features",
-                       choices = c("acousticness", "danceability","energy", "instrumentalness",
-                                   "liveness", "speechiness", "valence"),
-                       selected = c("acousticness", "danceability"),
-                       checkIcon = list(
-                         yes = tags$i(class = "fa fa-check-square", 
-                                      style = "color: black"),
-                         no = tags$i(class = "fa fa-square-o", 
-                                     style = "color: black")),
-                       direction = "vertical"
-                     )
-                     ),
-              column(8,
-                     textOutput("test1"),
-                     plotOutput("songs_features_lineplot",height="400px",width="800px")
-                     )
-            ),
+            plotOutput("songs_features_lineplot",height="400px",width="100%"),
             title="Musical Features Trend",
             status="success",
             background = "black",

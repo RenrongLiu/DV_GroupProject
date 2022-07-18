@@ -12,12 +12,13 @@ songs_clean = songs %>%
   select(year,danceability,energy,speechiness,acousticness,instrumentalness,liveness,valence) %>%
   group_by(year) %>%
   summarise(across(everything(), mean)) %>%
-  pivot_longer(c(2:8),names_to = "Type",values_to = "Score")
-write_csv(songs_clean,"songs_clean.csv")
+  pivot_longer(c(2:8),names_to = "Features",values_to = "Score")
+write_csv(songs_clean,"data/songs_clean.csv")
   ggplot(aes(x=year,y=Score,color=Type))+
   geom_line()+
   theme_light()
-
+g=
+  
 table(songs$year)
 song
 

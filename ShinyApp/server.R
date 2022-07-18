@@ -60,17 +60,14 @@ shinyServer(function(input, output,session) {
   ######## Spotify Trend ############
   
   songs = read_csv("../data/songs_clean.csv",show_col_types = FALSE)
-  table(songs$year)
-  summary(songs)
   
   output$songs_features_lineplot = renderPlot({
-    songs %>%
+    g= songs %>%
       filter(year<=input$songs_years[2] & year >=input$songs_years[1]) %>%
-      select(year, input$str_split(input$songs_features,pattern=" ")) %>%
-      pivot_longer(c(2:8),names_to = "Features",values_to = "Score") %>%
       ggplot(aes(x=year,y=Score,color=Features))+
-      geom_line()+
-      theme_light()
+      geom_line()
+      #theme_light()
+    ggplotly(g)
   })
   
   
