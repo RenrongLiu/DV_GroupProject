@@ -39,8 +39,8 @@ library(ggradar)
 # https://towardsdatascience.com/combining-spotify-and-r-an-interactive-rshiny-app-spotify-dashboard-tutorial-af48104cb6e9
 authenticate <- function(id, secret) {
   # authenticate the spotify client stuff
-  Sys.setenv(SPOTIFY_CLIENT_ID = id)
-  Sys.setenv(SPOTIFY_CLIENT_SECRET = secret)
+  Sys.setenv(SPOTIFY_CLIENT_ID = "d340106f00af4dd6addae953a3b12f1d")
+  Sys.setenv(SPOTIFY_CLIENT_SECRET = "329d27b0e97f42918c8649b50bf5eefe")
   
   access_token <- get_spotify_access_token()
 }
