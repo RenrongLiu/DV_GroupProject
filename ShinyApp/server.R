@@ -66,19 +66,49 @@ shinyServer(function(input, output,session) {
       filter(year<=input$songs_years[2] & year >=input$songs_years[1]) %>%
       ggplot(aes(x=year,y=Score,color=Features))+
       geom_line()+
-      theme_light()
+      theme_light()+
+      labs(title="Musical Features Trends")
     ggplotly(g)
   })
   
   songs_key = read_csv("../data/songs_key.csv",show_col_types = FALSE)
+  musical_keys=c("C","C#","D","D#","E","F","F#","G","G#","A","A#","B")
   output$songs_key = renderPlot({
     songs_key %>%
       filter(year<=input$songs_years[2] & year >=input$songs_years[1]) %>%
       ggplot(aes(x=year,y=key,color=key))+
       geom_point(shape="♪",size=8)+
-      scale_y_continuous(breaks=c(0:11),labels=c("C","C#","D","D#","E","F","F#","G","G#","A","A#","B"))+
+      scale_y_continuous(breaks=c(0:11),labels=musical_keys)+
       scale_color_gradient(low = "cyan",high = "red")+
-      theme_light()
+      theme_light()+
+      labs(title="Most Common Keys by Popular Songs")
+  })
+  
+  songs_compare = songs %>%
+    pivot_wider(names_from = Features,values_from = Score)
+  output$songs_compare = renderPlot({
+    songs_compare %>%
+      filter(year==input$songs_compare1 | year ==input$songs_compare2) %>%
+      ggradar()
+  })
+  
+  
+  output$songs_comparekey1 = renderValueBox({
+    key1=songs_key[songs_key$year==input$songs_compare1,]$key
+    valueBox(
+      musical_keys[key1+1],
+      paste0("Most Common Key in ",as.character(input$songs_compare1)),
+      icon = icon("music",lib='glyphicon'),
+      color = "green")
+  })
+  
+  output$songs_comparekey2 = renderValueBox({
+    key2=songs_key[songs_key$year==input$songs_compare2,]$key
+    valueBox(
+      musical_keys[key2+1],
+      paste0("Most Common Key in ",as.character(input$songs_compare2)),
+      icon = icon("music",lib='glyphicon'),
+      color = "green")
   })
   
   ######## Artist Analysis ############ 

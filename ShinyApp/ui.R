@@ -144,33 +144,45 @@ shinyUI(
             a("Data Source",href="https://www.kaggle.com/datasets/paradisejoy/top-hits-spotify-from-20002019")
           ),
           box(
-            plotlyOutput("songs_features_lineplot",height="400px",width="100%"),
-            title="Musical Features Trend",
+            title="Musical Trend",
             status="success",
             background = "black",
             width="100%",
-            height="500px"
-          ),
-          box(
-            title="Most Common Key",
-            status="success",
-            background = "black",
-            plotOutput("songs_key",height="400px",width="100%"),
-            width="100%"
+            height="500px",
+            fluidRow(
+              column(6,plotlyOutput("songs_features_lineplot",height="400px",width="100%")),
+              column(6,plotOutput("songs_key",height="400px",width="100%"))
+            )
           ),
           box(
             title="Compare Two Years",
             status="success",
             background = "black",
-            selectInput(
-              inputId =  "songs_year1", 
-              label = "Select Year:",
-              choices = 2000:2019,
-              selected = 2000
+            width="100%",
+            fluidRow(
+              column(4,
+                     selectInput(
+                       inputId =  "songs_compare1", 
+                       label = "Select Year 1:",
+                       choices = 2000:2019,
+                       selected = 2000
+                     )
+                     ),
+              column(4,
+                     selectInput(
+                       inputId =  "songs_compare2", 
+                       label = "Select Year 2:",
+                       choices = 2000:2019,
+                       selected = 2019
+                     ))
             ),
-            plotOutput("songs_compare",height="400px"),
-            width="100%"
-          )
+            plotOutput("songs_compare",height="400px",width = "100%"),
+            fluidRow(
+              valueBoxOutput("songs_comparekey1"),
+              valueBoxOutput("songs_comparekey2")
+            )
+          ),
+          
         ),
         # Artist page##########
         tabItem(tabName = "artist",
@@ -417,7 +429,7 @@ shinyUI(
                   background = "black",
                   tags$ol(
                     tags$li(a("ggplot2 gradient color (in Chinese) ggplot2 颜色渐变（离散颜色）设置", href="https://www.cnblogs.com/mmtinfo/p/12105987.html")),
-                    tags$li(a("Font Awesome icon 4",href="https://fontawesome.com/v4/icons/")),
+                    tags$li(a("Spotify most streamed songs by ChartMaster",href="https://chartmasters.org/spotify-most-streamed-songs/")),
                     tags$li(a("Google Fonts",href="https://fonts.google.com/?category=Display"))
                   )
                   

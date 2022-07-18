@@ -38,6 +38,13 @@ songs_key %>%
   scale_color_gradient(low = "cyan",high = "red")+
   theme_light()
 
+songs=read_csv("data/songs_clean.csv")
+songs %>%
+  filter(year==2000 | year == 2019) 
+  ggradar()
+
+
+
 table(songs$year)
 song
 
