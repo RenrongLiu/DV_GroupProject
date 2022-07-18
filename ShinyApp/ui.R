@@ -168,7 +168,7 @@ shinyUI(
               choices = 2000:2019,
               selected = 2000
             ),
-            plotOutput("songs_key",height="600px"),
+            plotOutput("songs_compare",height="400px"),
             width="100%"
           )
         ),
