@@ -14,11 +14,28 @@ songs_clean = songs %>%
   summarise(across(everything(), mean)) %>%
   pivot_longer(c(2:8),names_to = "Features",values_to = "Score")
 write_csv(songs_clean,"data/songs_clean.csv")
-  ggplot(aes(x=year,y=Score,color=Type))+
-  geom_line()+
+songs_clean%>%
+  ggplot(aes(x=year,y=Score,color=Features))+
+  geom_point(shape="♪",size=4)+
   theme_light()
-g=
+
+songs_key = songs %>%
+  select(year,key) %>%
+  filter(year<=2019 & year >=2000) %>%
+  group_by(year,key) %>%
+  summarise(n=n()) %>%
+  arrange(year,desc(n)) %>%
+  group_by(year) %>%
+  slice(1) %>%
+  ungroup
+
+write_csv(songs_key,"data/songs_key.csv")
   
+songs_key %>%
+  ggplot(aes(x=year,y=key,color=key))+
+  geom_point(shape="♪",size=4)+
+  scale_y_continuous(breaks=c(0:11),labels=c("A","A#","B","C","C#","D","D#","E","F","F#","G","G#"))
+
 table(songs$year)
 song
 

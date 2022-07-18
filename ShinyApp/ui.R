@@ -143,7 +143,7 @@ shinyUI(
             )
           ),
           box(
-            plotOutput("songs_features_lineplot",height="400px",width="100%"),
+            plotlyOutput("songs_features_lineplot",height="400px",width="100%"),
             title="Musical Features Trend",
             status="success",
             background = "black",

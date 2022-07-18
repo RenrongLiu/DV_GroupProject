@@ -61,7 +61,7 @@ shinyServer(function(input, output,session) {
   
   songs = read_csv("../data/songs_clean.csv",show_col_types = FALSE)
   
-  output$songs_features_lineplot = renderPlot({
+  output$songs_features_lineplot = renderPlotly({
     g= songs %>%
       filter(year<=input$songs_years[2] & year >=input$songs_years[1]) %>%
       ggplot(aes(x=year,y=Score,color=Features))+
