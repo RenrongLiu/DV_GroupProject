@@ -218,7 +218,7 @@ shinyServer(function(input, output,session) {
     
     return(tidy_track)
   })
-  #######################################################################
+  
   
   output$topTra <- renderFormattable({
     
@@ -259,7 +259,20 @@ shinyServer(function(input, output,session) {
   #################################################################
   ################Try to pull favorite artist name ################
   
-  artist_name = c("a", "b", "c")
+  top3_artist <- eventReactive(input$valid, {
+    
+    artists <- get_my_top_artists_or_tracks("artists", limit=3)
+    
+    if (is_list(artists)){
+      artists <- read_csv("artists_alltime.csv")
+      names <- artists[3,] %>% pull(Artist)
+    }else{
+      names <- artists %>% pull(name)
+    }
+    
+    return(names)
+    
+  })
   
   #################################################################
   
@@ -267,20 +280,20 @@ shinyServer(function(input, output,session) {
   
   output$favArt1 <- renderValueBox({
     
-    valueBox(artist_name[1], 
+    valueBox(top3_artist[1], 
              "Your Favorite Artist #1", icon=icon("heart"))
   })
   
   output$favArt2 <- renderValueBox({
     
-    valueBox(artist_name[2], 
+    valueBox(top3_artist[2], 
              "Your Favorite Artist #2", icon=icon("heart"),
              color = "yellow")
   })
   
   output$favArt3 <- renderValueBox({
     
-    valueBox(artist_name[3], 
+    valueBox(top3_artist[3], 
              "Your Favorite Artist #3", icon=icon("heart"),
              color = "purple")
   })
@@ -292,13 +305,28 @@ shinyServer(function(input, output,session) {
     top_50_track <- get_my_top_artists_or_tracks(type="tracks",
                                                  limit = 50)
     
-    artist_id <- top_50_track %>% 
-      select(artists) %>% 
-      unnest(cols=c(artists)) %>% 
-      select(id) %>% 
-      distinct() %>% 
-      pull(id)
-    
+    if(is_list(top_50_track)){
+      
+      df <- read_csv("artists_alltime.csv")
+      names <- df[50,] %>% pull(Artist)
+      artists_id <- list()
+      
+      for (name in names){
+        id <- search_spotify(name, type=c("artist")) %>% pull(id)
+        artists_id <- append(artists_id, id[1])
+      }
+      
+    }  else{
+      
+      artist_id <- top_50_track %>% 
+        select(artists) %>% 
+        unnest(cols=c(artists)) %>% 
+        select(id) %>% 
+        distinct() %>% 
+        pull(id)
+      
+    }
+
     #get artists' genres
     genres <- get_artists(ids=artist_id) %>% 
       select(genres)
