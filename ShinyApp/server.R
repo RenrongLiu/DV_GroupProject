@@ -213,25 +213,27 @@ shinyServer(function(input, output,session) {
     # if no user's data, we pull a back up file
     df <- tryCatch({
       
-      id <- top10_track %>% distinct(id) %>% pull(id)
+      id <- top10_track %>% pull(id)
       audio_feat <- get_track_audio_features(id) %>% 
         select(c("energy", "acousticness", "danceability","liveness", 
                  "speechiness", "valence", "id"))
       
       top10_track %>% 
         left_join(audio_feat, by="id") %>% 
+        filter(!duplicated(id)) %>%
         select(-id)
       
     }, error = function(e){
       
-      df <- read_csv("top10_songs_alltime.csv")
-      id <- df %>% distinct(id) %>% pull(id)
+      backup <- read_csv("top10_songs_alltime.csv")
+      id <- backup %>% pull(id)
       audio_feat <- get_track_audio_features(id) %>% 
         select(c("energy", "acousticness", "danceability","liveness", 
                  "speechiness", "valence", "id"))
       
       df %>% 
         left_join(audio_feat, by="id") %>% 
+        filter(!duplicated(id)) %>%
         select(-id)
       
     })
@@ -284,7 +286,6 @@ shinyServer(function(input, output,session) {
     
   })
   
-  output$missArt <- renderText("Test123.")
   
   
   output$favArt1 <- renderValueBox({
