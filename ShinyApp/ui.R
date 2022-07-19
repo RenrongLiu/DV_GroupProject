@@ -367,70 +367,112 @@ shinyUI(
                 div(
                   class="top-container",
                   strong("Authors", class="trends-h2")),
-                box(
-                  width = 12,
-                  title = "Yikai Jin",
-                  status = "primary",
-                  solidHeader = TRUE,
-                  collapsible = TRUE,
-                  collapsed = TRUE,
-                  column(width = 3,
-                         img(
-                           src = 'yikai_jin.jpeg',
-                           align = "left",
-                           height = 200
-                         )),
-                  column(width = 9,
-                         p("I am Yikai Jin from BARM, and it is nice to meet all of you in the Data Visualization class. The following is a little information about me."),
-                         p("I finished my bachelor's degree in Statistics and Applied Mathematics at the University of Wisconsin- Madison in 2019. With the covid-19 coming suddenly,  I deferred my offer of BARM in the year 2020, and use one year to work as an IT consultant, and my attending projects are mainly about IT Governance and IT regulation, and also I did much research on AIOPs during the year. I pursuing my master's degree at JHU to improve my business understanding and data analytics."),
-                         br(),
-                         strong("Email: yjin32@jh.edu")
-                         )
-                ),
-                
-                box(
-                  width = 12,
-                  title = "Renrong Liu",
-                  status = "success",
-                  solidHeader = TRUE,
-                  collapsible = TRUE,
-                  collapsed = TRUE,
-                  tags$img(),
-                  p()
-                ),
-                
-                box(
-                  width = 12,
-                  title = "Ruizhi Xu",
-                  status = "info",
-                  solidHeader = TRUE,
-                  collapsible = TRUE,
-                  collapsed = TRUE,
-                  tags$img(),
-                  p()
-                ),
-                
-                box(
-                  width = 12,
-                  title = "Yue Pan",
-                  status = "warning",
-                  solidHeader = TRUE,
-                  collapsible = TRUE,
-                  collapsed = TRUE,
-                  tags$img(),
-                  p()
-                ),
-                
-                box(
-                  width = 12,
-                  title = "Junzhe Zhu",
-                  status = "danger",
-                  solidHeader = TRUE,
-                  collapsible = TRUE,
-                  collapsed = TRUE,
-                  tags$img(),
-                  p()
-                )),
+                fluidRow(
+                  box(
+                    width = 12,
+                    title = "Yikai Jin",
+                    status = "primary",
+                    solidHeader = TRUE,
+                    collapsible = TRUE,
+                    collapsed = FALSE,
+                    column(width = 3,
+                           img(
+                             src = 'yikai_jin.jpg',
+                             align = "left",
+                             height = 200
+                           )),
+                    column(width = 9,
+                           p("I am Yikai Jin from BARM, and it is nice to meet all of you in the Data Visualization class. The following is a little information about me."),
+                           p("I finished my bachelor's degree in Statistics and Applied Mathematics at the University of Wisconsin- Madison in 2019. With the covid-19 coming suddenly,  I deferred my offer of BARM in the year 2020, and use one year to work as an IT consultant, and my attending projects are mainly about IT Governance and IT regulation, and also I did much research on AIOPs during the year. I pursuing my master's degree at JHU to improve my business understanding and data analytics."),
+                           br(),
+                           strong("Email: yjin32@jh.edu")
+                           )
+                  ),
+                  
+                  box(
+                    width = 12,
+                    title = "Renrong Liu",
+                    status = "success",
+                    solidHeader = TRUE,
+                    collapsible = TRUE,
+                    collapsed = FALSE,
+                    column(width = 3,
+                           img(
+                             src = 'renrong_liu.JPG',
+                             align = "left",
+                             height = 200
+                           )),
+                    column(width = 9,
+                           p("I am Renrong Liu, a full-time MS BARM student at Carey."),
+                           p("My undergrad major is marketing, and I worked as an analyst in an investment consulting firm in Beijing afterward. I am interested in data visualization because I hope this course could help me learn more techniques for interactive visualizations. In my spare time, I watch TV series like GoT and HoC."),
+                           br(),
+                           strong("Email: rliu57@jh.edu")
+                           )
+                  ),
+                  
+                  box(
+                    width = 12,
+                    title = "Ruizhi Xu",
+                    status = "info",
+                    solidHeader = TRUE,
+                    collapsible = TRUE,
+                    collapsed = FALSE,
+                    column(width = 3,
+                           img(
+                             src = 'ruizhi_xu.jpg',
+                             align = "left",
+                             height = 200
+                           )),
+                    column(width = 9,
+                           p("I'm Ruizhi from MS Business Analytics and Risk Management program. The major of my undergraduate study is Business Administration, which is belonging to the management department. I used to have interns in commercial banks and portfolio management companies."),
+                           p("As mentioned above, the major of my undergraduate is management-related, and I don't have any data-related courses until my graduate study. In this program, I found the data-related course quite attractive for me, I took courses, such as Data Analytics, Data Science and Business Intelligence, Big Data Machine Learning, etc. I found that I feel fulfilled when I do those data-related projects. It is also interesting to study the mechanism behind the algorithms. Although this class is not about data mining or machine learning, from my understanding, data visualization could be an indispensable component in data mining or machine learning. Before the data preprocessing, we need to do some exploratory data analysis to firgue out the possible patterns of our dataset and get a direction for our data preprocessing. After we finish the modeling and prediction part, data visualization is also important for us to present our results to others. Visual plots could be more intuitive and direct for people to understand no matter whether they have professional knowledge or not.  I have already taken a course to use Python and Tableau to do the visualization, it will be a pleasure to take a course based on R. In the Data Science course, we were taught to use ggplot to do some basic visualization and hope could learn more advanced material based on R in this class."),
+                           p("Currently, I'm a full-time student at Carey, so the majority of my time is spent on my curricula. Besides, I'm the Teaching Assistant of Professor Changmin in another class. In my free time, I used to play electronic games, board games, or mahjong with my friends. Recently we found a community gym and we could play a variety of sports there, basketball is my favorite sport and I began to watch NBA when I was in primary school. The detective novel is another interest of mine, and Higashino Keigo is my favorite writer."),
+                           br(),
+                           strong("Email: rxu38@jh.edu")
+                           )
+                  ),
+                  
+                  box(
+                    width = 12,
+                    title = "Yue Pan",
+                    status = "warning",
+                    solidHeader = TRUE,
+                    collapsible = TRUE,
+                    collapsed = FALSE,
+                    column(width = 3,
+                           img(
+                             src = 'yue_pan.png',
+                             align = "left",
+                             height = 200
+                           )),
+                    column(width = 9,
+                           p("I am Yue Pan from Business Analytics and Risk Management program. I majored in International Trade and Economics at Central South University, China. I am a full-time student who would love to read, travel, and vlog in my spare time. See my videos here https://www.bilibili.com/video/BV1Va41177LX?spm_id_from=333.999.0.0 "),
+                           p("In my senior year, I interned in an IT consulting team at KPMG as a business consultant, during which I self-studied multiple data visualization tools, including Tableau, Qliksense, and PowerBI. Fulfilled by the sense of achievement and innovation while creating and finishing dashboards and reports, I found myself interested in data visualization. As the last stage of a data project which directly connects with users, data visualization will greatly influence the performance of the project, which means it can improve the performance of the background data processing, model construction, data mining, or other complicated algorithms and it can also jeopardize them. With the need for further, systematic knowledge of data visualization, I felt so excited to know that our program opened this course."),
+                           br(),
+                           strong("Email: ypan29@jh.edu")
+                           )
+                  ),
+                  
+                  box(
+                    width = 12,
+                    title = "Junzhe Zhu",
+                    status = "danger",
+                    solidHeader = TRUE,
+                    collapsible = TRUE,
+                    collapsed = FALSE,
+                    column(width = 3,
+                           img(
+                             src = 'junzhe_zhu.jpeg',
+                             align = "left",
+                             height = 200
+                           )),
+                    column(width = 9,
+                           p("My name is Junzhe Zhu. I had my undergraduate degree from the University of California, Davis, double major in managerial economics and statistics. "),
+                           p("My motivation to take this course is to learn more techniques for data visualization and better facilitate myself as a DS/DA. Building an interactive web application using RShiny is one of the topics that particularly attracts me to take this course."),
+                           br(),
+                           strong("Email: jzhu81@jhu.edu")
+                           )
+                  ))),
         ######## Reference ###########
         tabItem(tabName = "reference",
                 div(
