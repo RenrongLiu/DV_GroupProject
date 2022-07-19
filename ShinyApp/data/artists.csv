@@ -1,10 +1,46 @@
-Year,1,2,3,4,5
-2013,Macklemore & Ryan Lewis,Avicii,Daft Punk,Eminem,Imagine Dragons
-2014,Ed Sheeran,Eminem,Coldplay,Calvin Harris,Katy Perry
-2015,Drake,Ed Sheeran,The Weeknd,Maroon 5,Kanye West
-2016,Drake,Justin Bieber,Rihanna,Twenty One Pilots,Kanye West
-2017,Ed Sheeran,Drake,The Weeknd,Kendrick Lamar,The Chainsmokers
-2018,Drake,Post Malone,XXXTentacion,J Balvin,Ed Sheeran
-2019,Post Malone,Billie Eilish,Ariana Grande,Ed Sheeran,Bad Bunny
-2020,Bad Bunny,Drake,J Balvin,Juice Wrld,The Weeknd
-2021,Bad Bunny,Taylor Swift,BTS,Drake,Justin Bieber
+Year,rank,artist
+2013,1,Macklemore & Ryan Lewis
+2013,2,Avicii
+2013,3,Daft Punk
+2013,4,Eminem
+2013,5,Imagine Dragons
+2014,1,Ed Sheeran
+2014,2,Eminem
+2014,3,Coldplay
+2014,4,Calvin Harris
+2014,5,Katy Perry
+2015,1,Drake
+2015,2,Ed Sheeran
+2015,3,The Weeknd
+2015,4,Maroon 5
+2015,5,Kanye West
+2016,1,Drake
+2016,2,Justin Bieber
+2016,3,Rihanna
+2016,4,Twenty One Pilots
+2016,5,Kanye West
+2017,1,Ed Sheeran
+2017,2,Drake
+2017,3,The Weeknd
+2017,4,Kendrick Lamar
+2017,5,The Chainsmokers
+2018,1,Drake
+2018,2,Post Malone
+2018,3,XXXTentacion
+2018,4,J Balvin
+2018,5,Ed Sheeran
+2019,1,Post Malone
+2019,2,Billie Eilish
+2019,3,Ariana Grande
+2019,4,Ed Sheeran
+2019,5,Bad Bunny
+2020,1,Bad Bunny
+2020,2,Drake
+2020,3,J Balvin
+2020,4,Juice Wrld
+2020,5,The Weeknd
+2021,1,Bad Bunny
+2021,2,Taylor Swift
+2021,3,BTS
+2021,4,Drake
+2021,5,Justin Bieber

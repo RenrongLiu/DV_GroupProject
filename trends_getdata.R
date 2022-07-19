@@ -72,5 +72,5 @@ albums_clean = albums %>%
   pivot_longer(c(2:8),names_to = "Features",values_to = "Score")
 
 artists = read_csv("ShinyApp/data/artists.csv")
-
-
+#artists = artists%>%pivot_longer(c("1","2","3","4","5"),names_to = "rank",values_to = "artist")
+#artists %>% write_csv("ShinyApp/data/artists.csv")
