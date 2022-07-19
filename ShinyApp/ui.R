@@ -22,7 +22,7 @@ shinyUI(
   dashboardPage(
     skin="black",
   
-    dashboardHeader(title="Project Name"),
+    dashboardHeader(title="MusicTrend.com"),
 
     #################### Dashboard siderbar ####################
       dashboardSidebar(
@@ -32,10 +32,10 @@ shinyUI(
           menuItem("Home", tabName = "home", icon=icon("home")),
           hr(class="sidebar-hr-gradient"),
           menuItem(
-            "Spotify Trends", tabName = "trend", icon=icon("chart-line"),
-            menuItem("Artists",tabName="TrendArtists", icon=icon("users")),
+            "Trends", tabName = "trend", icon=icon("chart-line"),
             menuItem("Songs",tabName="TrendSongs", icon=icon("music")),
-            menuItem("Albums",tabName="TrendAlbums", icon=icon("file"))
+            menuItem("Albums",tabName="TrendAlbums", icon=icon("file")),
+            menuItem("Artists",tabName="TrendArtists", icon=icon("users"))
           ),
           menuItem("Artist Analysis", tabName = "artist", icon=icon("microphone")),
           menuItem("User Profile", tabName = "user", icon=icon("user-circle")),
@@ -122,45 +122,48 @@ shinyUI(
           tabName = "TrendSongs",
           div(
             class="top-container",
-            strong("Trends at Spotify: Artists", class="trends-h2")
+            strong("Music Trends of Songs: Top Hits Spotify", class="trends-h2")
           ),
-          div(
-            class="top-container2",
-            div(
-              class="trends-slider",
-              noUiSliderInput(
-                inputId="songs_years",
-                label="",
-                value=c(2000,2019),
-                min=2000,
-                max=2019,
-                step=1,
-                width="400px",
-                height="10px",
-                color="#000000",
-                format=wNumbFormat(decimals=0)
-              )
-            ),
-            a("Data Source",href="https://www.kaggle.com/datasets/paradisejoy/top-hits-spotify-from-20002019")
+          box(
+            title=a("Data Overview (click to visit the dataset at Kaggle.com)",href="https://www.kaggle.com/datasets/paradisejoy/top-hits-spotify-from-20002019"),
+            status="success",
+            background = "black",
+            width="100%",
+            fluidRow(DT::dataTableOutput("songs_table")),
+            plotlyOutput("songs_overview",width="100%")
           ),
+          
           box(
             title="Musical Trend",
             status="success",
             background = "black",
             width="100%",
-            height="500px",
+            noUiSliderInput(
+              label="Select years: ",
+              inputId="songs_years",
+              value=c(2000,2019),
+              min=2000,
+              max=2019,
+              step=1,
+              width="400px",
+              height="10px",
+              color="#000000",
+              format=wNumbFormat(decimals=0)
+            ),
             fluidRow(
               column(6,plotlyOutput("songs_features_lineplot",height="400px",width="100%")),
               column(6,plotOutput("songs_key",height="400px",width="100%"))
             )
-          ),
+          )
+          ,
           box(
             title="Compare Two Years",
             status="success",
             background = "black",
             width="100%",
+            
             fluidRow(
-              column(4,
+              column(6,
                      selectInput(
                        inputId =  "songs_compare1", 
                        label = "Select Year 1:",
@@ -168,7 +171,7 @@ shinyUI(
                        selected = 2000
                      )
                      ),
-              column(4,
+              column(6,
                      selectInput(
                        inputId =  "songs_compare2", 
                        label = "Select Year 2:",
@@ -178,8 +181,8 @@ shinyUI(
             ),
             plotOutput("songs_compare",height="400px",width = "100%"),
             fluidRow(
-              valueBoxOutput("songs_comparekey1"),
-              valueBoxOutput("songs_comparekey2")
+              column(6,valueBoxOutput("songs_comparekey1",width="100%")),
+              column(6,valueBoxOutput("songs_comparekey2",width="100%"))
             )
           ),
           

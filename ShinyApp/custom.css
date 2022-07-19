@@ -49,13 +49,6 @@
   margin-bottom: 1rem;
   text-align: center;
 }
-.trends-slider{
-  font-size:0.5rem;
-  font-family: "Press Start 2P", cursive;
-  margin: 0;
-  margin-left:50%;
-  transform: translate(-50%,-50%);
-}
 
 .trends-sidebar{
   text-align: left;

@@ -7,6 +7,7 @@
 #    http://shiny.rstudio.com/
 #
 
+#install.packages("devtools")
 #library(devtools)
 #install_github("ricardo-bion/ggradar")
 
@@ -57,11 +58,31 @@ shinyServer(function(input, output,session) {
   output$valMessage <- renderText({ validate() })
  
   
-  ######## Spotify Trend ############
+  ######## Spotify Trend - songs ############
   
-  songs = read_csv("../data/songs_clean.csv",show_col_types = FALSE)
+  
+  ####### data processing
+  songs_all = read_csv("data/songs.csv",show_col_types = FALSE)
+  songs = read_csv("data/songs_clean.csv",show_col_types = FALSE)
+  songs_key = read_csv("data/songs_key.csv",show_col_types = FALSE)
+  musical_keys=c("C","C#","D","D#","E","F","F#","G","G#","A","A#","B")
+
+  output$songs_table = DT::renderDT({
+    
+  })
+  
+  output$songs_overview = renderPlotly({
+    g = songs_all%>%
+      filter(year>=2000&year<=2019)%>%
+      ggplot(aes(x=year))+
+      geom_bar()+
+      labs(title="Number of Songs in Each Year",y="songs")+
+      theme_light()
+    ggplotly(g)
+  })
   
   output$songs_features_lineplot = renderPlotly({
+    
     g= songs %>%
       filter(year<=input$songs_years[2] & year >=input$songs_years[1]) %>%
       ggplot(aes(x=year,y=Score,color=Features))+
@@ -71,23 +92,21 @@ shinyServer(function(input, output,session) {
     ggplotly(g)
   })
   
-  songs_key = read_csv("../data/songs_key.csv",show_col_types = FALSE)
-  musical_keys=c("C","C#","D","D#","E","F","F#","G","G#","A","A#","B")
   output$songs_key = renderPlot({
     songs_key %>%
       filter(year<=input$songs_years[2] & year >=input$songs_years[1]) %>%
       ggplot(aes(x=year,y=key,color=key))+
-      geom_point(shape="♪",size=8)+
+      geom_point(shape="♪",size=10)+
       scale_y_continuous(breaks=c(0:11),labels=musical_keys)+
-      scale_color_gradient(low = "cyan",high = "red")+
+      scale_color_gradient(low = "red",high = "cyan")+
       theme_light()+
       labs(title="Most Common Keys by Popular Songs")
   })
   
-  songs_compare = songs %>%
-    pivot_wider(names_from = Features,values_from = Score)
+  
   output$songs_compare = renderPlot({
-    songs_compare %>%
+    songs %>% 
+      pivot_wider(names_from = Features,values_from = Score)%>%
       filter(year==input$songs_compare1 | year ==input$songs_compare2) %>%
       ggradar()
   })

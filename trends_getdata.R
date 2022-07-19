@@ -4,16 +4,25 @@ library(dplyr)
 library(ggplot2)
 library(ggradar)
 
-songs = read_csv("data/songs.csv")
+
+################ songs #######################
+
+songs = read_csv("ShinyApp/data/songs.csv")
+songs = unique(songs)
 table(songs$year)
 summary(songs)
+songs_num = songs%>%
+  filter(year<=2019 & year >=2000) %>%
+  group_by(year)%>%
+  summarise(n=n())
+write_csv(songs_num,"ShinyApp/data/songs_num.csv")
 songs_clean = songs %>%
   filter(year<=2019 & year >=2000) %>%
   select(year,danceability,energy,speechiness,acousticness,instrumentalness,liveness,valence) %>%
   group_by(year) %>%
   summarise(across(everything(), mean)) %>%
   pivot_longer(c(2:8),names_to = "Features",values_to = "Score")
-write_csv(songs_clean,"data/songs_clean.csv")
+write_csv(songs_clean,"ShinyApp/data/songs_clean.csv")
 songs_clean%>%
   ggplot(aes(x=year,y=Score,color=Features))+
   geom_point(shape="♪",size=4)+
@@ -29,7 +38,7 @@ songs_key = songs %>%
   slice(1) %>%
   ungroup
 
-write_csv(songs_key,"data/songs_key.csv")
+write_csv(songs_key,"ShinyApp/data/songs_key.csv")
   
 songs_key %>%
   ggplot(aes(x=year,y=key,color=key))+
@@ -38,23 +47,29 @@ songs_key %>%
   scale_color_gradient(low = "cyan",high = "red")+
   theme_light()
 
-songs=read_csv("data/songs_clean.csv")
+songs=read_csv("ShinyApp/data/songs_clean.csv")
 songs %>%
   filter(year==2000 | year == 2019) 
   ggradar()
+  
+  
+################ albums #######################
 
-
-
-table(songs$year)
-song
-
-albums = read_csv("data/albums.csv")
+albums = read_csv("ShinyApp/data/albums.csv")
 table(albums$rel_date)
 
 albums1=albums%>%
   mutate(year=substr(rel_date,nchar(rel_date)-3,nchar(rel_date)))
 table(albums1$year)
 
-artists = read_csv("data/artists.csv")
+albums_clean = albums %>%
+  mutate(year=as.numeric(substr(rel_date,nchar(rel_date)-3,nchar(rel_date))))%>%
+  filter(year>=1960 & year <=2021) %>%
+  select(year,danceability,energy,speechiness,acousticness,instrumentalness,liveness,valence) %>%
+  group_by(year) %>%
+  summarise(across(everything(), mean)) %>%
+  pivot_longer(c(2:8),names_to = "Features",values_to = "Score")
+
+artists = read_csv("ShinyApp/data/artists.csv")
 
 
