@@ -64,7 +64,7 @@ shinyUI(
                     status="success",
                     background="black",
                     collapsible = TRUE,
-                    collapsed = TRUE,
+                    collapsed = FALSE,
                     tags$span(
                       "Spotify is one of the most popular audio streaming platforms, which including millions of subscribers. We are applying musical audio features analysis for the popular tracks on Spotify. The audio features can be seperated to different categories such as the mood, properties, and context. We mainly using danceability, energy, valence, sppechiness, liveness, and acousticness those six features to analysis the tracks.  ",
                       br(),
@@ -91,12 +91,9 @@ shinyUI(
                          status="success",
                          background="black",
                          collapsible = TRUE,
-                         collapsed = TRUE,
+                         collapsed = FALSE,
                          p("Technically, we using Spotify API to accesses user related data as the main data sources for our project. The Spotify’s Web API can dicover music, manage the labrary, control audio playbacks. We mainly get information such as albms, artist, tracks, and users from Spotify’s Web API. "),
-                         br(),
-                         br(),
                          p("In the trending part, we also use the Spotify dataset from Kaggle, which including all the top songs in recent years, and it also be captured by Spotify API. "),
-                         br(),
                          p("Following are the video to learn more about Spotify API:"),
                          # put video here, following the format:
                          tags$iframe(width="450", height="300", src="https://www.youtube.com/embed/yAXoOolPvjU", frameborder="0", allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture", allowfullscreen=NA)
