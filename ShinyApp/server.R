@@ -401,8 +401,6 @@ shinyServer(function(input, output,session) {
       artist_id <- top_50_track %>% 
         select(artists) %>% 
         unnest(cols=c(artists)) %>% 
-        select(id) %>% 
-        distinct() %>% 
         pull(id)
       
     }
