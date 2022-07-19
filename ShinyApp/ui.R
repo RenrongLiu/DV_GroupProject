@@ -77,7 +77,7 @@ shinyUI(
                       br(),
                       br(),
                       tags$strong("Artist Analysis:"),
-                      "Artist Analysis: You can serch for your interested artists to see his or her image and the artists’ most common keys in the songs. To further learn your searched artist, audio feature summary will be provided with six components (danceability, energy, valence, sppechiness, liveness, and acousticness), and you can learn the artists’ songs and albums from different musical features. At last, this page includes the album comparision for the artist, you are welcome to choose two of the album from your searching artist to compare the overall musical features in the songs. ",
+                      " You can serch for your interested artists to see his or her image and the artists’ most common keys in the songs. To further learn your searched artist, audio feature summary will be provided with six components (danceability, energy, valence, sppechiness, liveness, and acousticness), and you can learn the artists’ songs and albums from different musical features. At last, this page includes the album comparision for the artist, you are welcome to choose two of the album from your searching artist to compare the overall musical features in the songs. ",
                       br(),
                       br(),
                       tags$strong("User Profile:"),
