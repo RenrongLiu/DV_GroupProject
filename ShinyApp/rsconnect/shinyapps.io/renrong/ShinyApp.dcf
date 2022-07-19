@@ -1,0 +1,13 @@
+name: ShinyApp
+title: ShinyApp
+username:
+account: renrong
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6660447
+bundleId: 6110024
+url: https://renrong.shinyapps.io/ShinyApp/
+when: 1658190811.04778
+lastSyncTime: 1658190811.04781
+asMultiple: FALSE
+asStatic: FALSE
