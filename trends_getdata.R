@@ -8,7 +8,8 @@ library(ggradar)
 ################ songs #######################
 
 songs = read_csv("ShinyApp/data/songs.csv")
-songs = unique(songs)
+#songs = unique(songs)
+#songs %>% write_csv("ShinyApp/data/songs.csv")
 table(songs$year)
 summary(songs)
 songs_num = songs%>%

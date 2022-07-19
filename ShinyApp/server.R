@@ -68,7 +68,11 @@ shinyServer(function(input, output,session) {
   musical_keys=c("C","C#","D","D#","E","F","F#","G","G#","A","A#","B")
 
   output$songs_table = DT::renderDT({
-    
+    songs_dt = songs_all %>%
+      filter(year<=2019 & year >=2000) %>%
+      select(artist,song,year,danceability,energy,speechiness,acousticness,instrumentalness,liveness,valence)
+    songs_dt[,4:10] = round(songs_dt[,4:10],2)
+    songs_dt
   })
   
   output$songs_overview = renderPlotly({

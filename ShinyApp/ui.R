@@ -129,7 +129,7 @@ shinyUI(
             status="success",
             background = "black",
             width="100%",
-            fluidRow(DT::dataTableOutput("songs_table")),
+            DT::dataTableOutput("songs_table"),
             plotlyOutput("songs_overview",width="100%")
           ),
           
