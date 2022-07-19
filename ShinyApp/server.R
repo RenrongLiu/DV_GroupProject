@@ -384,7 +384,7 @@ shinyServer(function(input, output,session) {
     top_50_track <- get_my_top_artists_or_tracks(type="tracks",
                                                  limit = 50)
     
-    if(is.null(top_50_track)){
+    if(is.null(top_50_track) || is.null(dim(top_50_track))){
       
       df <- read_csv("artists_alltime.csv")
       names <- df[1:50,] %>% pull(Artist)
