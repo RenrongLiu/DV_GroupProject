@@ -400,6 +400,7 @@ shinyServer(function(input, output,session) {
       artist_id <- top_50_track %>% 
         select(artists) %>% 
         unnest(cols=c(artists)) %>% 
+        distinct(id) %>% 
         pull(id)
       
     }
@@ -432,7 +433,7 @@ shinyServer(function(input, output,session) {
     
     wordcloud2(freq_genre,
                size=1.5,
-               backgroundColor = "black",
+               #backgroundColor = "black",
                color=brewer.pal(12, "Paired"))
     
   })
