@@ -340,9 +340,9 @@ shinyServer(function(input, output,session) {
     
     artists <- get_my_top_artists_or_tracks("artists", limit=3)
     
-    if (is_list(artists)){
+    if (is.null(artists) || is.null(dim(artists))){
       artists <- read_csv("artists_alltime.csv")
-      names <- artists[3,] %>% pull(Artist)
+      names <- artists[1:3,] %>% pull(Artist)
     }else{
       names <- artists %>% pull(name)
     }
@@ -357,35 +357,38 @@ shinyServer(function(input, output,session) {
   
   output$favArt1 <- renderValueBox({
     
-    valueBox(top3_artist[1], 
+    valueBox(top3_artist()[1], 
              "Your Favorite Artist #1", icon=icon("heart"))
   })
   
   output$favArt2 <- renderValueBox({
     
-    valueBox(top3_artist[2], 
+    valueBox(top3_artist()[2], 
              "Your Favorite Artist #2", icon=icon("heart"),
              color = "yellow")
   })
   
   output$favArt3 <- renderValueBox({
     
-    valueBox(top3_artist[3], 
+    valueBox(top3_artist()[3], 
              "Your Favorite Artist #3", icon=icon("heart"),
              color = "purple")
   })
   
   
-  output$userFavGen <- renderWordcloud2({
+  #################################################################
+  ################top 50 artists' genres ################
+  
+  artist_ids <- eventReactive(input$valid, {
     
     # Get user's top 50 songs and their artist
     top_50_track <- get_my_top_artists_or_tracks(type="tracks",
                                                  limit = 50)
     
-    if(is_list(top_50_track)){
+    if(is.null(top_50_track)){
       
       df <- read_csv("artists_alltime.csv")
-      names <- df[50,] %>% pull(Artist)
+      names <- df[1:50,] %>% pull(Artist)
       artists_id <- list()
       
       for (name in names){
@@ -403,9 +406,18 @@ shinyServer(function(input, output,session) {
         pull(id)
       
     }
-
+    
+    return(artist_id)
+    })
+  
+  #################################################################
+  
+  
+  
+  output$userFavGen <- renderWordcloud2({
+    
     #get artists' genres
-    genres <- get_artists(ids=artist_id) %>% 
+    genres <- get_artists(ids=artist_ids()) %>% 
       select(genres)
     
     genre_list=list()
@@ -436,7 +448,6 @@ shinyServer(function(input, output,session) {
     songs = tracks %>% distinct(song) %>% pull(song)
     updateSelectInput(session=session,"topTraList",choices = songs,selected=songs[1])
   })
-  
   
   
   output$userTraFeat <- renderPlotly({
