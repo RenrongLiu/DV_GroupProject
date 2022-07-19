@@ -22,7 +22,7 @@ shinyUI(
   dashboardPage(
     skin="black",
   
-    dashboardHeader(title="Project Name"),
+    dashboardHeader(title="MusicTrend.com"),
 
     #################### Dashboard siderbar ####################
       dashboardSidebar(
@@ -32,16 +32,17 @@ shinyUI(
           menuItem("Home", tabName = "home", icon=icon("home")),
           hr(class="sidebar-hr-gradient"),
           menuItem(
-            "Spotify Trends", tabName = "trend", icon=icon("chart-line"),
-            menuItem("Artists",tabName="TrendArtists", icon=icon("users")),
-            menuItem("Tracks",tabName="TrendTracks", icon=icon("music")),
-            menuItem("Albums",tabName="TrendAlbums", icon=icon("file"))
+            "Trends", tabName = "trend", icon=icon("chart-line"),
+            menuItem("Songs",tabName="TrendSongs", icon=icon("music")),
+            menuItem("Albums",tabName="TrendAlbums", icon=icon("file")),
+            menuItem("Artists",tabName="TrendArtists", icon=icon("users"))
           ),
           menuItem("Artist Analysis", tabName = "artist", icon=icon("microphone")),
           menuItem("User Profile", tabName = "user", icon=icon("user-circle")),
           hr(class="sidebar-hr-gradient"),
           menuItem("About Us", tabName = "us", icon=icon("paperclip")),
-          menuItem("Reference", tabName = "reference", icon=icon("book"))
+          menuItem("Reference", tabName = "reference", icon=icon("book")),
+          menuItem("Visit Our Github", icon = icon("send", lib='glyphicon'), href = "https://github.com/RenrongLiu/DV_GroupProject")
         )
       ),
     
@@ -63,6 +64,7 @@ shinyUI(
                     status="success",
                     background="black",
                     collapsible = TRUE,
+                    collapsed = TRUE,
                     p("Spotify is one of the most popular audio streaming platforms, which including millions of subscribers. We are applying musical audio features analysis for the popular tracks on Spotify. The audio features can be seperated to different categories such as the mood, properties, and context. We mainly using danceability, energy, valence, sppechiness, liveness, and acousticness those six features to analysis the tracks.  "),
                     p("Our application has three major components:  "),
                     p("Spotify Trends:You can explore the top artists, tracks, and albums from year 2013 to 2021, and comparing the musical features trends among the songs. The page will provide you the overall idea of the musical feature taste transformation in the time duration."),
@@ -77,94 +79,113 @@ shinyUI(
                          status="success",
                          background="black",
                          collapsible = TRUE,
+                         collapsed = TRUE,
                          p("Technically, we using Spotify API to accesses user related data as the main data sources for our project. The Spotify’s Web API can dicover music, manage the labrary, control audio playbacks. We mainly get information such as albms, artist, tracks, and users from Spotify’s Web API. "),
                          br(),
                          # put video here, following the format:
-                         # tags$iframe(width="560", height="315", src="https://www.youtube.com/embed/T1-k7VYwsHg", frameborder="0", allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture", allowfullscreen=NA)
+                         tags$iframe(width="560", height="315", src="https://www.youtube.com/embed/yAXoOolPvjU", frameborder="0", allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture", allowfullscreen=NA),
                          tags$iframe()
                        )
                   ),
                 
-                box(width=12,
-                  column(6,
-                         h3("Get your Spotify access token here:"),
-                         textInput("spotifyId", "Client ID: ", ""),
-                         textInput("spotifySec", "Client Secret: ", ""),
-                         actionButton("valid", "Validate"),
-                         textOutput("valMessage")),
-                  
-                  column(6,
-                         h2("Instructions"),
-                         br(),
-                         h6("Step 1: Go to https://developer.spotify.com/dashboard/ and login with your Spotify information"),
-                         h6("Step 2: Create an app with name and description temp, then find the client ID and Client Secret"),
-                         h6("Step 3: Copy and paste the ID and Secret into the designated dialog boxes, and click validate."),
-                         h6("Step 4: Allow spotify to authenticate your account"),
-                         h6("Now you should be good to go! Click one of the tabs above and learn more about your music")
-                         # h6("Step 4: When prompted with the message are you ..., make sure to click NOT YOU and login yourself. Now you're good to go! "),
-                         # verbatimTextOutput("txtout"), # generated from the server
+                fluidRow(
+                  box(width=12,
+                      column(6,
+                             h3(strong("Get your Spotify access token here:")),
+                             textInput("spotifyId", "Client ID: ", ""),
+                             textInput("spotifySec", "Client Secret: ", ""),
+                             actionButton("valid", "Validate"),
+                             br(),
+                             br(),
+                             p(strong("If validation successes, you should see your Spotify access token below:")),
+                             wellPanel(textOutput("valMessage"))
+                             ),
+                      
+                      column(6,
+                             h3(strong("Instructions")),
+                             br(),
+                             h6("Step 1: Go to https://developer.spotify.com/dashboard/ and login with your Spotify information"),
+                             h6("Step 2: Create an app with name and description temp, then find the client ID and Client Secret"),
+                             h6("Step 3: Copy and paste the ID and Secret into the designated dialog boxes, and click validate."),
+                             h6("Step 4: Allow spotify to authenticate your account"),
+                             h6("Now you should be good to go! Click one of the tabs above and learn more about your music")
+                             # h6("Step 4: When prompted with the message are you ..., make sure to click NOT YOU and login yourself. Now you're good to go! "),
+                             # verbatimTextOutput("txtout"), # generated from the server
+                      )
                   )
                 )
+
                 ),
         
-        #################### Trend page ####################
+        #################### Trend page - Songs ####################
         tabItem(
-          tabName = "TrendArtists",
+          tabName = "TrendSongs",
           div(
             class="top-container",
-            strong("Trends at Spotify: Artists", class="trends-h2")
-          ),
-          div(
-            class="top-container2",
-            div(
-              class="trends-slider",
-              noUiSliderInput(
-                inputId="trendYear",
-                label="",
-                value=c(2013,2021),
-                min=2013,
-                max=2021,
-                step=1,
-                width="400px",
-                height="10px",
-                color="#000000",
-                format=wNumbFormat(decimals=0)
-              )
-            )
-            
+            strong("Music Trends of Songs: Top Hits Spotify", class="trends-h2")
           ),
           box(
+            title=a("Data Overview (click to visit the dataset at Kaggle.com)",href="https://www.kaggle.com/datasets/paradisejoy/top-hits-spotify-from-20002019"),
+            status="success",
+            background = "black",
+            width="100%",
+            DT::dataTableOutput("songs_table"),
+            plotlyOutput("songs_overview",width="100%")
+          ),
+          
+          box(
+            title="Musical Trend",
+            status="success",
+            background = "black",
+            width="100%",
+            noUiSliderInput(
+              label="Select years: ",
+              inputId="songs_years",
+              value=c(2000,2019),
+              min=2000,
+              max=2019,
+              step=1,
+              width="400px",
+              height="10px",
+              color="#000000",
+              format=wNumbFormat(decimals=0)
+            ),
             fluidRow(
-              column(4,
-                     checkboxGroupButtons(
-                       inputId = "trendFeatures",
-                       label = "Musical Features",
-                       choices = c("Energy", "Acousticness", "danceability",
-                                   "liveness", "loudness", "speechiness",
-                                   "valence"),
-                       checkIcon = list(
-                         yes = tags$i(class = "fa fa-check-square", 
-                                      style = "color: black"),
-                         no = tags$i(class = "fa fa-square-o", 
-                                     style = "color: black")),
-                       direction = "vertical"
+              column(6,plotlyOutput("songs_features_lineplot",height="400px",width="100%")),
+              column(6,plotOutput("songs_key",height="400px",width="100%"))
+            )
+          )
+          ,
+          box(
+            title="Compare Two Years",
+            status="success",
+            background = "black",
+            width="100%",
+            
+            fluidRow(
+              column(6,
+                     selectInput(
+                       inputId =  "songs_compare1", 
+                       label = "Select Year 1:",
+                       choices = 2000:2019,
+                       selected = 2000
                      )
                      ),
-              column(8,
-                     plotOutput("trendFeatures",height="400px")
-                     )
+              column(6,
+                     selectInput(
+                       inputId =  "songs_compare2", 
+                       label = "Select Year 2:",
+                       choices = 2000:2019,
+                       selected = 2019
+                     ))
             ),
-            title="Musical Features Trend",
-            status="success",
-            background = "black",
+            plotOutput("songs_compare",height="400px",width = "100%"),
+            fluidRow(
+              column(6,valueBoxOutput("songs_comparekey1",width="100%")),
+              column(6,valueBoxOutput("songs_comparekey2",width="100%"))
+            )
           ),
-          box(
-            title="Most Common Key",
-            status="success",
-            background = "black",
-            plotOutput("trendKey",height="400px"),
-            width=12
-          ),
+          
         ),
         # Artist page##########
         tabItem(tabName = "artist",
@@ -205,57 +226,65 @@ shinyUI(
                                plotOutput("artFeatSum", height = "400px"))),
                             
                            
+                           fluidRow(
+                             box(width = 12,
+                                 title="Let's take a closer look",
+                                 status="success",
+                                 background="black",
+                                 solidHeader = TRUE,
+                                 
+                                 column(3,
+                                        
+                                        selectInput("featByX", label="Feature on the X-axis",
+                                                    choices = list("energy", "acousticness", "danceability",
+                                                                   "liveness", "speechiness",
+                                                                   "valence"),selected="liveness"),
+                                        selectInput("featByY", label="Feature on the Y-axis",
+                                                    choices = list("energy", "acousticness", "danceability",
+                                                                   "liveness", "speechiness",
+                                                                   "valence"),selected="energy")),
+                                 
+                                 column(9, plotlyOutput("artFeatScatter", height="400px"))
+                             )
+                           )
+),
+                  
+                  tabPanel("Album Feature Comparison",
                            
-                           box(width = 12,
-                               title="Let's take a closer look",
+                           fluidRow(                           
+                             box(
+                               width = 12,
+                               title="Feature Differences Between Two Albums",
                                status="success",
                                background="black",
                                solidHeader = TRUE,
                                
-                               column(3,
-                                
-                                      selectInput("featByX", label="Feature on the X-axis",
-                                                  choices = list("energy", "acousticness", "danceability",
-                                                                 "liveness", "speechiness",
-                                                                 "valence"),selected="liveness"),
-                                      selectInput("featByY", label="Feature on the Y-axis",
-                                                  choices = list("energy", "acousticness", "danceability",
-                                                                 "liveness", "speechiness",
-                                                                 "valence"),selected="energy")),
                                
-                               column(9, plotlyOutput("artFeatScatter", height="400px"))
-                           )),
-                  
-                  tabPanel("Album Feature Comparison",
-                           box(
-                             width = 12,
-                             title="Feature Differences Between Two Albums",
-                             status="success",
-                             background="black",
-                             solidHeader = TRUE,
-                            
-                             
-                             column(3,
-                                    selectInput("album1", "Select the first album:", choice=""),
-                                    selectInput("album2", "select the second album:", choice="")),
-                             
-                             column(9, plotOutput("albComp", height = "400px"))
-                           )),
-                  tabPanel("Datatable",
-                           box(
-                             width=12,
-                             title="Data table of audio features",
-                             status="success",
-                             background="black",
-                             solidHeader=TRUE,
-                             column(12,
-                                    h5("note: row name is the track id"),
-                                    DT::dataTableOutput("table")
-                                    )
-                             
+                               column(3,
+                                      selectInput("album1", "Select the first album:", choice=""),
+                                      selectInput("album2", "select the second album:", choice="")),
+                               
+                               column(9, plotOutput("albComp", height = "400px"))
                            ))
+),
+                  tabPanel("Datatable",
+                           fluidRow(
+                             box(
+                               width=12,
+                               title="Data table of audio features",
+                               status="success",
+                               background="black",
+                               solidHeader=TRUE,
+                               column(12,
+                                      h5("note: row name is the track id"),
+                                      DT::dataTableOutput("table")
+                               )
+                               
+                             )
+                           )
+)
                 )),
-        #user page ###########
+        #User page ###########
         tabItem(tabName = "user",
                 div(
                   class="top-container",
@@ -263,12 +292,15 @@ shinyUI(
 
                 tabsetPanel(
                   tabPanel("Top 10 Songs",
+                           br(),
                            box(width=12,
                                title="Top 10 Songs",
                                status="success",
                                background = "black",
                                solidHeader = TRUE,
                                collapsible = TRUE,
+                               textOutput("missTra"),
+                               br(),
                                formattableOutput("topTra"),
                                style = "overflow-x: scroll;"),
                            
@@ -276,10 +308,19 @@ shinyUI(
                              box(width=12,
                                  status="success",
                                  #background = "black",
-                                 plotlyOutput("userTraFeat")))
+                                 column(3,
+                                        selectInput("topTraList",
+                                                    "Pick a song:",
+                                                    choice="")),
+                                 
+                                 column(9,
+                                        plotlyOutput("userTraFeat"))
+                                 ))
                          ),
                   
                   tabPanel("Favorite Artists",
+                           br(),
+                           textOutput("missArt"),
                            br(),
                            fluidRow(
                              valueBoxOutput("favArt1"),
@@ -390,16 +431,18 @@ shinyUI(
                   tags$img(),
                   p()
                 )),
+        ######## Reference ###########
         tabItem(tabName = "reference",
                 div(
                   class="top-container",
                   strong("References", class="trends-h2")),
                 box(
+                  width="100%",
                   status="success",
                   background = "black",
                   tags$ol(
-                    tags$li(a(" R Shiny", href="https://shiny.rstudio.com/")),
-                    tags$li(a("Font Awesome icon 4",href="https://fontawesome.com/v4/icons/")),
+                    tags$li(a("ggplot2 gradient color (in Chinese) ggplot2 颜色渐变（离散颜色）设置", href="https://www.cnblogs.com/mmtinfo/p/12105987.html")),
+                    tags$li(a("Spotify most streamed songs by ChartMaster",href="https://chartmasters.org/spotify-most-streamed-songs/")),
                     tags$li(a("Google Fonts",href="https://fonts.google.com/?category=Display"))
                   )
                   
@@ -408,6 +451,7 @@ shinyUI(
                 )
         )
         
+      ########## end ###########
       )
       
     )

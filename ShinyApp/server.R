@@ -7,6 +7,10 @@
 #    http://shiny.rstudio.com/
 #
 
+#install.packages("devtools")
+#library(devtools)
+#install_github("ricardo-bion/ggradar")
+
 library(shiny)
 library(spotifyr)
 library(tidyverse)
@@ -28,18 +32,19 @@ library(cowplot)
 library(DT)
 library(shinythemes)
 library(shinyWidgets)
+library(plotly)
+library(ggradar)
 
 # Function to authenticate user's id and secret
 # This part of code is originate from a blog on towardDataScience written by Azaan Barlas:
 # https://towardsdatascience.com/combining-spotify-and-r-an-interactive-rshiny-app-spotify-dashboard-tutorial-af48104cb6e9
 authenticate <- function(id, secret) {
   # authenticate the spotify client stuff
-  Sys.setenv(SPOTIFY_CLIENT_ID = id)
-  Sys.setenv(SPOTIFY_CLIENT_SECRET = secret)
+  Sys.setenv(SPOTIFY_CLIENT_ID = "d340106f00af4dd6addae953a3b12f1d")
+  Sys.setenv(SPOTIFY_CLIENT_SECRET = "329d27b0e97f42918c8649b50bf5eefe")
   
   access_token <- get_spotify_access_token()
 }
-
 
 
 
@@ -53,9 +58,81 @@ shinyServer(function(input, output,session) {
   output$valMessage <- renderText({ validate() })
  
   
-  ######## Spotify Trend ############
+  ######## Spotify Trend - songs ############
   
   
+  ####### data processing
+  songs_all = read_csv("data/songs.csv",show_col_types = FALSE)
+  songs = read_csv("data/songs_clean.csv",show_col_types = FALSE)
+  songs_key = read_csv("data/songs_key.csv",show_col_types = FALSE)
+  musical_keys=c("C","C#","D","D#","E","F","F#","G","G#","A","A#","B")
+
+  output$songs_table = DT::renderDT({
+    songs_dt = songs_all %>%
+      filter(year<=2019 & year >=2000) %>%
+      select(artist,song,year,danceability,energy,speechiness,acousticness,instrumentalness,liveness,valence)
+    songs_dt[,4:10] = round(songs_dt[,4:10],2)
+    songs_dt
+  })
+  
+  output$songs_overview = renderPlotly({
+    g = songs_all%>%
+      filter(year>=2000&year<=2019)%>%
+      ggplot(aes(x=year))+
+      geom_bar()+
+      labs(title="Number of Songs in Each Year",y="songs")+
+      theme_light()
+    ggplotly(g)
+  })
+  
+  output$songs_features_lineplot = renderPlotly({
+    
+    g= songs %>%
+      filter(year<=input$songs_years[2] & year >=input$songs_years[1]) %>%
+      ggplot(aes(x=year,y=Score,color=Features))+
+      geom_line()+
+      theme_light()+
+      labs(title="Musical Features Trends")
+    ggplotly(g)
+  })
+  
+  output$songs_key = renderPlot({
+    songs_key %>%
+      filter(year<=input$songs_years[2] & year >=input$songs_years[1]) %>%
+      ggplot(aes(x=year,y=key,color=key))+
+      geom_point(shape="♪",size=10)+
+      scale_y_continuous(breaks=c(0:11),labels=musical_keys)+
+      scale_color_gradient(low = "red",high = "cyan")+
+      theme_light()+
+      labs(title="Most Common Keys by Popular Songs")
+  })
+  
+  
+  output$songs_compare = renderPlot({
+    songs %>% 
+      pivot_wider(names_from = Features,values_from = Score)%>%
+      filter(year==input$songs_compare1 | year ==input$songs_compare2) %>%
+      ggradar()
+  })
+  
+  
+  output$songs_comparekey1 = renderValueBox({
+    key1=songs_key[songs_key$year==input$songs_compare1,]$key
+    valueBox(
+      musical_keys[key1+1],
+      paste0("Most Common Key in ",as.character(input$songs_compare1)),
+      icon = icon("music",lib='glyphicon'),
+      color = "green")
+  })
+  
+  output$songs_comparekey2 = renderValueBox({
+    key2=songs_key[songs_key$year==input$songs_compare2,]$key
+    valueBox(
+      musical_keys[key2+1],
+      paste0("Most Common Key in ",as.character(input$songs_compare2)),
+      icon = icon("music",lib='glyphicon'),
+      color = "green")
+  })
   
   ######## Artist Analysis ############ 
   
@@ -189,30 +266,59 @@ shinyServer(function(input, output,session) {
   
   
   ######## User Profile ############ 
+  # get user's top 10 songs.
+  top10_track <- eventReactive(input$valid, {
+    
+    tracks <- get_my_top_artists_or_tracks("tracks", limit=10)
+    
+    # If no top songs, we create a back up list from all-time popular songs
+    if (is.null(tracks) || is.null(dim(tracks))){
+      songs_at <- read_csv("songs_alltime.csv")
+      names <- songs_at[1:10,] %>% pull(Title)
+      tracks <- data.frame()
+      
+      for (name in names){
+        row = search_spotify(name, type=c("track"))
+        tracks <- rbind(tracks, row[1,])
+      }
+    }
+    
+    # clean up the top song dataframe
+    tidy_track <- tracks %>% 
+      select(name, album.name, id, artists) %>% 
+      unnest() %>% 
+      select(name, name1, album.name,id) %>% 
+      rename(song = name) %>% 
+      rename(artist = name1) %>% 
+      mutate(album.name = paste("《", album.name, "》", spe="")) %>% 
+      rename(album = album.name)
+    
+    return(tidy_track)
+  })
   
   
   output$topTra <- renderFormattable({
     
-    top_track <- get_my_top_artists_or_tracks(type="tracks", limit=10)
+    id <- top10_track() %>% distinct(id) %>% pull(id)
     
-    top10_tra <- top_track %>% 
-      select(name, album.name, id, artists) %>% 
-      unnest() %>% 
-      select(name, name1, album.name,id) %>% 
-      rename(Song = name) %>% 
-      rename(Artist = name1) %>% 
-      mutate(album.name = paste("《", album.name, "》", spe="")) %>% 
-      rename(Album = album.name)
-    
-    id <- top10_tra %>% pull(id)
     audio_feat <- get_track_audio_features(id) %>% 
       select(c("energy", "acousticness", "danceability","liveness", 
                "speechiness", "valence", "id"))
     
-    df <- top10_tra %>% 
+    df <- top10_track() %>% 
       left_join(audio_feat, by="id") %>% 
-      filter(!duplicated(id)) %>% 
       select(-id)
+    
+    
+    # Get audio features for user's top ten songs
+    #audio_feat <- get_track_audio_features(id) %>% 
+      #select(c("energy", "acousticness", "danceability","liveness", 
+               #"speechiness", "valence", "id"))
+    
+    #df <- top10_track %>% 
+      #left_join(audio_feat, by="id") %>% 
+      #filter(!duplicated(id)) %>% 
+      #select(-id)
 
     formattable(df,
                 align = c(rep("l", 3),rep("r", 6)),
@@ -227,28 +333,44 @@ shinyServer(function(input, output,session) {
                 ))
   })
   
+  #################################################################
+  ################Try to pull favorite artist name ################
   
-  #artist_name <- get_my_top_artists_or_tracks(limit=3) %>% 
-  #  pull(name)
+  top3_artist <- eventReactive(input$valid, {
+    
+    artists <- get_my_top_artists_or_tracks("artists", limit=3)
+    
+    if (is_list(artists)){
+      artists <- read_csv("artists_alltime.csv")
+      names <- artists[3,] %>% pull(Artist)
+    }else{
+      names <- artists %>% pull(name)
+    }
+    
+    return(names)
+    
+  })
   
-  artist_name = c("Taylor Swift", "Justin Bieber", "Justin Timberlake")
+  #################################################################
+  
+  
   
   output$favArt1 <- renderValueBox({
     
-    valueBox(artist_name[1], 
+    valueBox(top3_artist[1], 
              "Your Favorite Artist #1", icon=icon("heart"))
   })
   
   output$favArt2 <- renderValueBox({
     
-    valueBox(artist_name[2], 
+    valueBox(top3_artist[2], 
              "Your Favorite Artist #2", icon=icon("heart"),
              color = "yellow")
   })
   
   output$favArt3 <- renderValueBox({
     
-    valueBox(artist_name[3], 
+    valueBox(top3_artist[3], 
              "Your Favorite Artist #3", icon=icon("heart"),
              color = "purple")
   })
@@ -256,16 +378,33 @@ shinyServer(function(input, output,session) {
   
   output$userFavGen <- renderWordcloud2({
     
+    # Get user's top 50 songs and their artist
     top_50_track <- get_my_top_artists_or_tracks(type="tracks",
                                                  limit = 50)
     
-    artist_id <- top_50_track %>% 
-      select(artists) %>% 
-      unnest(cols=c(artists)) %>% 
-      select(id) %>% 
-      distinct() %>% 
-      pull(id)
-    
+    if(is_list(top_50_track)){
+      
+      df <- read_csv("artists_alltime.csv")
+      names <- df[50,] %>% pull(Artist)
+      artists_id <- list()
+      
+      for (name in names){
+        id <- search_spotify(name, type=c("artist")) %>% pull(id)
+        artists_id <- append(artists_id, id[1])
+      }
+      
+    }  else{
+      
+      artist_id <- top_50_track %>% 
+        select(artists) %>% 
+        unnest(cols=c(artists)) %>% 
+        select(id) %>% 
+        distinct() %>% 
+        pull(id)
+      
+    }
+
+    #get artists' genres
     genres <- get_artists(ids=artist_id) %>% 
       select(genres)
     
@@ -275,6 +414,7 @@ shinyServer(function(input, output,session) {
       genre_list = append(genre_list, x)
     }
     
+    # get most frequent genres
     freq_genre <- unlist(genre_list) %>% 
       as_tibble() %>% 
       group_by(value) %>% 
@@ -288,25 +428,56 @@ shinyServer(function(input, output,session) {
     
   })
   
+  
+  
+  
+  observe({ 
+    tracks = top10_track()
+    songs = tracks %>% distinct(song) %>% pull(song)
+    updateSelectInput(session=session,"topTraList",choices = songs,selected=songs[1])
+  })
+  
+  
+  
   output$userTraFeat <- renderPlotly({
     
-    id <- get_my_top_artists_or_tracks("tracks", limit=10) %>% pull(id)
+    tracks <- top10_track()
+    ids <- tracks %>% distinct(id) %>% pull(id)
     
-    audio_feat <- get_track_audio_features(id) %>% 
+    song_id <- tracks %>% 
+      filter(song==as.character(input$topTraList)) %>% 
+      pull(id)
+    
+    audio_feat <- get_track_audio_features(ids) %>% 
       select(c("energy", "acousticness", "danceability","liveness", 
                "speechiness", "valence", "id"))
     
     avg_feat <- audio_feat[,-7] %>% 
       sapply(mean)
     
+    song_feat <- audio_feat %>% 
+      filter(id == song_id) %>% 
+      select(!id) %>% 
+      as.numeric()
+    
+    #### Song vs average spider plot
     fig <- plot_ly(
       type = 'scatterpolar',
-      r = avg_feat,
-      theta = colnames(audio_feat)[-7],
       fill = 'toself',
-      mode="markers"
-    )
-    
+      mode = "markers"
+    ) 
+    fig <- fig %>%
+      add_trace(
+        r = avg_feat,
+        theta = colnames(audio_feat)[-7],
+        name = 'Average of Top 10 Songs'
+      ) 
+    fig <- fig %>%
+      add_trace(
+        r = song_feat,
+        theta = colnames(audio_feat)[-7],
+        name = input$topTraList
+      ) 
     fig <- fig %>%
       layout(
         polar = list(
@@ -314,11 +485,10 @@ shinyServer(function(input, output,session) {
             visible = T,
             range = c(0,1)
           )
-        ),
-        showlegend = F
+        )
       )
     
-    fig
+    fig %>% layout(title = 'One Song vs. The Average')
   })
   
   
