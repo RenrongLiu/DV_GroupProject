@@ -441,7 +441,7 @@ shinyUI(
                     collapsed = FALSE,
                     column(width = 3,
                            img(
-                             src = 'yue_pan.png',
+                             src = 'yue_pan.jpeg',
                              align = "left",
                              height = 200
                            )),
