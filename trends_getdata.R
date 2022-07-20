@@ -60,7 +60,8 @@ albums = read_csv("ShinyApp/data/albums.csv")
 table(albums$rel_date)
 
 albums=albums%>%
-  mutate(year=substr(rel_date,nchar(rel_date)-3,nchar(rel_date)))
+  mutate(year=substr(rel_date,nchar(rel_date)-3,nchar(rel_date)))%>%
+  select(-1)
 table(albums$year)
 write.csv(albums,"ShinyApp/data/albums.csv")
 
