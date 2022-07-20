@@ -158,7 +158,7 @@ shinyUI(
               min=2000,
               max=2019,
               step=1,
-              width="400px",
+              width="100%",
               height="10px",
               color="#000000",
               format=wNumbFormat(decimals=0)
@@ -196,6 +196,76 @@ shinyUI(
             fluidRow(
               column(6,valueBoxOutput("songs_comparekey1",width="100%")),
               column(6,valueBoxOutput("songs_comparekey2",width="100%"))
+            )
+          ),
+          
+        ),
+        #################### Trend page - Albums ####################
+        tabItem(
+          tabName = "TrendAlbums",
+          div(
+            class="top-container",
+            strong("Music Trends of Albums: Top 5000 Albums of All Time", class="trends-h2")
+          ),
+          box(
+            title=a("Data Overview (click to visit the dataset at Kaggle.com)",href="https://www.kaggle.com/datasets/lucascantu/top-5000-albums-of-all-time-spotify-features"),
+            status="success",
+            background = "black",
+            width="100%",
+            DT::dataTableOutput("albums_table"),
+            plotlyOutput("albums_overview",width="100%")
+          ),
+          
+          box(
+            title="Musical Trend",
+            status="success",
+            background = "black",
+            width="100%",
+            noUiSliderInput(
+              label="Select years: ",
+              inputId="albums_years",
+              value=c(1960,2021),
+              min=1960,
+              max=2021,
+              step=1,
+              width="100%",
+              height="10px",
+              color="#000000",
+              format=wNumbFormat(decimals=0)
+            ),
+            fluidRow(
+              column(6,plotlyOutput("albums_features_lineplot",height="400px",width="100%")),
+              column(6,plotOutput("albums_key",height="400px",width="100%"))
+            )
+          )
+          ,
+          box(
+            title="Compare Two Years",
+            status="success",
+            background = "black",
+            width="100%",
+            
+            fluidRow(
+              column(6,
+                     selectInput(
+                       inputId =  "albums_compare1", 
+                       label = "Select Year 1:",
+                       choices = 1960:2021,
+                       selected = 1960
+                     )
+              ),
+              column(6,
+                     selectInput(
+                       inputId =  "albums_compare2", 
+                       label = "Select Year 2:",
+                       choices = 1960:2021,
+                       selected = 2021
+                     ))
+            ),
+            plotOutput("albums_compare",height="400px",width = "100%"),
+            fluidRow(
+              column(6,valueBoxOutput("albums_comparekey1",width="100%")),
+              column(6,valueBoxOutput("albums_comparekey2",width="100%"))
             )
           ),
           
