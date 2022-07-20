@@ -133,6 +133,82 @@ shinyServer(function(input, output,session) {
       color = "green")
   })
   
+  ######## Spotify Trend - albums ############
+  
+  
+  ####### data processing
+  albums_all = read_csv("data/albums.csv",show_col_types = FALSE)
+  albums = read_csv("data/albums_clean.csv",show_col_types = FALSE)
+  albums_key = read_csv("data/albums_key.csv",show_col_types = FALSE)
+  musical_keys=c("C","C#","D","D#","E","F","F#","G","G#","A","A#","B")
+  
+  output$albums_table = DT::renderDT({
+    albums_dt = albums_all %>%
+      filter(year<=2019 & year >=2000) %>%
+      select(artist,song,year,danceability,energy,speechiness,acousticness,instrumentalness,liveness,valence)
+    albums_dt[,4:10] = round(albums_dt[,4:10],2)
+    albums_dt
+  })
+  
+  output$albums_overview = renderPlotly({
+    g = albums_all%>%
+      filter(year>=2000&year<=2019)%>%
+      ggplot(aes(x=year))+
+      geom_bar()+
+      labs(title="Number of albums in Each Year",y="albums")+
+      theme_light()
+    ggplotly(g)
+  })
+  
+  output$albums_features_lineplot = renderPlotly({
+    
+    g= albums %>%
+      filter(year<=input$albums_years[2] & year >=input$albums_years[1]) %>%
+      ggplot(aes(x=year,y=Score,color=Features))+
+      geom_line()+
+      theme_light()+
+      labs(title="Musical Features Trends")
+    ggplotly(g)
+  })
+  
+  output$albums_key = renderPlot({
+    albums_key %>%
+      filter(year<=input$albums_years[2] & year >=input$albums_years[1]) %>%
+      ggplot(aes(x=year,y=key,color=key))+
+      geom_point(shape="♪",size=10)+
+      scale_y_continuous(breaks=c(0:11),labels=musical_keys)+
+      scale_color_gradient(low = "red",high = "cyan")+
+      theme_light()+
+      labs(title="Most Common Keys by Popular albums")
+  })
+  
+  
+  output$albums_compare = renderPlot({
+    albums %>% 
+      pivot_wider(names_from = Features,values_from = Score)%>%
+      filter(year==input$albums_compare1 | year ==input$albums_compare2) %>%
+      ggradar()
+  })
+  
+  
+  output$albums_comparekey1 = renderValueBox({
+    key1=albums_key[albums_key$year==input$albums_compare1,]$key
+    valueBox(
+      musical_keys[key1+1],
+      paste0("Most Common Key in ",as.character(input$albums_compare1)),
+      icon = icon("music",lib='glyphicon'),
+      color = "green")
+  })
+  
+  output$albums_comparekey2 = renderValueBox({
+    key2=albums_key[albums_key$year==input$albums_compare2,]$key
+    valueBox(
+      musical_keys[key2+1],
+      paste0("Most Common Key in ",as.character(input$albums_compare2)),
+      icon = icon("music",lib='glyphicon'),
+      color = "green")
+  })
+  
   ######## Artist Analysis ############ 
   
   data=eventReactive(input$button, {
