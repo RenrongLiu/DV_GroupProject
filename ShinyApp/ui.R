@@ -33,12 +33,23 @@ shinyUI(
           hr(class="sidebar-hr-gradient"),
           menuItem(
             "Trends", tabName = "trend", icon=icon("chart-line"),
-            menuItem("Songs",tabName="TrendSongs", icon=icon("music")),
-            menuItem("Albums",tabName="TrendAlbums", icon=icon("file")),
-            menuItem("Artists",tabName="TrendArtists", icon=icon("users"))
+            menuSubItem("Songs",tabName="TrendSongs", icon=icon("music")),
+            menuSubItem("Albums",tabName="TrendAlbums", icon=icon("file")),
+            menuSubItem("Artists",tabName="TrendArtists", icon=icon("users"))
           ),
-          menuItem("Artist Analysis", tabName = "artist", icon=icon("microphone")),
-          menuItem("User Profile", tabName = "user", icon=icon("user-circle")),
+          menuItem(
+            "Artist Analysis", tabName = "artist", icon=icon("microphone"),
+             menuSubItem("Artist Summary",tabName="artSum", icon=icon("music")),
+             menuSubItem("Feature Summary",tabName="featSum", icon=icon("file")),
+             menuSubItem("Album Comparison",tabName="albComp", icon=icon("users")),
+             menuSubItem("Sample Data",tabName="sampData", icon=icon("users"))
+                   ),
+          menuItem(
+            "User Profile", tabName = "user", icon=icon("user-circle"),
+             menuSubItem("Top 10 Songs",tabName="topSong", icon=icon("music")),
+             menuSubItem("Artists & Genres",tabName="artGen", icon=icon("file")),
+             menuSubItem("Recommendation",tabName="recom", icon=icon("users"))
+                   ),
           hr(class="sidebar-hr-gradient"),
           menuItem("About Us", tabName = "us", icon=icon("paperclip")),
           menuItem("Reference", tabName = "reference", icon=icon("book")),
@@ -201,180 +212,208 @@ shinyUI(
           
         ),
         # Artist page##########
-        tabItem(tabName = "artist",
+        tabItem(tabName = "artSum",
                 div(
                   class="top-container",
                   strong("Artist Analysis", class="trends-h2")),
-                tabsetPanel(
-                  tabPanel("Artist Search",
-                           textInput("artSearch", "Please enter the name of an artist:","Ariana Grande"),
-                           actionButton("button","Submit"),
-                           
-                           br(),
-                           
-                           fluidRow(
-                             box(width = 6,
-                                 title="Artist's image",
-                                 status="success",
-                                 background="black",
-                                 solidHeader = TRUE,
-                                 plotOutput("artimage")),
-                             
-                             box(width = 6,
-                                 title="Artist's Most Common Keys",
-                                 status="success",
-                                 background="black",
-                                 solidHeader = TRUE,
-                                 plotOutput("artKeyBar", height = "400px"))
-                           )),
+                
+                textInput("artSearch", "Please enter the name of an artist:","Ariana Grande"),
+                actionButton("button","Submit"),
+                
+                br(),
+                
+                fluidRow(
+                  box(width = 6,
+                      title="Artist's image",
+                      status="success",
+                      background="black",
+                      solidHeader = TRUE,
+                      plotOutput("artimage")),
                   
-                  tabPanel("Feature Summary",
-                           box(width = 12,
-                               title="Audio Feature Summary",
-                               status="success",
-                               background="black",
-                               solidHeader = TRUE,
-                               collapsible = TRUE,
-                               column(12,
-                               plotOutput("artFeatSum", height = "400px"))),
-                            
-                           
-                           fluidRow(
-                             box(width = 12,
-                                 title="Let's take a closer look",
-                                 status="success",
-                                 background="black",
-                                 solidHeader = TRUE,
-                                 
-                                 column(3,
-                                        
-                                        selectInput("featByX", label="Feature on the X-axis",
-                                                    choices = list("energy", "acousticness", "danceability",
-                                                                   "liveness", "speechiness",
-                                                                   "valence"),selected="liveness"),
-                                        selectInput("featByY", label="Feature on the Y-axis",
-                                                    choices = list("energy", "acousticness", "danceability",
-                                                                   "liveness", "speechiness",
-                                                                   "valence"),selected="energy")),
-                                 
-                                 column(9, plotlyOutput("artFeatScatter", height="400px"))
-                             )
-                           )
-),
-                  
-                  tabPanel("Album Feature Comparison",
-                           
-                           fluidRow(                           
-                             box(
-                               width = 12,
-                               title="Feature Differences Between Two Albums",
-                               status="success",
-                               background="black",
-                               solidHeader = TRUE,
-                               
-                               
-                               column(3,
-                                      selectInput("album1", "Select the first album:", choice=""),
-                                      selectInput("album2", "select the second album:", choice="")),
-                               
-                               column(9, plotOutput("albComp", height = "400px"))
-                           ))
-),
-                  tabPanel("Datatable",
-                           fluidRow(
-                             box(
-                               width=12,
-                               title="Data table of audio features",
-                               status="success",
-                               background="black",
-                               solidHeader=TRUE,
-                               column(12,
-                                      h5("note: row name is the track id"),
-                                      DT::dataTableOutput("table")
-                               )
-                               
-                             )
-                           )
-)
-                )),
-        #User page ###########
-        tabItem(tabName = "user",
+                  box(width = 6,
+                      title="Artist's Most Common Keys",
+                      status="success",
+                      background="black",
+                      solidHeader = TRUE,
+                      plotOutput("artKeyBar", height = "400px"))
+                )
+        ),
+        
+        
+        
+        tabItem(tabName = "featSum",
                 div(
                   class="top-container",
-                  strong("Your Customized Profile", class="trends-h2")),
-
-                tabsetPanel(
-                  tabPanel("Top 10 Songs",
-                           br(),
-                           box(width=12,
-                               title="Top 10 Songs",
-                               status="success",
-                               background = "black",
-                               solidHeader = TRUE,
-                               collapsible = TRUE,
-                               textOutput("missTra"),
-                               br(),
-                               formattableOutput("topTra"),
-                               style = "overflow-x: scroll;"),
-                           
-                           fluidRow(
-                             box(width=12,
-                                 status="success",
-                                 #background = "black",
-                                 column(3,
-                                        selectInput("topTraList",
-                                                    "Pick a song:",
-                                                    choice="")),
-                                 
-                                 column(9,
-                                        plotlyOutput("userTraFeat"))
-                                 ))
-                         ),
-                  
-                  tabPanel("Favorite Artists",
-                           br(),
-                           textOutput("missArt"),
-                           br(),
-                           fluidRow(
-                             valueBoxOutput("favArt1"),
-                             valueBoxOutput("favArt2"),
-                             valueBoxOutput("favArt3")
-                           ),
-                           
-                           fluidRow(
-                             box(
-                               width=12,
-                               status="success",
-                               background = "black",
-                               wordcloud2Output("userFavGen"))
-                             )
-                           ),
-                  
-                  tabPanel("Recommendation",
-                           fixedRow(
-                             box(
-                              width=4,
-                              radioButtons("seedSel", 
-                                            label="Get recomendations from my:",
-                                            choices = list("Favorite tracks",
-                                                          "Favorite artists",
-                                                          "Favorite genres"))
-                           ),
-                           
-                            box(
-                              width = 8,
-                              textOutput("favSeed")
-                            )),
-                           
-                           box(width=12,
-                               title="Your Customized Recommendation",
-                               status="success",
-                               background = "black",
-                               solidHeader = TRUE,
-                               collapsible = TRUE,
-                               formattableOutput("recTra"))
+                  strong("Artist's Feature Analysis", class="trends-h2")),
+                
+                box(width = 12,
+                    title="Audio Feature Summary",
+                    status="success",
+                    background="black",
+                    solidHeader = TRUE,
+                    collapsible = TRUE,
+                    column(12,
+                           plotOutput("artFeatSum", height = "400px"))),
+                
+                
+                fluidRow(
+                  box(width = 12,
+                      title="Let's take a closer look",
+                      status="success",
+                      background="black",
+                      solidHeader = TRUE,
+                      
+                      column(3,
+                             
+                             selectInput("featByX", label="Feature on the X-axis",
+                                         choices = list("energy", "acousticness", "danceability",
+                                                        "liveness", "speechiness",
+                                                        "valence"),selected="liveness"),
+                             selectInput("featByY", label="Feature on the Y-axis",
+                                         choices = list("energy", "acousticness", "danceability",
+                                                        "liveness", "speechiness",
+                                                        "valence"),selected="energy")),
+                      
+                      column(9, plotlyOutput("artFeatScatter", height="400px"))
+                  )
                 )
-                )),
+        ),
+        
+        
+        
+        tabItem(tabName = "albComp",
+                div(
+                  class="top-container",
+                  strong("Artist's Album Comparison", class="trends-h2")),
+                
+                fluidRow(                           
+                  box(
+                    width = 12,
+                    title="Feature Differences Between Two Albums",
+                    status="success",
+                    background="black",
+                    solidHeader = TRUE,
+                    
+                    
+                    column(3,
+                           selectInput("album1", "Select the first album:", choice=""),
+                           selectInput("album2", "select the second album:", choice="")),
+                    
+                    column(9, plotOutput("albComp", height = "400px"))
+                  ))
+        ),
+        
+        
+        
+        
+        tabItem(tabName = "sampData",
+                div(
+                  class="top-container",
+                  strong("Sample Artist's Feature Data", class="trends-h2")),
+                
+                fluidRow(
+                  box(
+                    width=12,
+                    title="Data table of audio features",
+                    status="success",
+                    background="black",
+                    solidHeader=TRUE,
+                    column(12,
+                           h5("note: row name is the track id"),
+                           DT::dataTableOutput("table")
+                    )
+                    
+                  )
+                )
+        ),
+                
+        #User page ###########
+        tabItem(tabName = "topSong",
+                div(
+                  class="top-container",
+                  strong("Your Favorite Songs & Audio Features", class="trends-h2")),
+                
+                box(width=12,
+                    title="Top 10 Songs",
+                    status="success",
+                    background = "black",
+                    solidHeader = TRUE,
+                    collapsible = TRUE,
+                    textOutput("missTra"),
+                    br(),
+                    formattableOutput("topTra"),
+                    style = "overflow-x: scroll;"),
+                
+                fluidRow(
+                  box(width=12,
+                      status="success",
+                      #background = "black",
+                      column(3,
+                             selectInput("topTraList",
+                                         "Pick a song:",
+                                         choice="")),
+                      
+                      column(9,
+                             plotlyOutput("userTraFeat"))
+                  ))
+        ),
+        
+        
+        
+        tabItem(tabName = "artGen",
+                div(
+                  class="top-container",
+                  strong("Your Top 3 Artists & Favorite Genres", class="trends-h2")),
+                
+                textOutput("missArt"),
+                br(),
+                fluidRow(
+                  valueBoxOutput("favArt1"),
+                  valueBoxOutput("favArt2"),
+                  valueBoxOutput("favArt3")
+                ),
+                
+                fluidRow(
+                  box(
+                    width=12,
+                    status="success",
+                    background = "black",
+                    wordcloud2Output("userFavGen"))
+                )
+        ),
+        
+        
+        tabItem(tabName = "recom",
+                div(
+                  class="top-container",
+                  strong("Customized Playlist for You", class="trends-h2")),
+                
+                fixedRow(
+                  box(
+                    width=4,
+                    radioButtons("seedSel", 
+                                 label="Get recomendations from my:",
+                                 choices = list("Favorite tracks",
+                                                "Favorite artists",
+                                                "Favorite genres"))
+                  ),
+                  
+                  box(
+                    width = 8,
+                    textOutput("favSeed")
+                  )),
+                
+                box(width=12,
+                    title="Your Customized Recommendation",
+                    status="success",
+                    background = "black",
+                    solidHeader = TRUE,
+                    collapsible = TRUE,
+                    formattableOutput("recTra"))
+        ),
+        
+        
+        
         #About us ############
         tabItem(tabName = "us",
                 div(
