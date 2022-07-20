@@ -81,6 +81,18 @@ albums_num = albums%>%
 write_csv(albums_num,"ShinyApp/data/albums_num.csv")
 write_csv(albums_clean,"ShinyApp/data/albums_clean.csv")
 
+tmp=albums%>%
+  filter(year<=2021 & year >=1960) %>%
+  pull(gens)%>%
+  str_split(pattern=", ")%>%
+  map_df(as_tibble)%>%
+  group_by(value)%>%
+  summarise(freq=n())%>%
+  arrange(desc(freq))%>%
+  slice(1:20)
+
+wordcloud2(tmp,size=1.5,color=brewer.pal(12, "Paired"))
+
 artists = read_csv("ShinyApp/data/artists.csv")
 #artists = artists%>%pivot_longer(c("1","2","3","4","5"),names_to = "rank",values_to = "artist")
 #artists %>% write_csv("ShinyApp/data/artists.csv")
