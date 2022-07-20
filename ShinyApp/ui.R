@@ -246,7 +246,7 @@ shinyUI(
                   class="top-container",
                   strong("Artist's Feature Analysis", class="trends-h2")),
                 
-                box(width = 12,
+                box(width = "100%",
                     title="Audio Feature Summary",
                     status="success",
                     background="black",
@@ -257,7 +257,7 @@ shinyUI(
                 
                 
                 fluidRow(
-                  box(width = 12,
+                  box(width = "100%",
                       title="Let's take a closer look",
                       status="success",
                       background="black",
@@ -288,7 +288,7 @@ shinyUI(
                 
                 fluidRow(                           
                   box(
-                    width = 12,
+                    width = "100%",
                     title="Feature Differences Between Two Albums",
                     status="success",
                     background="black",
@@ -313,7 +313,7 @@ shinyUI(
                 
                 fluidRow(
                   box(
-                    width=12,
+                    width="100%",
                     title="Data table of audio features",
                     status="success",
                     background="black",
@@ -333,7 +333,7 @@ shinyUI(
                   class="top-container",
                   strong("Your Favorite Songs & Audio Features", class="trends-h2")),
                 
-                box(width=12,
+                box(width="100%",
                     title="Top 10 Songs",
                     status="success",
                     background = "black",
@@ -345,7 +345,7 @@ shinyUI(
                     style = "overflow-x: scroll;"),
                 
                 fluidRow(
-                  box(width=12,
+                  box(width="100%",
                       status="success",
                       #background = "black",
                       column(3,
@@ -375,7 +375,7 @@ shinyUI(
                 
                 fluidRow(
                   box(
-                    width=12,
+                    width="100%",
                     status="success",
                     background = "black",
                     wordcloud2Output("userFavGen"))
@@ -403,7 +403,7 @@ shinyUI(
                     textOutput("favSeed")
                   )),
                 
-                box(width=12,
+                box(width="100%",
                     title="Your Customized Recommendation",
                     status="success",
                     background = "black",
