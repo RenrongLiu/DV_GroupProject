@@ -384,20 +384,20 @@ shinyServer(function(input, output,session) {
     top_50_track <- get_my_top_artists_or_tracks(type="tracks",
                                                  limit = 50)
     
-    if(is.null(top_50_track)){
+    if(is.null(top_50_track) || is.null(dim(top_50_track))){
       
       df <- read_csv("artists_alltime.csv")
       names <- df[1:50,] %>% pull(Artist)
-      artists_id <- list()
+      ids <- list()
       
       for (name in names){
         id <- search_spotify(name, type=c("artist")) %>% pull(id)
-        artists_id <- append(artists_id, id[1])
+        ids <- append(ids, id[1])
       }
       
     }  else{
       
-      artist_id <- top_50_track %>% 
+      ids <- top_50_track %>% 
         select(artists) %>% 
         unnest(cols=c(artists)) %>% 
         distinct(id) %>% 
@@ -405,7 +405,7 @@ shinyServer(function(input, output,session) {
       
     }
     
-    return(artist_id)
+    return(ids)
     })
   
   #################################################################
