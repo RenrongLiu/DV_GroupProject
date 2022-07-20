@@ -610,7 +610,7 @@ shinyUI(
                     tags$li(a("Spotify most streamed albums by ChartMaster",href="https://chartmasters.org/spotify-most-streamed-albums/?y=alltime")),
                     tags$li(a("Inserting an image to ggplot2",href="https://stackoverflow.com/questions/9917049/inserting-an-image-to-ggplot2")),
                     tags$li(a("Combining Spotify and R — An Interactive Rshiny App + Spotify Dashboard Tutorial",href="https://towardsdatascience.com/combining-spotify-and-r-an-interactive-rshiny-app-spotify-dashboard-tutorial-af48104cb6e9")),
-                    tags$li(a("How to create Radar Charts in R with Plotly",href="https://plotly.com/r/radar-chart/"))
+                    tags$li(a("How to create Radar Charts in R with Plotly",href="https://plotly.com/r/radar-chart/")),
                     tags$li(a("Inserting an image to ggplot2",href="https://stackoverflow.com/questions/9917049/inserting-an-image-to-ggplot2")),
                     tags$li(a("BEAUTIFUL RADAR CHART IN R USING FMSB AND GGPLOT PACKAGES"),href="https://www.datanovia.com/en/blog/beautiful-radar-chart-in-r-using-fmsb-and-ggplot-packages/"),
                     tags$li(a("spotifyr overview"),href="https://www.rcharlie.com/spotifyr/")
