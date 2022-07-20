@@ -139,7 +139,6 @@ shinyServer(function(input, output,session) {
   ####### data processing
   albums_all = read_csv("data/albums.csv",show_col_types = FALSE)
   albums = read_csv("data/albums_clean.csv",show_col_types = FALSE)
-  albums_key = read_csv("data/albums_key.csv",show_col_types = FALSE)
   musical_keys=c("C","C#","D","D#","E","F","F#","G","G#","A","A#","B")
   
   output$albums_table = DT::renderDT({
@@ -171,17 +170,6 @@ shinyServer(function(input, output,session) {
     ggplotly(g)
   })
   
-  output$albums_key = renderPlot({
-    albums_key %>%
-      filter(year<=input$albums_years[2] & year >=input$albums_years[1]) %>%
-      ggplot(aes(x=year,y=key,color=key))+
-      geom_point(shape="♪",size=10)+
-      scale_y_continuous(breaks=c(0:11),labels=musical_keys)+
-      scale_color_gradient(low = "red",high = "cyan")+
-      theme_light()+
-      labs(title="Most Common Keys by Popular albums")
-  })
-  
   
   output$albums_compare = renderPlot({
     albums %>% 
@@ -192,21 +180,21 @@ shinyServer(function(input, output,session) {
   
   
   output$albums_comparekey1 = renderValueBox({
-    key1=albums_key[albums_key$year==input$albums_compare1,]$key
-    valueBox(
-      musical_keys[key1+1],
-      paste0("Most Common Key in ",as.character(input$albums_compare1)),
-      icon = icon("music",lib='glyphicon'),
-      color = "green")
+    #key1=albums_key[albums_key$year==input$albums_compare1,]$key
+    #valueBox(
+    #  musical_keys[key1+1],
+    #  paste0("Most Common Key in ",as.character(input$albums_compare1)),
+    #  icon = icon("music",lib='glyphicon'),
+    #  color = "green")
   })
   
   output$albums_comparekey2 = renderValueBox({
-    key2=albums_key[albums_key$year==input$albums_compare2,]$key
-    valueBox(
-      musical_keys[key2+1],
-      paste0("Most Common Key in ",as.character(input$albums_compare2)),
-      icon = icon("music",lib='glyphicon'),
-      color = "green")
+    #key2=albums_key[albums_key$year==input$albums_compare2,]$key
+    #valueBox(
+    #  musical_keys[key2+1],
+    #  paste0("Most Common Key in ",as.character(input$albums_compare2)),
+    #  icon = icon("music",lib='glyphicon'),
+    #  color = "green")
   })
   
   ######## Artist Analysis ############ 
