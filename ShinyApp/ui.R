@@ -47,8 +47,7 @@ shinyUI(
           menuItem(
             "User Profile", tabName = "user", icon=icon("user-circle"),
              menuSubItem("Top 10 Songs",tabName="topSong", icon=icon("headphones")),
-             menuSubItem("Artists & Genres",tabName="artGen", icon=icon("users")),
-             menuSubItem("Recommendation",tabName="recom", icon=icon("heart"))
+             menuSubItem("Artists & Genres",tabName="artGen", icon=icon("users"))
                    ),
           hr(class="sidebar-hr-gradient"),
           menuItem("About Us", tabName = "us", icon=icon("paperclip")),
@@ -450,36 +449,6 @@ shinyUI(
                     background = "black",
                     wordcloud2Output("userFavGen"))
                 )
-        ),
-        
-        
-        tabItem(tabName = "recom",
-                div(
-                  class="top-container",
-                  strong("Customized Playlist for You", class="trends-h2")),
-                
-                fixedRow(
-                  box(
-                    width=4,
-                    radioButtons("seedSel", 
-                                 label="Get recomendations from my:",
-                                 choices = list("Favorite tracks",
-                                                "Favorite artists",
-                                                "Favorite genres"))
-                  ),
-                  
-                  box(
-                    width = 8,
-                    textOutput("favSeed")
-                  )),
-                
-                box(width="100%",
-                    title="Your Customized Recommendation",
-                    status="success",
-                    background = "black",
-                    solidHeader = TRUE,
-                    collapsible = TRUE,
-                    formattableOutput("recTra"))
         ),
         
         
