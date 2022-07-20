@@ -38,16 +38,16 @@ shinyUI(
             menuSubItem("Artists",tabName="TrendArtists", icon=icon("users"))
           ),
           menuItem(
-            "Artist Analysis", tabName = "artist", icon=icon("vcard"),
+            "Artist Analysis", tabName = "artist", icon=icon("address-card"),
              menuSubItem("Artist Summary",tabName="artSum", icon=icon("file-audio")),
-             menuSubItem("Feature Summary",tabName="featSum", icon=icon("bar-chart")),
-             menuSubItem("Album Comparison",tabName="albComp", icon=icon("sliders")),
+             menuSubItem("Feature Summary",tabName="featSum", icon=icon("chart-bar")),
+             menuSubItem("Album Comparison",tabName="albComp", icon=icon("sliders-h")),
              menuSubItem("Sample Data",tabName="sampData", icon=icon("database"))
                    ),
           menuItem(
             "User Profile", tabName = "user", icon=icon("user-circle"),
              menuSubItem("Top 10 Songs",tabName="topSong", icon=icon("headphones")),
-             menuSubItem("Artists & Genres",tabName="artGen", icon=icon("group")),
+             menuSubItem("Artists & Genres",tabName="artGen", icon=icon("users")),
              menuSubItem("Recommendation",tabName="recom", icon=icon("heart"))
                    ),
           hr(class="sidebar-hr-gradient"),
