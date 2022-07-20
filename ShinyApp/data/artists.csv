@@ -1,46 +1,46 @@
-Year,rank,artist
-2013,1,Macklemore & Ryan Lewis
-2013,2,Avicii
-2013,3,Daft Punk
-2013,4,Eminem
-2013,5,Imagine Dragons
-2014,1,Ed Sheeran
-2014,2,Eminem
-2014,3,Coldplay
-2014,4,Calvin Harris
-2014,5,Katy Perry
-2015,1,Drake
-2015,2,Ed Sheeran
-2015,3,The Weeknd
-2015,4,Maroon 5
-2015,5,Kanye West
-2016,1,Drake
-2016,2,Justin Bieber
-2016,3,Rihanna
-2016,4,Twenty One Pilots
-2016,5,Kanye West
-2017,1,Ed Sheeran
-2017,2,Drake
-2017,3,The Weeknd
-2017,4,Kendrick Lamar
-2017,5,The Chainsmokers
-2018,1,Drake
-2018,2,Post Malone
-2018,3,XXXTentacion
-2018,4,J Balvin
-2018,5,Ed Sheeran
-2019,1,Post Malone
-2019,2,Billie Eilish
-2019,3,Ariana Grande
-2019,4,Ed Sheeran
-2019,5,Bad Bunny
-2020,1,Bad Bunny
-2020,2,Drake
-2020,3,J Balvin
-2020,4,Juice Wrld
-2020,5,The Weeknd
-2021,1,Bad Bunny
-2021,2,Taylor Swift
-2021,3,BTS
-2021,4,Drake
-2021,5,Justin Bieber
+Year,rank,artist,url
+2013,1,Macklemore & Ryan Lewis,https://i.scdn.co/image/ab6761610000e5eb3c2f1ba4c1a3de141e63d775
+2013,2,Avicii,https://i.scdn.co/image/ab6761610000e5eb09bf4814c6585e1f69dfeef7
+2013,3,Daft Punk,https://i.scdn.co/image/ab6761610000e5eb96d66c60658005885d1135ce
+2013,4,Eminem,https://i.scdn.co/image/ab6761610000e5eba00b11c129b27a88fc72f36b
+2013,5,Imagine Dragons,https://i.scdn.co/image/ab6761610000e5eb920dc1f617550de8388f368e
+2014,1,Ed Sheeran,https://i.scdn.co/image/ab6761610000e5eb12a2ef08d00dd7451a6dbed6
+2014,2,Eminem,https://i.scdn.co/image/ab6761610000e5eba00b11c129b27a88fc72f36b
+2014,3,Coldplay,https://i.scdn.co/image/ab6761610000e5eb865a3301762a8fce048cb469
+2014,4,Calvin Harris,https://i.scdn.co/image/ab6761610000e5eb578905d5539cff25568dc097
+2014,5,Katy Perry,https://i.scdn.co/image/ab6761610000e5ebdc9dcb7e4a97b4552e1224d6
+2015,1,Drake,https://i.scdn.co/image/ab6761610000e5eb4293385d324db8558179afd9
+2015,2,Ed Sheeran,https://i.scdn.co/image/ab6761610000e5eb12a2ef08d00dd7451a6dbed6
+2015,3,The Weeknd,https://i.scdn.co/image/ab6761610000e5ebb5f9e28219c169fd4b9e8379
+2015,4,Maroon 5,https://i.scdn.co/image/ab6761610000e5eb288ac05481cedc5bddb5b11b
+2015,5,Kanye West,https://i.scdn.co/image/ab6761610000e5eb867008a971fae0f4d913f63a
+2016,1,Drake,https://i.scdn.co/image/ab6761610000e5eb4293385d324db8558179afd9
+2016,2,Justin Bieber,https://i.scdn.co/image/ab6761610000e5eb8ae7f2aaa9817a704a87ea36
+2016,3,Rihanna,https://i.scdn.co/image/ab6761610000e5eb019d6873a01987cbe35888cd
+2016,4,Twenty One Pilots,https://i.scdn.co/image/ab6761610000e5eb196972172c37d934d9ca8093
+2016,5,Kanye West,https://i.scdn.co/image/ab6761610000e5eb867008a971fae0f4d913f63a
+2017,1,Ed Sheeran,https://i.scdn.co/image/ab6761610000e5eb12a2ef08d00dd7451a6dbed6
+2017,2,Drake,https://i.scdn.co/image/ab6761610000e5eb4293385d324db8558179afd9
+2017,3,The Weeknd,https://i.scdn.co/image/ab6761610000e5ebb5f9e28219c169fd4b9e8379
+2017,4,Kendrick Lamar,https://i.scdn.co/image/ab6761610000e5eb437b9e2a82505b3d93ff1022
+2017,5,The Chainsmokers,https://i.scdn.co/image/ab6761610000e5eb3c02f4fb4cc9187c488afd50
+2018,1,Drake,https://i.scdn.co/image/ab6761610000e5eb4293385d324db8558179afd9
+2018,2,Post Malone,https://i.scdn.co/image/ab6761610000e5ebb894ef9fa437b0389c5567cc
+2018,3,XXXTentacion,https://i.scdn.co/image/ab6761610000e5ebf0c20db5ef6c6fbe5135d2e4
+2018,4,J Balvin,https://i.scdn.co/image/ab6761610000e5eb5d0fc400392250a750a9403e
+2018,5,Ed Sheeran,https://i.scdn.co/image/ab6761610000e5eb12a2ef08d00dd7451a6dbed6
+2019,1,Post Malone,https://i.scdn.co/image/ab6761610000e5ebb894ef9fa437b0389c5567cc
+2019,2,Billie Eilish,https://i.scdn.co/image/ab6761610000e5ebd8b9980db67272cb4d2c3daf
+2019,3,Ariana Grande,https://i.scdn.co/image/ab6761610000e5ebcdce7620dc940db079bf4952
+2019,4,Ed Sheeran,https://i.scdn.co/image/ab6761610000e5eb12a2ef08d00dd7451a6dbed6
+2019,5,Bad Bunny,https://i.scdn.co/image/ab6761610000e5eb8ee9a6f54dcbd4bc95126b14
+2020,1,Bad Bunny,https://i.scdn.co/image/ab6761610000e5eb8ee9a6f54dcbd4bc95126b14
+2020,2,Drake,https://i.scdn.co/image/ab6761610000e5eb4293385d324db8558179afd9
+2020,3,J Balvin,https://i.scdn.co/image/ab6761610000e5eb5d0fc400392250a750a9403e
+2020,4,Juice Wrld,https://i.scdn.co/image/ab6761610000e5eb1908e1a8b79abf71d5598944
+2020,5,The Weeknd,https://i.scdn.co/image/ab6761610000e5ebb5f9e28219c169fd4b9e8379
+2021,1,Bad Bunny,https://i.scdn.co/image/ab6761610000e5eb8ee9a6f54dcbd4bc95126b14
+2021,2,Taylor Swift,https://i.scdn.co/image/ab6761610000e5eb9e3acf1eaf3b8846e836f441
+2021,3,BTS,https://i.scdn.co/image/ab6761610000e5eb5704a64f34fe29ff73ab56bb
+2021,4,Drake,https://i.scdn.co/image/ab6761610000e5eb4293385d324db8558179afd9
+2021,5,Justin Bieber,https://i.scdn.co/image/ab6761610000e5eb8ae7f2aaa9817a704a87ea36
