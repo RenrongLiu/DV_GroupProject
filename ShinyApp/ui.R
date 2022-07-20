@@ -38,17 +38,17 @@ shinyUI(
             menuSubItem("Artists",tabName="TrendArtists", icon=icon("users"))
           ),
           menuItem(
-            "Artist Analysis", tabName = "artist", icon=icon("microphone"),
-             menuSubItem("Artist Summary",tabName="artSum", icon=icon("music")),
-             menuSubItem("Feature Summary",tabName="featSum", icon=icon("file")),
-             menuSubItem("Album Comparison",tabName="albComp", icon=icon("users")),
-             menuSubItem("Sample Data",tabName="sampData", icon=icon("users"))
+            "Artist Analysis", tabName = "artist", icon=icon("vcard"),
+             menuSubItem("Artist Summary",tabName="artSum", icon=icon("file-audio")),
+             menuSubItem("Feature Summary",tabName="featSum", icon=icon("bar-chart")),
+             menuSubItem("Album Comparison",tabName="albComp", icon=icon("sliders")),
+             menuSubItem("Sample Data",tabName="sampData", icon=icon("database"))
                    ),
           menuItem(
             "User Profile", tabName = "user", icon=icon("user-circle"),
-             menuSubItem("Top 10 Songs",tabName="topSong", icon=icon("music")),
-             menuSubItem("Artists & Genres",tabName="artGen", icon=icon("file")),
-             menuSubItem("Recommendation",tabName="recom", icon=icon("users"))
+             menuSubItem("Top 10 Songs",tabName="topSong", icon=icon("headphones")),
+             menuSubItem("Artists & Genres",tabName="artGen", icon=icon("group")),
+             menuSubItem("Recommendation",tabName="recom", icon=icon("heart"))
                    ),
           hr(class="sidebar-hr-gradient"),
           menuItem("About Us", tabName = "us", icon=icon("paperclip")),
@@ -77,7 +77,7 @@ shinyUI(
                     collapsible = TRUE,
                     collapsed = FALSE,
                     tags$span(
-                      "Spotify is one of the most popular audio streaming platforms, which including millions of subscribers. We are applying musical audio features analysis for the popular tracks on Spotify. The audio features can be seperated to different categories such as the mood, properties, and context. We mainly using danceability, energy, valence, sppechiness, liveness, and acousticness those six features to analysis the tracks.  ",
+                      "Spotify is one of the most popular audio streaming platforms, which includes millions of subscribers. In this project, we will focus on analyzing musical audio features and other miscellaneous data acquired from", tags$a(href="https://developer.spotify.com/", strong("Spotify API")), "which is an interface for developers to retrieve and manage Spotify data over the internet. Audio features we use include danceability, energy, valence, speechiness, liveness, acousticness, and key mode.",
                       br(),
                       br(),
                       tags$strong("Our application has three major components:  "),
@@ -92,7 +92,7 @@ shinyUI(
                       br(),
                       br(),
                       tags$strong("User Profile:"),
-                      " The other interactive part in our project is understanding your Spotify list. We need your permission to link your Spotify account, and to give your summary of the top 10 songs, top 3 singers from you listening history. In addition, we would based on your favorite tracks, artists and genres to provide some cusomized recommendation, and it can provide advisory for your music. "
+                      " The other interactive part in our project is understanding your Spotify playlist. We need your permission to link your Spotify account, and to give your summary of the top 10 songs, top 3 singers from you listening history. In addition, we would based on your favorite tracks, artists and genres to provide some cusomized recommendation, and it can provide advisory for your music.", strong("Notice"), ", if you are not a Spotify user, we will return the most popular tracks and artists of all time given that you don't have any Spotify data."
                   )),
                   # Spotify API Intro###########
                        box(
@@ -417,7 +417,7 @@ shinyUI(
                 fluidRow(
                   box(width="100%",
                       status="success",
-                      #background = "black",
+                      background = "black",
                       column(3,
                              selectInput("topTraList",
                                          "Pick a song:",
