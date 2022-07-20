@@ -143,15 +143,15 @@ shinyServer(function(input, output,session) {
   
   output$albums_table = DT::renderDT({
     albums_dt = albums_all %>%
-      filter(year<=2019 & year >=2000) %>%
-      select(artist,song,year,danceability,energy,speechiness,acousticness,instrumentalness,liveness,valence)
-    albums_dt[,4:10] = round(albums_dt[,4:10],2)
+      filter(year<=2021 & year >=1960) %>%
+      select(album,ars_name,rel_date,gens,danceability,energy,speechiness,acousticness,instrumentalness,liveness,valence)
+    albums_dt[,5:11] = round(albums_dt[,5:11],2)
     albums_dt
   })
   
   output$albums_overview = renderPlotly({
     g = albums_all%>%
-      filter(year>=2000&year<=2019)%>%
+      filter(year>=1960&year<=2021)%>%
       ggplot(aes(x=year))+
       geom_bar()+
       labs(title="Number of albums in Each Year",y="albums")+
