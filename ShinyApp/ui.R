@@ -47,8 +47,7 @@ shinyUI(
           menuItem(
             "User Profile", tabName = "user", icon=icon("user-circle"),
              menuSubItem("Top 10 Songs",tabName="topSong", icon=icon("headphones")),
-             menuSubItem("Artists & Genres",tabName="artGen", icon=icon("users")),
-             menuSubItem("Recommendation",tabName="recom", icon=icon("heart"))
+             menuSubItem("Artists & Genres",tabName="artGen", icon=icon("users"))
                    ),
           hr(class="sidebar-hr-gradient"),
           menuItem("About Us", tabName = "us", icon=icon("paperclip")),
@@ -130,11 +129,12 @@ shinyUI(
                       column(6,
                              h3(strong("Instructions")),
                              br(),
-                             h6("Step 1: Go to https://developer.spotify.com/dashboard/ and login with your Spotify information"),
-                             h6("Step 2: Create an app with name and description temp, then find the client ID and Client Secret"),
-                             h6("Step 3: Copy and paste the ID and Secret into the designated dialog boxes, and click validate."),
-                             h6("Step 4: Allow spotify to authenticate your account"),
-                             h6("Now you should be good to go! Click one of the tabs above and learn more about your music")
+                             h5("Step 1: Go to", tags$a("https://developer.spotify.com/dashboard/"), "and login with your Spotify information"),
+                             h5("Step 2: Create an app with name and description temp, then find the client ID and Client Secret"),
+                             h5('Step 3: Go to \"Edit Settings\", set \"Redirect URLs\" to http://localhost:1410/.'),
+                             h5("Step 4: Copy and paste the ID and Secret into the designated dialog boxes, and click validate. If a string jumps out below, it means you have successfully acquired the access token."),
+                             h5("Step 5: Allow spotify to authenticate your account"),
+                             h5("Now you should be good to go! Click one of the tabs above and learn more about your music")
                              # h6("Step 4: When prompted with the message are you ..., make sure to click NOT YOU and login yourself. Now you're good to go! "),
                              # verbatimTextOutput("txtout"), # generated from the server
                       )
@@ -473,7 +473,7 @@ shinyUI(
                     background = "black",
                     solidHeader = TRUE,
                     collapsible = TRUE,
-                    textOutput("missTra"),
+                    p(strong("Notice:"), "If you are not a frequent Spotify user, Spotify API may not have your listening history. Thus, we will replace all contents in User Profile page with Spotify's data of alltime favorites."),
                     br(),
                     formattableOutput("topTra"),
                     style = "overflow-x: scroll;"),
@@ -482,6 +482,8 @@ shinyUI(
                   box(width="100%",
                       status="success",
                       background = "black",
+                      title="One Song's Feature vs. Your Average Music Taste",
+                      solidHeader = TRUE,
                       column(3,
                              selectInput("topTraList",
                                          "Pick a song:",
@@ -499,7 +501,6 @@ shinyUI(
                   class="top-container",
                   strong("Your Top 3 Artists & Favorite Genres", class="trends-h2")),
                 
-                textOutput("missArt"),
                 br(),
                 fluidRow(
                   valueBoxOutput("favArt1"),
@@ -514,36 +515,6 @@ shinyUI(
                     background = "black",
                     wordcloud2Output("userFavGen"))
                 )
-        ),
-        
-        
-        tabItem(tabName = "recom",
-                div(
-                  class="top-container",
-                  strong("Customized Playlist for You", class="trends-h2")),
-                
-                fixedRow(
-                  box(
-                    width=4,
-                    radioButtons("seedSel", 
-                                 label="Get recomendations from my:",
-                                 choices = list("Favorite tracks",
-                                                "Favorite artists",
-                                                "Favorite genres"))
-                  ),
-                  
-                  box(
-                    width = 8,
-                    textOutput("favSeed")
-                  )),
-                
-                box(width="100%",
-                    title="Your Customized Recommendation",
-                    status="success",
-                    background = "black",
-                    solidHeader = TRUE,
-                    collapsible = TRUE,
-                    formattableOutput("recTra"))
         ),
         
         

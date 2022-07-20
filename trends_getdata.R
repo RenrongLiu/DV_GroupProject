@@ -59,9 +59,12 @@ songs %>%
 albums = read_csv("ShinyApp/data/albums.csv")
 table(albums$rel_date)
 
-albums1=albums%>%
-  mutate(year=substr(rel_date,nchar(rel_date)-3,nchar(rel_date)))
-table(albums1$year)
+#albums=albums%>%
+#  mutate(year=substr(rel_date,nchar(rel_date)-3,nchar(rel_date)))%>%
+#table(albums$year)
+#albums=albums[,-1]
+write_csv(albums,"ShinyApp/data/albums.csv")
+table(albums$year)
 
 albums_clean = albums %>%
   mutate(year=as.numeric(substr(rel_date,nchar(rel_date)-3,nchar(rel_date))))%>%
@@ -70,6 +73,13 @@ albums_clean = albums %>%
   group_by(year) %>%
   summarise(across(everything(), mean)) %>%
   pivot_longer(c(2:8),names_to = "Features",values_to = "Score")
+
+albums_num = albums%>%
+  filter(year<=2021 & year >=1960) %>%
+  group_by(year)%>%
+  summarise(n=n())
+write_csv(albums_num,"ShinyApp/data/albums_num.csv")
+write_csv(albums_clean,"ShinyApp/data/albums_clean.csv")
 
 artists = read_csv("ShinyApp/data/artists.csv")
 #artists = artists%>%pivot_longer(c("1","2","3","4","5"),names_to = "rank",values_to = "artist")

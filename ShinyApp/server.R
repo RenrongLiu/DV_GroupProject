@@ -272,7 +272,7 @@ shinyServer(function(input, output,session) {
     
     # If no top songs, we create a back up list from all-time popular songs
     if (is.null(tracks) || is.null(dim(tracks))){
-      songs_at <- read_csv("songs_alltime.csv")
+      songs_at <- read_csv("data/songs_alltime.csv")
       names <- songs_at[1:10,] %>% pull(Title)
       tracks <- data.frame()
       
@@ -341,7 +341,7 @@ shinyServer(function(input, output,session) {
     artists <- get_my_top_artists_or_tracks("artists", limit=3)
     
     if (is.null(artists) || is.null(dim(artists))){
-      artists <- read_csv("artists_alltime.csv")
+      artists <- read_csv("data/artists_alltime.csv")
       names <- artists[1:3,] %>% pull(Artist)
     }else{
       names <- artists %>% pull(name)
@@ -387,7 +387,7 @@ shinyServer(function(input, output,session) {
     
     if(is.null(top_50_track) || is.null(dim(top_50_track))){
       
-      df <- read_csv("artists_alltime.csv")
+      df <- read_csv("data/artists_alltime.csv")
       names <- df[1:50,] %>% pull(Artist)
       ids <- list()
       
@@ -498,7 +498,7 @@ shinyServer(function(input, output,session) {
         )
       )
     
-    fig %>% layout(title = 'One Song vs. The Average')
+    fig %>% layout(title = paste(input$topTraList,'vs. The Average'))
   })
   
   
