@@ -305,7 +305,8 @@ shinyServer(function(input, output,session) {
                "speechiness", "valence", "id"))
     
     df <- top10_track() %>% 
-      left_join(audio_feat, by="id") %>% 
+      left_join(audio_feat, by="id") %>%
+      filter(!duplicated(id)) %>% 
       select(-id)
     
     
@@ -356,20 +357,20 @@ shinyServer(function(input, output,session) {
   
   output$favArt1 <- renderValueBox({
     
-    valueBox(top3_artist()[1], 
+    valueBox(value = tags$p(top3_artist()[1], style = "font-size: 80%;"), 
              "Your Favorite Artist #1", icon=icon("heart"))
   })
   
   output$favArt2 <- renderValueBox({
     
-    valueBox(top3_artist()[2], 
+    valueBox(value = tags$p(top3_artist()[2], style = "font-size: 80%;"), 
              "Your Favorite Artist #2", icon=icon("heart"),
              color = "yellow")
   })
   
   output$favArt3 <- renderValueBox({
     
-    valueBox(top3_artist()[3], 
+    valueBox(value = tags$p(top3_artist()[3], style = "font-size: 80%;"), 
              "Your Favorite Artist #3", icon=icon("heart"),
              color = "purple")
   })
