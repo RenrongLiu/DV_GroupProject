@@ -608,7 +608,10 @@ shinyUI(
                     tags$li(a("ggplot2 gradient color (in Chinese) ggplot2 颜色渐变（离散颜色）设置", href="https://www.cnblogs.com/mmtinfo/p/12105987.html")),
                     tags$li(a("Spotify most streamed songs by ChartMaster",href="https://chartmasters.org/spotify-most-streamed-songs/")),
                     tags$li(a("Spotify most streamed albums by ChartMaster",href="https://chartmasters.org/spotify-most-streamed-albums/?y=alltime")),
-                    tags$li(a("Inserting an image to ggplot2",href="https://stackoverflow.com/questions/9917049/inserting-an-image-to-ggplot2"))
+                    tags$li(a("Inserting an image to ggplot2",href="https://stackoverflow.com/questions/9917049/inserting-an-image-to-ggplot2")),
+                    tags$li(a("Inserting an image to ggplot2",href="https://stackoverflow.com/questions/9917049/inserting-an-image-to-ggplot2")),
+                    tags$li(a("BEAUTIFUL RADAR CHART IN R USING FMSB AND GGPLOT PACKAGES"),href="https://www.datanovia.com/en/blog/beautiful-radar-chart-in-r-using-fmsb-and-ggplot-packages/"),
+                    tags$li(a("spotifyr overview"),href="https://www.rcharlie.com/spotifyr/")
                   )
                   
                   
