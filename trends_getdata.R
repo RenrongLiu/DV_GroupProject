@@ -62,6 +62,7 @@ table(albums$rel_date)
 albums=albums%>%
   mutate(year=substr(rel_date,nchar(rel_date)-3,nchar(rel_date)))
 table(albums$year)
+write.csv(albums,"ShinyApp/data/albums.csv")
 
 albums_clean = albums %>%
   mutate(year=as.numeric(substr(rel_date,nchar(rel_date)-3,nchar(rel_date))))%>%
