@@ -213,15 +213,6 @@ shinyUI(
             strong("Music Trends of Songs: Top Hits Spotify", class="trends-h2")
           ),
           box(
-            title=a("Data Overview (click to visit the dataset at Kaggle.com)",href="https://www.kaggle.com/datasets/paradisejoy/top-hits-spotify-from-20002019"),
-            status="success",
-            background = "black",
-            width="100%",
-            DT::dataTableOutput("songs_table"),
-            plotlyOutput("songs_overview",width="100%")
-          ),
-          
-          box(
             title="Musical Trend",
             status="success",
             background = "black",
@@ -246,8 +237,7 @@ shinyUI(
               column(6,p("")),
               column(6,p("C & G groups are the most common keys "))
             )
-          )
-          ,
+          ),
           box(
             title="Compare Two Years",
             status="success",
@@ -277,7 +267,14 @@ shinyUI(
               column(6,valueBoxOutput("songs_comparekey2",width="100%"))
             )
           ),
-          
+          box(
+            title=a("Data Overview (click to visit the dataset at Kaggle.com)",href="https://www.kaggle.com/datasets/paradisejoy/top-hits-spotify-from-20002019"),
+            status="success",
+            background = "black",
+            width="100%",
+            DT::dataTableOutput("songs_table"),
+            plotlyOutput("songs_overview",width="100%")
+          )
         ),
         #################### Trend page - Albums ####################
         tabItem(
@@ -286,15 +283,6 @@ shinyUI(
             class="top-container",
             strong("Music Trends of Albums: Top 5000 Albums of All Time", class="trends-h2")
           ),
-          box(
-            title=a("Data Overview (click to visit the dataset at Kaggle.com)",href="https://www.kaggle.com/datasets/lucascantu/top-5000-albums-of-all-time-spotify-features"),
-            status="success",
-            background = "black",
-            width="100%",
-            DT::dataTableOutput("albums_table"),
-            plotlyOutput("albums_overview",width="100%")
-          ),
-          
           box(
             title="Musical Trend",
             status="success",
@@ -346,7 +334,14 @@ shinyUI(
               column(6,valueBoxOutput("albums_genres2",width="100%"))
             )
           ),
-          
+          box(
+            title=a("Data Overview (click to visit the dataset at Kaggle.com)",href="https://www.kaggle.com/datasets/lucascantu/top-5000-albums-of-all-time-spotify-features"),
+            status="success",
+            background = "black",
+            width="100%",
+            DT::dataTableOutput("albums_table"),
+            plotlyOutput("albums_overview",width="100%")
+          )
         ),
         # Artist page##########
         tabItem(tabName = "artSum",
