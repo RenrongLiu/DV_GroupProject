@@ -68,6 +68,7 @@ shinyUI(
                 fluidRow(
                   box(width=12,
                       p('Our application retrieves part of data from Spotify API. This requires an access token authorized by applying for a Spotify API client ID and secret. Given that our application is still under "development mode", our access token is bind to a traffic limitation. It is ideal for our users to apply for their own access token. We have attached a detailed instruction of how to obtain a Spotify access token below. Furthermore, for your convenience, we also provide a sample client ID and client secret for you to validate. You should be aware that the sample id and secret may not function due to the restrictions from Spotify API.'),
+                      p('* You should be aware that the sample id and secret may not function due to the restrictions from Spotify API.', strong('Also, by using the sample ID and secret, you will not be able to access your personal music data (exhibit in User Profile Page).')),
                       p(strong('Sample Client ID:'), '11145821abf14ce68d1603eeb196bfeb'),
                       p(strong('Sample Client Secret:'), '39b301de43af4b2ab68564731669181a'),
                       column(6,
@@ -106,7 +107,7 @@ shinyUI(
                     collapsible = TRUE,
                     collapsed = FALSE,
                     tags$span(
-                      "Spotify is one of the most popular audio streaming platforms, which includes millions of subscribers. In this project, we will focus on analyzing musical audio features and other miscellaneous data acquired from", tags$a(href="https://developer.spotify.com/", strong("Spotify API")), "which is an interface for developers to retrieve and manage Spotify data over the internet. Audio features we use include danceability, energy, valence, speechiness, liveness, acousticness, and key mode.",
+                      "Spotify is one of the most popular audio streaming platforms, which includes millions of subscribers. In this project, we will focus on analyzing musical audio features and other miscellaneous data acquired from", tags$a(href="https://developer.spotify.com/", strong("Spotify API")), "which is an interface for developers to retrieve and manage Spotify data over the internet. Audio features we use include danceability, energy, valence, speechiness, liveness, acousticness, and key mode (Detailed descriptions of these audio features are in the Data Source Section at the bottom of the page).",
                       br(),
                       br(),
                       tags$strong("Our application has three major components:  "),
@@ -184,7 +185,10 @@ shinyUI(
                         collapsed = FALSE,
                         tags$span(
                           "We mainly have three tabs in our appliance, the Trending tab using the Kaggle dataset and data we grab from Wikipedia. We include the data table in each tab of Trending part, and also the linking to the dataset. The musical data variable using in our application is following:",
-                          tags$ul(
+                          br(),
+                          wellPanel(
+                            style = "background: black",
+                            tags$ul(
                             tags$li("artist: Name of the Artist"),
                             tags$li("song: Name of the Track"),
                             tags$li("year: Release Year of the track"),
@@ -196,6 +200,7 @@ shinyUI(
                             tags$li("liveness: the presence of an audience in the recording"),
                             tags$li("instrumentalness: Predicts whether a track contains no vocals"),
                             tags$li("valence: the musical positiveness conveyed by a track")
+                          )
                           ),
                           "The other two tabs( Artist Analyst and User Profile) are grabbing the dataset from Spotify API, the Artist Analyst tab have the page of you searching artist name, which including the information of artist on Spotiry and his/her songs' musical features"
                           
