@@ -693,7 +693,7 @@ shinyUI(
                   status="success",
                   background = "black",
                   tags$ol(
-                    tags$li(a("ggplot2 gradient color (in Chinese) ggplot2 颜色渐变（离散颜色）设置", href="https://www.cnblogs.com/mmtinfo/p/12105987.html")),
+                    tags$li(a("ggplot2 gradient color (in Chinese)", href="https://www.cnblogs.com/mmtinfo/p/12105987.html")),
                     tags$li(a("Spotify most streamed songs by ChartMaster",href="https://chartmasters.org/spotify-most-streamed-songs/")),
                     tags$li(a("Spotify most streamed albums by ChartMaster",href="https://chartmasters.org/spotify-most-streamed-albums/?y=alltime")),
                     tags$li(a("Inserting an image to ggplot2",href="https://stackoverflow.com/questions/9917049/inserting-an-image-to-ggplot2")),
@@ -701,7 +701,9 @@ shinyUI(
                     tags$li(a("How to create Radar Charts in R with Plotly",href="https://plotly.com/r/radar-chart/")),
                     tags$li(a("Convert list of list object to dataframe in R",href="https://stackoverflow.com/questions/50777607/convert-list-of-list-object-to-dataframe-in-r")),
                     tags$li(a("BEAUTIFUL RADAR CHART IN R USING FMSB AND GGPLOT PACKAGES"),href="https://www.datanovia.com/en/blog/beautiful-radar-chart-in-r-using-fmsb-and-ggplot-packages/"),
-                    tags$li(a("spotifyr overview"),href="https://www.rcharlie.com/spotifyr/")
+                    tags$li(a("Spotifyr overview",href="https://www.rcharlie.com/spotifyr/")),
+                    tags$li(a("Remove ggplot's background and grid (in Chinese)",href="https://blog.csdn.net/aspirinvagrant/article/details/39672635")),
+                    tags$li(a("ggplot2 - axis (in Chinese)", href="https://blog.csdn.net/Bone_ACE/article/details/47427453"))
                   )
                   
                   
