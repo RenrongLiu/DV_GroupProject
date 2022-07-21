@@ -103,24 +103,29 @@ artists = read_csv("ShinyApp/data/artists.csv")
 #artists = artists%>%pivot_longer(c("1","2","3","4","5"),names_to = "rank",values_to = "artist")
 #artists %>% write_csv("ShinyApp/data/artists.csv")
 
-g=qplot()+
-  scale_x_continuous(expand = c(0, 0))+
-  scale_y_continuous(expand = c(0, 0))+
+g=ggplot()+
+  xlim(0.75,5.25)+
+  scale_y_continuous(limits=c(2012.75,2021.25),breaks=seq(2013,2021,1))+
+  labs(
+    x="Rank",
+    y="Year"
+  )+
   theme(
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
     panel.border = element_blank(),
-    axis.title = element_blank(),
-    axis.text = element_blank(),
+    panel.background = element_blank(),
     axis.ticks = element_blank()
   ) 
 for(i in 1:45){
   artist_image = readJPEG(getURLContent(artists[i,4]))
-  ymin=(artists[i,]$Year-2013)/9
-  xmin=(artists[i,]$rank-1)/5
-  print("ymin")
-  print(ymin)
-  g=g+annotation_raster(artist_image, ymin = ymin,ymax= ymin+1/9,xmin = xmin,xmax = xmin+1/5)
+  ymin=artists[i,]$Year-0.5
+  xmin=artists[i,]$rank-0.5
+  g=g+annotation_raster(artist_image, ymin = ymin,ymax= ymin+1,xmin = xmin,xmax = xmin+1)
   print(g)
 }
 my_image <-  readJPEG(getURLContent(artists[3,4]))
+
+g+theme(panel.background = element_blank())
+
+g+ggplot2::annotate("text",label="testtest",x=3,y=2013,color="white",size=5)
