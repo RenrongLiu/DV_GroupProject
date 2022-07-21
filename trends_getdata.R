@@ -96,3 +96,6 @@ wordcloud2(tmp,size=1.5,color=brewer.pal(12, "Paired"))
 artists = read_csv("ShinyApp/data/artists.csv")
 #artists = artists%>%pivot_longer(c("1","2","3","4","5"),names_to = "rank",values_to = "artist")
 #artists %>% write_csv("ShinyApp/data/artists.csv")
+
+g=ggplot()
+
