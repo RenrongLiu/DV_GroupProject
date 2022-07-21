@@ -416,6 +416,7 @@ shinyUI(
                   width=4,
                   status = "success",
                   background = "black",
+                  tags$style("#artSearch {background-color:black;}"),
                   textInput("artSearch", "Please enter the name of an artist:", value="Ariana Grande"),
                   actionButton("button","Submit")
                 )),
