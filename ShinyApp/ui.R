@@ -66,6 +66,34 @@ shinyUI(
                   strong("Home Page", class="trends-h2")),
                 
                 fluidRow(
+                  box(width=12,
+                      column(6,
+                             h3(strong("Get your Spotify access token here:")),
+                             textInput("spotifyId", "Client ID: ", ""),
+                             textInput("spotifySec", "Client Secret: ", ""),
+                             actionButton("valid", "Validate"),
+                             br(),
+                             br(),
+                             p(strong("If validation successes, you should see your Spotify access token below:")),
+                             wellPanel(textOutput("valMessage"))
+                      ),
+                      
+                      column(6,
+                             h3(strong("Instructions")),
+                             br(),
+                             h5("Step 1: Go to", tags$a("https://developer.spotify.com/dashboard/",href="https://developer.spotify.com/dashboard/ "), "and login with your Spotify information"),
+                             h5("Step 2: Create an app with name and description temp, then find the client ID and Client Secret"),
+                             h5('Step 3: Go to \"Edit Settings\", set \"Redirect URLs\" to http://localhost:1410/'),
+                             h5("Step 4: Copy and paste the ID and Secret into the designated dialog boxes, and click validate. If a string jumps out below, it means you have successfully acquired the access token."),
+                             h5("Step 5: Allow spotify to authenticate your account"),
+                             h5("Now you should be good to go! Click one of the tabs above and learn more about your music")
+                             # h6("Step 4: When prompted with the message are you ..., make sure to click NOT YOU and login yourself. Now you're good to go! "),
+                             # verbatimTextOutput("txtout"), # generated from the server
+                      )
+                  )
+                ),
+                
+                fluidRow(
                   # Project intro ##########
                   box(
                     width=6,
@@ -113,34 +141,9 @@ shinyUI(
                        )
                   ),
                 
-                fluidRow(
-                  box(width=12,
-                      column(6,
-                             h3(strong("Get your Spotify access token here:")),
-                             textInput("spotifyId", "Client ID: ", ""),
-                             textInput("spotifySec", "Client Secret: ", ""),
-                             actionButton("valid", "Validate"),
-                             br(),
-                             br(),
-                             p(strong("If validation successes, you should see your Spotify access token below:")),
-                             wellPanel(textOutput("valMessage"))
-                             ),
-                      
-                      column(6,
-                             h3(strong("Instructions")),
-                             br(),
-                             h5("Step 1: Go to", tags$a("https://developer.spotify.com/dashboard/",href="https://developer.spotify.com/dashboard/ "), "and login with your Spotify information"),
-                             h5("Step 2: Create an app with name and description temp, then find the client ID and Client Secret"),
-                             h5('Step 3: Go to \"Edit Settings\", set \"Redirect URLs\" to http://localhost:1410/'),
-                             h5("Step 4: Copy and paste the ID and Secret into the designated dialog boxes, and click validate. If a string jumps out below, it means you have successfully acquired the access token."),
-                             h5("Step 5: Allow spotify to authenticate your account"),
-                             h5("Now you should be good to go! Click one of the tabs above and learn more about your music")
-                             # h6("Step 4: When prompted with the message are you ..., make sure to click NOT YOU and login yourself. Now you're good to go! "),
-                             # verbatimTextOutput("txtout"), # generated from the server
-                      )
-                  ),
+               
                   ####Research Questions and Data
-                  
+                  fluidRow(
                     box(width=6,
                         title="Research Questions & Method of Analysis",
                         solidHeader = TRUE,
@@ -167,9 +170,9 @@ shinyUI(
                             tags$li("Wordcloud"),
                             tags$li("..."),
                             br()
-                            )
                           )
-                        ),
+                        )
+                    ),
                     box(width=6,
                         title="Data Resources",
                         solidHeader = TRUE,
@@ -180,25 +183,25 @@ shinyUI(
                         tags$span(
                           "We mainly have three tabs in our appliance, the Trending tab using the Kaggle dataset and data we grab from Wikipedia. We include the data table in each tab of Trending part, and also the linking to the dataset. The musical data variable using in our application is following:",
                           tags$ul(
-                          tags$li("artist: Name of the Artist"),
-                          tags$li("song: Name of the Track"),
-                          tags$li("year: Release Year of the track"),
-                          tags$li("danceability: how suitable a track is for dancing"),
-                          tags$li("energy: perceptual measure of intensity and activity"),
-                          tags$li("key: Integers map to pitches using standard Pitch Class notation"),
-                          tags$li("speechiness: the presence of spoken words in a track"),
-                          tags$li("acousticness: whether the track is acoustic"),
-                          tags$li("liveness: the presence of an audience in the recording"),
-                          tags$li("instrumentalness: Predicts whether a track contains no vocals"),
-                          tags$li("valence: the musical positiveness conveyed by a track")
+                            tags$li("artist: Name of the Artist"),
+                            tags$li("song: Name of the Track"),
+                            tags$li("year: Release Year of the track"),
+                            tags$li("danceability: how suitable a track is for dancing"),
+                            tags$li("energy: perceptual measure of intensity and activity"),
+                            tags$li("key: Integers map to pitches using standard Pitch Class notation"),
+                            tags$li("speechiness: the presence of spoken words in a track"),
+                            tags$li("acousticness: whether the track is acoustic"),
+                            tags$li("liveness: the presence of an audience in the recording"),
+                            tags$li("instrumentalness: Predicts whether a track contains no vocals"),
+                            tags$li("valence: the musical positiveness conveyed by a track")
                           ),
                           "The other two tabs( Artist Analyst and User Profile) are grabbing the dataset from Spotify API, the Artist Analyst tab have the page of you searching artist songs, which including the song ID on Spotiry and songs' musical features"
-                         
-                          )
+                          
+                        )
                         
                     )
                   )
-
+                
                 ),
         
         #################### Trend page - Songs ####################
