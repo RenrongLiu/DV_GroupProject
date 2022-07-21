@@ -104,7 +104,7 @@ shinyUI(
                          collapsed = FALSE,
                          p("Technically, we using Spotify API to accesses user related data as the main data sources for our project. The Spotify’s Web API can dicover music, manage the labrary, control audio playbacks. We mainly get information such as albms, artist, tracks, and users from Spotify’s Web API. "),
                          p("In the trending part, we also use the Spotify dataset from Kaggle, which including all the top songs in recent years, and it also be captured by Spotify API. "),
-                         p(tags$strong("To using our Artist Analysis and User Profile tabs to check fabulous data visualization, the following token assess procedure is needed to go through, therefore, please follow the tutorials. ")),
+                         p(tags$strong("To use our Artist Analysis and User Profile tabs to check fabulous data visualization, the following token assess procedure is needed to go through, therefore, please follow the tutorials. ")),
                          br(),
                          p("If you still have questions, you can check the following videos to learn more about Spotify API:"),
                          # put video here, following the format:
@@ -187,7 +187,7 @@ shinyUI(
                           tags$li("energy: perceptual measure of intensity and activity"),
                           tags$li("key: Integers map to pitches using standard Pitch Class notation"),
                           tags$li("speechiness: the presence of spoken words in a track"),
-                          tags$li("acousticness: binary variable whether the track is acoustic"),
+                          tags$li("acousticness: whether the track is acoustic"),
                           tags$li("liveness: the presence of an audience in the recording"),
                           tags$li("instrumentalness: Predicts whether a track contains no vocals"),
                           tags$li("valence: the musical positiveness conveyed by a track")
