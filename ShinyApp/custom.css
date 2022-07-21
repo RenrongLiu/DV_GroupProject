@@ -56,8 +56,17 @@ table.dataTable thead th, table.dataTable thead td{
   font-family: "Press Start 2P", cursive;
 }  
 .data-source{
-  text-align:left;
-  margin:auto;
+  text-align:center;
+  margin:15px auto;
+  font-size:1.5rem;
+  font-family: "Press Start 2P", cursive;
+
+}
+.data-source>a{
+  color:#b1e0b1;
+}
+.data-source>a:hover{
+  color:#ffffff;
 }
 .btn{
   text-align:left;
