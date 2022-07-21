@@ -415,7 +415,6 @@ shinyUI(
                   actionButton("button","Submit")
                 )),
                 
-                #br(),
                 
                 fluidRow(
                   box(width = 6,
