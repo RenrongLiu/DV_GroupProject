@@ -79,7 +79,6 @@ shinyServer(function(input, output,session) {
       filter(year>=2000&year<=2019)%>%
       ggplot(aes(x=year))+
       geom_bar()+
-      labs(title="Number of Songs in Each Year",y="songs")+
       theme_light()
     ggplotly(g)
   })
@@ -89,10 +88,9 @@ shinyServer(function(input, output,session) {
     g= songs %>%
       filter(year<=input$songs_years[2] & year >=input$songs_years[1]) %>%
       ggplot(mapping=aes(x=year,y=Score,color=Features))+
-      geom_point(shape=4,size=1)+
+      #geom_point(shape=4,size=1)+
       geom_smooth()+
-      theme_light()+
-      labs(title="Musical Features Trends")
+      theme_light()
     ggplotly(g)
   })
   
@@ -103,8 +101,7 @@ shinyServer(function(input, output,session) {
       geom_point(shape="♪",size=10)+
       scale_y_continuous(breaks=c(0:11),labels=musical_keys)+
       scale_color_gradient(low = "red",high = "cyan")+
-      theme_light()+
-      labs(title="Most Common Keys by Popular Songs")
+      theme_light()
   })
   
   
@@ -477,7 +474,7 @@ shinyServer(function(input, output,session) {
   #################################################################
   ################top 50 artists' genres ################
   
-  artist_ids <- eventReactive(input$valid, {
+  artist_ids <- eventReactive(input$valid&input$profile_botton, {
     
     # Get user's top 50 songs and their artist
     top_50_track <- get_my_top_artists_or_tracks(type="tracks",
