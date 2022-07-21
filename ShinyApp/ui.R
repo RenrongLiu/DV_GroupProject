@@ -35,7 +35,7 @@ shinyUI(
             "Trends", tabName = "trend", icon=icon("chart-line"),
             menuSubItem("Songs",tabName="TrendSongs", icon=icon("music")),
             menuSubItem("Albums",tabName="TrendAlbums", icon=icon("file")),
-            menuSubItem("Artists",tabName="TrendArtists", icon=icon("users"))
+            menuSubItem("Spotify Top Artists",tabName="TrendArtists", icon=icon("users"))
           ),
           menuItem(
             "Artist Analysis", tabName = "artist", icon=icon("address-card"),
@@ -208,6 +208,10 @@ shinyUI(
             class="top-container",
             strong("Music Trends of Songs: Top Hits Spotify", class="trends-h2")
           ),
+          div(
+            class="data-source",
+            a("Data Source",href="https://www.kaggle.com/datasets/paradisejoy/top-hits-spotify-from-20002019")
+          ),
           box(
             title="Musical Trend",
             status="success",
@@ -266,7 +270,7 @@ shinyUI(
             )
           ),
           box(
-            title=a("Data Overview (click to visit the dataset at Kaggle.com)",href="https://www.kaggle.com/datasets/paradisejoy/top-hits-spotify-from-20002019"),
+            title="Data Overview",
             status="success",
             background = "black",
             width="100%",
@@ -282,6 +286,10 @@ shinyUI(
           div(
             class="top-container",
             strong("Music Trends of Albums: Top 5000 Albums of All Time", class="trends-h2")
+          ),
+          div(
+            class="data-source",
+            a("Data Source",href="https://www.kaggle.com/datasets/lucascantu/top-5000-albums-of-all-time-spotify-features")
           ),
           box(
             title="Musical Trend",
@@ -337,7 +345,7 @@ shinyUI(
             )
           ),
           box(
-            title=a("Data Overview (click to visit the dataset at Kaggle.com)",href="https://www.kaggle.com/datasets/lucascantu/top-5000-albums-of-all-time-spotify-features"),
+            title="Data Overview",
             status="success",
             background = "black",
             width="100%",
@@ -347,6 +355,46 @@ shinyUI(
             plotlyOutput("albums_overview",width="100%")
           )
         ),
+        ############ Trend - Artist ############
+        tabItem(
+          tabName="TrendArtists",
+          div(
+            class="top-container",
+            strong("Spotify Top 5 Artists in 2013-2021", class="trends-h2")
+            ),
+          div(
+            class="data-source",
+            a("Data Source",href="https://en.wikipedia.org/wiki/List_of_most-streamed_artists_on_Spotify")
+            ),
+          box(
+            title="Artist Images",
+            status="success",
+            background = "black",
+            width="100%",
+            noUiSliderInput(
+              label="Select years: ",
+              inputId="topartists_years",
+              value=c(2013,2021),
+              min=2013,
+              max=2021,
+              step=1,
+              width="300px",
+              height="10px",
+              color="#000000",
+              format=wNumbFormat(decimals=0)
+            ),
+            br(),
+            checkboxInput(
+              inputId="topartists_text",
+              label="Show Name"
+            ),
+            br(),
+            actionButton("topartists_botton","Generate Image"),
+            
+            plotOutput("topartists_image",height="1600px",width="800px")
+          )
+        ),
+        
         # Artist page##########
         tabItem(tabName = "artSum",
                 div(

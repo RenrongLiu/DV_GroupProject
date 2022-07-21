@@ -33,6 +33,9 @@ library(shinythemes)
 library(shinyWidgets)
 library(plotly)
 library(ggradar)
+library(jpeg)
+library(RCurl)
+library(grid)
 
 # Function to authenticate user's id and secret
 # This part of code is originate from a blog on towardDataScience written by Azaan Barlas:
@@ -226,6 +229,44 @@ shinyServer(function(input, output,session) {
       paste0("Genres in ",as.character(input$albums_compare2)),
       icon = icon("music",lib='glyphicon'),
       color = "green")
+  })
+  
+  ############## Trend - Artists ################
+  
+  artists = eventReactive(input$topartists_botton,{read_csv("data/artists.csv")})
+  
+  output$topartists_image = renderPlot({
+    artists=artists()
+    g=ggplot()+
+      scale_x_continuous(limits=c(0.75,5.25),position="top")+
+      scale_y_continuous(limits=c(2013,2021),breaks=seq(2013,2021,1))+
+      labs(
+        x="Rank",
+        y="Year"
+      )+
+      theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title.x = element_text(size=25),
+        axis.title.y = element_text(size=25),
+        axis.text.x = element_text(size=15),
+        axis.text.y = element_text(size=15)
+      )
+    a=(input$topartists_years[1]-2013)*5+1
+    b=(input$topartists_years[2]-2012)*5
+    for(i in a:b){
+      artist_image = readJPEG(getURLContent(artists[i,4]))
+      ymin=artists[i,]$Year-0.5
+      xmin=artists[i,]$rank-0.5
+      g=g+annotation_raster(artist_image, ymin = ymin,ymax= ymin+1,xmin = xmin,xmax = xmin+1)
+      if(input$topartists_text){
+        g=g+ggplot2::annotate("text",x=artists[i,]$rank,y=artists[i,]$Year,label=artists[i,]$artist,color="white",size=5)
+      }
+    }
+    g
   })
   
   ######## Artist Analysis ############ 
