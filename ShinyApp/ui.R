@@ -168,6 +168,10 @@ shinyUI(
             fluidRow(
               column(6,plotlyOutput("songs_features_lineplot",height="400px",width="100%")),
               column(6,plotOutput("songs_key",height="400px",width="100%"))
+            ),
+            fluidRow(
+              column(6,p("")),
+              column(6,p("C & G groups are the most common keys "))
             )
           ),
           box(
@@ -232,12 +236,11 @@ shinyUI(
               color="#000000",
               format=wNumbFormat(decimals=0)
             ),
-            fluidRow(
-              column(6,plotlyOutput("albums_features_lineplot",height="400px",width="100%")),
-              column(6,plotOutput("albums_key",height="400px",width="100%"))
-            )
-          )
-          ,
+            plotlyOutput("albums_features_lineplot",height="400px",width="100%"),
+            h2("Genres in these years: "),
+            actionButton("album_botton","Click to Show WordCloud (May take 10 seconds)"),
+            wordcloud2Output("albums_genres",height="400px",width="100%")
+          ),
           box(
             title="Compare Two Years",
             status="success",
@@ -263,8 +266,8 @@ shinyUI(
             ),
             plotOutput("albums_compare",height="400px",width = "100%"),
             fluidRow(
-              column(6,valueBoxOutput("albums_comparekey1",width="100%")),
-              column(6,valueBoxOutput("albums_comparekey2",width="100%"))
+              column(6,valueBoxOutput("albums_genres1",width="100%")),
+              column(6,valueBoxOutput("albums_genres2",width="100%"))
             )
           ),
           box(
