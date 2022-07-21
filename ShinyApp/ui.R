@@ -74,11 +74,7 @@ shinyUI(
                              h3(strong("Get your Spotify access token here:")),
                              textInput("spotifyId", "Client ID: ", ""),
                              textInput("spotifySec", "Client Secret: ", ""),
-                             actionButton("valid", "Validate"),
-                             br(),
-                             br(),
-                             p(strong("If validation successes, you should see your Spotify access token below:")),
-                             wellPanel(textOutput("valMessage"))
+                             actionButton("valid", "Validate")
                       ),
                       
                       column(6,
@@ -92,7 +88,10 @@ shinyUI(
                              h5("Now you should be good to go! Click one of the tabs above and learn more about your music")
                              # h6("Step 4: When prompted with the message are you ..., make sure to click NOT YOU and login yourself. Now you're good to go! "),
                              # verbatimTextOutput("txtout"), # generated from the server
-                      )
+                      ),
+                      
+                      p(strong("If validation successes, you should see your Spotify access token below:")),
+                      wellPanel(textOutput("valMessage"))
                   )
                 ),
                 
