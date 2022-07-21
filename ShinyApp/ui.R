@@ -197,7 +197,7 @@ shinyUI(
                             tags$li("instrumentalness: Predicts whether a track contains no vocals"),
                             tags$li("valence: the musical positiveness conveyed by a track")
                           ),
-                          "The other two tabs( Artist Analyst and User Profile) are grabbing the dataset from Spotify API, the Artist Analyst tab have the page of you searching artist songs, which including the song ID on Spotiry and songs' musical features"
+                          "The other two tabs( Artist Analyst and User Profile) are grabbing the dataset from Spotify API, the Artist Analyst tab have the page of you searching artist name, which including the information of artist on Spotiry and his/her songs' musical features"
                           
                         )
                         
@@ -727,7 +727,9 @@ shinyUI(
                     tags$li(a("CSDN: ggplot2 - axis (in Chinese)", href="https://blog.csdn.net/Bone_ACE/article/details/47427453")),
                     tags$li(a("CNBLOGS: ggplot2 gradient color (in Chinese)", href="https://www.cnblogs.com/mmtinfo/p/12105987.html")),
                     tags$li(a("PLOTLY: How to create Radar Charts in R with Plotly",href="https://plotly.com/r/radar-chart/")),
-                    tags$li(a("GITHUB: ggplot2 extensions: ggradar",href="https://github.com/ricardo-bion/ggradar"))
+                    tags$li(a("GITHUB: ggplot2 extensions: ggradar",href="https://github.com/ricardo-bion/ggradar")),
+                    tags$li(a("Beautiful radar chart in r using fmsb and ggplot packages",href="https://www.datanovia.com/en/blog/beautiful-radar-chart-in-r-using-fmsb-and-ggplot-packages/"))
+                    
                     
                   )
                   
