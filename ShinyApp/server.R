@@ -233,7 +233,7 @@ shinyServer(function(input, output,session) {
   
   ############## Trend - Artists ################
   
-  artists = eventReactive(input$topartists_botton,{read_csv("data/artists.csv")})
+  artists = eventReactive(input$topartists_botton,{read_csv("data/artists.csv",show_col_types = FALSE)})
   
   output$topartists_image = renderPlot({
     artists=artists()
