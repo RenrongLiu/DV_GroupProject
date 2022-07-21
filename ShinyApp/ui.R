@@ -67,6 +67,9 @@ shinyUI(
                 
                 fluidRow(
                   box(width=12,
+                      p('Our application retrieves part of data from Spotify API. This requires an access token authorized by applying for a Spotify API client ID and secret. Given that our application is still under "development mode", our access token is bind to a traffic limitation. It is ideal for our users to apply for their own access token. We have attached a detailed instruction of how to obtain a Spotify access token below. Furthermore, for your convenience, we also provide a sample client ID and client secret for you to validate. You should be aware that the sample id and secret may not function due to the restrictions from Spotify API.'),
+                      p(strong('Sample Client ID:'), '11145821abf14ce68d1603eeb196bfeb'),
+                      p(strong('Sample Client Secret:'), '39b301de43af4b2ab68564731669181a'),
                       column(6,
                              h3(strong("Get your Spotify access token here:")),
                              textInput("spotifyId", "Client ID: ", ""),
