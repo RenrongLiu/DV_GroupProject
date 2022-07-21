@@ -406,13 +406,16 @@ shinyUI(
                   class="top-container",
                   strong("Artist Analysis", class="trends-h2")),
                 
-                span(
-                  textInput("artSearch", "Please enter the name of an artist:","Ariana Grande"),
-                  class="artsearch"
-                ),
-                span(actionButton("button","Submit")),
+                fluidRow(
+                  box(
+                  width=4,
+                  status = "success",
+                  background = "black",
+                  textInput("artSearch", "Please enter the name of an artist:", value="Ariana Grande"),
+                  actionButton("button","Submit")
+                )),
                 
-                br(),
+                #br(),
                 
                 fluidRow(
                   box(width = 6,
