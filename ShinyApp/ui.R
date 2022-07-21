@@ -47,8 +47,7 @@ shinyUI(
           menuItem(
             "User Profile", tabName = "user", icon=icon("user-circle"),
              menuSubItem("Top 10 Songs",tabName="topSong", icon=icon("headphones")),
-             menuSubItem("Artists & Genres",tabName="artGen", icon=icon("users")),
-             menuSubItem("Recommendation",tabName="recom", icon=icon("heart"))
+             menuSubItem("Artists & Genres",tabName="artGen", icon=icon("users"))
                    ),
           hr(class="sidebar-hr-gradient"),
           menuItem("About Us", tabName = "us", icon=icon("paperclip")),
@@ -84,15 +83,15 @@ shinyUI(
                       br(),
                       br(),
                       tags$strong("Spotify Trends:"),
-                      "You can explore the top artists, tracks, and albums from year 2013 to 2021, and comparing the musical features trends among the songs. The page will provide you the overall idea of the musical feature taste transformation in the time duration.",
+                      "You can explore the top artists, tracks, and albums from previous years to 2021, and comparing the musical features and key changing trends among the songs, albums, and artists. The page will provide you the overall idea of the musical feature taste transformation in the time duration.",
                       br(),
                       br(),
                       tags$strong("Artist Analysis:"),
-                      " You can serch for your interested artists to see his or her image and the artists’ most common keys in the songs. To further learn your searched artist, audio feature summary will be provided with six components (danceability, energy, valence, sppechiness, liveness, and acousticness), and you can learn the artists’ songs and albums from different musical features. At last, this page includes the album comparision for the artist, you are welcome to choose two of the album from your searching artist to compare the overall musical features in the songs. ",
+                      " You can serch for your interested artists to see his or her image and the artists’ most common keys in the songs. To further learn your searched artist, audio feature summary will be provided with six components (danceability, energy, valence, sppechiness, liveness, and acousticness), and you can learn the artists’ songs and albums from different musical features in a radar chart. At last, this page includes the album comparision for the artist, you are welcome to choose two of the albums from your searching artist to compare the overall musical features in the songs. ",
                       br(),
                       br(),
                       tags$strong("User Profile:"),
-                      " The other interactive part in our project is understanding your Spotify playlist. We need your permission to link your Spotify account, and to give your summary of the top 10 songs, top 3 singers from you listening history. In addition, we would based on your favorite tracks, artists and genres to provide some cusomized recommendation, and it can provide advisory for your music.", strong("Notice"), ", if you are not a Spotify user, we will return the most popular tracks and artists of all time given that you don't have any Spotify data."
+                      " The other interactive part in our project is understanding your Spotify playlist. We need your permission to link your Spotify account, and to give your summary of the top 10 songs, top 3 singers from you listening history. Also there will be a Radar plot be provided to compare your chosen two songs. On the page of your top 3 artists, there is also a wordcloud to check your most-frequently listing genre in your listenging library."
                   )),
                   # Spotify API Intro###########
                        box(
@@ -105,9 +104,11 @@ shinyUI(
                          collapsed = FALSE,
                          p("Technically, we using Spotify API to accesses user related data as the main data sources for our project. The Spotify’s Web API can dicover music, manage the labrary, control audio playbacks. We mainly get information such as albms, artist, tracks, and users from Spotify’s Web API. "),
                          p("In the trending part, we also use the Spotify dataset from Kaggle, which including all the top songs in recent years, and it also be captured by Spotify API. "),
-                         p("Following are the video to learn more about Spotify API:"),
+                         p(tags$strong("To using our Artist Analysis and User Profile tabs to check fabulous data visualization, the following token assess procedure is needed to go through, therefore, please follow the tutorials. ")),
+                         br(),
+                         p("If you still have questions, you can check the following videos to learn more about Spotify API:"),
                          # put video here, following the format:
-                         tags$iframe(width="450", height="300", src="https://www.youtube.com/embed/yAXoOolPvjU", frameborder="0", allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture", allowfullscreen=NA)
+                         tags$iframe(width="450", height="280", src="https://www.youtube.com/embed/yAXoOolPvjU", frameborder="0", allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture", allowfullscreen=NA)
                          
                        )
                   ),
@@ -128,16 +129,79 @@ shinyUI(
                       column(6,
                              h3(strong("Instructions")),
                              br(),
-                             h6("Step 1: Go to https://developer.spotify.com/dashboard/ and login with your Spotify information"),
-                             h6("Step 2: Create an app with name and description temp, then find the client ID and Client Secret"),
-                             h6("Step 3: Copy and paste the ID and Secret into the designated dialog boxes, and click validate."),
-                             h6("Step 4: Allow spotify to authenticate your account"),
-                             h6("Now you should be good to go! Click one of the tabs above and learn more about your music")
+                             h5("Step 1: Go to", tags$a("https://developer.spotify.com/dashboard/"), "and login with your Spotify information"),
+                             h5("Step 2: Create an app with name and description temp, then find the client ID and Client Secret"),
+                             h5('Step 3: Go to \"Edit Settings\", set \"Redirect URLs\" to http://localhost:1410/.'),
+                             h5("Step 4: Copy and paste the ID and Secret into the designated dialog boxes, and click validate. If a string jumps out below, it means you have successfully acquired the access token."),
+                             h5("Step 5: Allow spotify to authenticate your account"),
+                             h5("Now you should be good to go! Click one of the tabs above and learn more about your music")
                              # h6("Step 4: When prompted with the message are you ..., make sure to click NOT YOU and login yourself. Now you're good to go! "),
                              # verbatimTextOutput("txtout"), # generated from the server
                       )
+                  ),
+                  ####Research Questions and Data
+                  
+                    box(width=6,
+                        title="Research Questions & Method of Analysis",
+                        solidHeader = TRUE,
+                        status="success",
+                        background="black",
+                        collapsible = TRUE,
+                        collapsed = FALSE,
+                        tags$span(
+                          tags$strong("·"),"How do the most popular songs’ feature trends change over time?",
+                          br(),
+                          tags$strong("·"), "What are the significant musical features of my favorite artist?",
+                          br(),
+                          tags$strong("·"),"How do the two albums of the same artist have different musical features?",
+                          br(),
+                          tags$strong("·")," What is my personal taste in music?",
+                          br(),
+                          tags$strong("·"),"  Who is my most-frequently listening artist?",
+                          br(),
+                          br(),
+                          br(),
+                          "We are using",tags$strong(" Times Series Analysis and Text Analysis"), "in our application. We are using:",
+                          tags$ul(
+                            tags$li("Scatter plot"),
+                            tags$li("Bar chart"),
+                            tags$li("Line Chart"),
+                            tags$li("Radar plot"),
+                            tags$li("Spider plot"),
+                            tags$li("Wordcloud"),
+                            tags$li("..."),
+                            br()
+                            )
+                          )
+                        ),
+                    box(width=6,
+                        title="Data Resources",
+                        solidHeader = TRUE,
+                        status="success",
+                        background="black",
+                        collapsible = TRUE,
+                        collapsed = FALSE,
+                        tags$span(
+                          "We mainly have three tabs in our appliance, the Trending tab using the Kaggle dataset and data we grab from Wikipedia. We include the data table in each tab of Trending part, and also the linking to the dataset. The musical data variable using in our application is following:",
+                          tags$ul(
+                          tags$li("artist: Name of the Artist"),
+                          tags$li("song: Name of the Track"),
+                          tags$li("year: Release Year of the track"),
+                          tags$li("danceability: how suitable a track is for dancing"),
+                          tags$li("energy: perceptual measure of intensity and activity"),
+                          tags$li("key: Integers map to pitches using standard Pitch Class notation"),
+                          tags$li("speechiness: the presence of spoken words in a track"),
+                          tags$li("acousticness: binary variable whether the track is acoustic"),
+                          tags$li("liveness: the presence of an audience in the recording"),
+                          tags$li("instrumentalness: Predicts whether a track contains no vocals"),
+                          tags$li("valence: the musical positiveness conveyed by a track")
+                          ),
+                          "The other two tabs( Artist Analyst and User Profile) are grabbing the dataset from Spotify API, the Artist Analyst tab have the page of you searching artist songs, which including the song ID on Spotiry and songs' musical features"
+                         
+                          )
+                        
+                    )
                   )
-                )
 
                 ),
         
@@ -148,6 +212,15 @@ shinyUI(
             class="top-container",
             strong("Music Trends of Songs: Top Hits Spotify", class="trends-h2")
           ),
+          box(
+            title=a("Data Overview (click to visit the dataset at Kaggle.com)",href="https://www.kaggle.com/datasets/paradisejoy/top-hits-spotify-from-20002019"),
+            status="success",
+            background = "black",
+            width="100%",
+            DT::dataTableOutput("songs_table"),
+            plotlyOutput("songs_overview",width="100%")
+          ),
+          
           box(
             title="Musical Trend",
             status="success",
@@ -173,7 +246,8 @@ shinyUI(
               column(6,p("")),
               column(6,p("C & G groups are the most common keys "))
             )
-          ),
+          )
+          ,
           box(
             title="Compare Two Years",
             status="success",
@@ -203,14 +277,7 @@ shinyUI(
               column(6,valueBoxOutput("songs_comparekey2",width="100%"))
             )
           ),
-          box(
-            title=a("Data Overview (click to visit the dataset at Kaggle.com)",href="https://www.kaggle.com/datasets/paradisejoy/top-hits-spotify-from-20002019"),
-            status="success",
-            background = "black",
-            width="100%",
-            DT::dataTableOutput("songs_table"),
-            plotlyOutput("songs_overview",width="100%")
-          )
+          
         ),
         #################### Trend page - Albums ####################
         tabItem(
@@ -219,6 +286,15 @@ shinyUI(
             class="top-container",
             strong("Music Trends of Albums: Top 5000 Albums of All Time", class="trends-h2")
           ),
+          box(
+            title=a("Data Overview (click to visit the dataset at Kaggle.com)",href="https://www.kaggle.com/datasets/lucascantu/top-5000-albums-of-all-time-spotify-features"),
+            status="success",
+            background = "black",
+            width="100%",
+            DT::dataTableOutput("albums_table"),
+            plotlyOutput("albums_overview",width="100%")
+          ),
+          
           box(
             title="Musical Trend",
             status="success",
@@ -270,14 +346,7 @@ shinyUI(
               column(6,valueBoxOutput("albums_genres2",width="100%"))
             )
           ),
-          box(
-            title=a("Data Overview (click to visit the dataset at Kaggle.com)",href="https://www.kaggle.com/datasets/lucascantu/top-5000-albums-of-all-time-spotify-features"),
-            status="success",
-            background = "black",
-            width="100%",
-            DT::dataTableOutput("albums_table"),
-            plotlyOutput("albums_overview",width="100%")
-          )
+          
         ),
         # Artist page##########
         tabItem(tabName = "artSum",
@@ -407,7 +476,7 @@ shinyUI(
                     background = "black",
                     solidHeader = TRUE,
                     collapsible = TRUE,
-                    textOutput("missTra"),
+                    p(strong("Notice:"), "If you are not a frequent Spotify user, Spotify API may not have your listening history. Thus, we will replace all contents in User Profile page with Spotify's data of alltime favorites."),
                     br(),
                     formattableOutput("topTra"),
                     style = "overflow-x: scroll;"),
@@ -416,6 +485,8 @@ shinyUI(
                   box(width="100%",
                       status="success",
                       background = "black",
+                      title="One Song's Feature vs. Your Average Music Taste",
+                      solidHeader = TRUE,
                       column(3,
                              selectInput("topTraList",
                                          "Pick a song:",
@@ -433,7 +504,6 @@ shinyUI(
                   class="top-container",
                   strong("Your Top 3 Artists & Favorite Genres", class="trends-h2")),
                 
-                textOutput("missArt"),
                 br(),
                 fluidRow(
                   valueBoxOutput("favArt1"),
@@ -448,36 +518,6 @@ shinyUI(
                     background = "black",
                     wordcloud2Output("userFavGen"))
                 )
-        ),
-        
-        
-        tabItem(tabName = "recom",
-                div(
-                  class="top-container",
-                  strong("Customized Playlist for You", class="trends-h2")),
-                
-                fixedRow(
-                  box(
-                    width=4,
-                    radioButtons("seedSel", 
-                                 label="Get recomendations from my:",
-                                 choices = list("Favorite tracks",
-                                                "Favorite artists",
-                                                "Favorite genres"))
-                  ),
-                  
-                  box(
-                    width = 8,
-                    textOutput("favSeed")
-                  )),
-                
-                box(width="100%",
-                    title="Your Customized Recommendation",
-                    status="success",
-                    background = "black",
-                    solidHeader = TRUE,
-                    collapsible = TRUE,
-                    formattableOutput("recTra"))
         ),
         
         
