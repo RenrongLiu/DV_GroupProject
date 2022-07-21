@@ -515,7 +515,7 @@ shinyServer(function(input, output,session) {
   #################################################################
   ################top 50 artists' genres ################
   
-  artist_ids <- eventReactive(input$valid&input$profile_botton, {
+    artist_ids <- eventReactive(input$valid, {
     
     # Get user's top 50 songs and their artist
     top_50_track <- get_my_top_artists_or_tracks(type="tracks",
@@ -548,12 +548,15 @@ shinyServer(function(input, output,session) {
   #################################################################
   
   
+  genres = eventReactive(input$profile_botton,{
+    return(get_artists(ids=artist_ids()) %>% 
+      select(genres))
+  })
   
   output$userFavGen <- renderWordcloud2({
     
     #get artists' genres
-    genres <- get_artists(ids=artist_ids()) %>% 
-      select(genres)
+    genres <- genres()
     
     genre_list=list()
     
