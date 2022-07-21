@@ -608,7 +608,7 @@ shinyUI(
                     collapsed = FALSE,
                     column(width = 3,
                            img(
-                             src = 'renrong_liu.jpg',
+                             src = 'renrong_liu.JPG',
                              align = "left",
                              height = 200
                            )),
