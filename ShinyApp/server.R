@@ -88,8 +88,9 @@ shinyServer(function(input, output,session) {
     
     g= songs %>%
       filter(year<=input$songs_years[2] & year >=input$songs_years[1]) %>%
-      ggplot(aes(x=year,y=Score,color=Features))+
-      geom_line()+
+      ggplot(mapping=aes(x=year,y=Score,color=Features))+
+      geom_point(shape=4,size=1)+
+      geom_smooth()+
       theme_light()+
       labs(title="Musical Features Trends")
     ggplotly(g)
@@ -161,15 +162,31 @@ shinyServer(function(input, output,session) {
   
   output$albums_features_lineplot = renderPlotly({
     
-    g= albums %>%
+    g1 = albums %>%
       filter(year<=input$albums_years[2] & year >=input$albums_years[1]) %>%
       ggplot(aes(x=year,y=Score,color=Features))+
-      geom_line()+
+      geom_smooth()+
       theme_light()+
       labs(title="Musical Features Trends")
-    ggplotly(g)
+    ggplotly(g1)
   })
   
+  words = eventReactive(input$album_botton, {
+    tmp=albums_all%>%
+      filter(year<=input$albums_years[2] & year >=input$albums_years[1]) %>%
+      pull(gens)%>%
+      str_split(pattern=", ")%>%
+      map_df(as_tibble)%>%
+      group_by(value)%>%
+      summarise(freq=n())%>%
+      arrange(desc(freq))%>%
+      slice(1:50)
+    return(tmp)})
+  
+  output$albums_genres = renderWordcloud2({
+    words=words()
+    wordcloud2(words,size=1.5,color=brewer.pal(12, "Paired"))
+  })
   
   output$albums_compare = renderPlot({
     albums %>% 
@@ -179,22 +196,39 @@ shinyServer(function(input, output,session) {
   })
   
   
-  output$albums_comparekey1 = renderValueBox({
-    #key1=albums_key[albums_key$year==input$albums_compare1,]$key
-    #valueBox(
-    #  musical_keys[key1+1],
-    #  paste0("Most Common Key in ",as.character(input$albums_compare1)),
-    #  icon = icon("music",lib='glyphicon'),
-    #  color = "green")
+  output$albums_genres1 = renderValueBox({
+    tmp=albums_all%>%
+      filter(year==input$albums_compare1) %>%
+      pull(gens)%>%
+      str_split(pattern=", ")%>%
+      map_df(as_tibble)%>%
+      group_by(value)%>%
+      summarise(freq=n())%>%
+      arrange(desc(freq))%>%
+      slice(1)
+    valueBox(
+      tmp,
+      paste0("Genres in ",as.character(input$albums_compare1)),
+      icon = icon("music",lib='glyphicon'),
+      color = "green")
   })
   
-  output$albums_comparekey2 = renderValueBox({
-    #key2=albums_key[albums_key$year==input$albums_compare2,]$key
-    #valueBox(
-    #  musical_keys[key2+1],
-    #  paste0("Most Common Key in ",as.character(input$albums_compare2)),
-    #  icon = icon("music",lib='glyphicon'),
-    #  color = "green")
+  
+  output$albums_genres2 = renderValueBox({
+    tmp=albums_all%>%
+      filter(year==input$albums_compare2) %>%
+      pull(gens)%>%
+      str_split(pattern=", ")%>%
+      map_df(as_tibble)%>%
+      group_by(value)%>%
+      summarise(freq=n())%>%
+      arrange(desc(freq))%>%
+      slice(1)
+    valueBox(
+      tmp,
+      paste0("Genres in ",as.character(input$albums_compare2)),
+      icon = icon("music",lib='glyphicon'),
+      color = "green")
   })
   
   ######## Artist Analysis ############ 
