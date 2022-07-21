@@ -391,7 +391,7 @@ shinyUI(
             br(),
             actionButton("topartists_botton","Generate Image"),
             
-            plotOutput("topartists_image",height="1600px",width="800px")
+            plotOutput("topartists_image",height="1600px",width="900px")
           )
         ),
         
