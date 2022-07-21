@@ -129,9 +129,9 @@ shinyUI(
                       column(6,
                              h3(strong("Instructions")),
                              br(),
-                             h5("Step 1: Go to", tags$a("https://developer.spotify.com/dashboard/"), "and login with your Spotify information"),
+                             h5("Step 1: Go to", tags$a("https://developer.spotify.com/dashboard/",href="https://developer.spotify.com/dashboard/ "), "and login with your Spotify information"),
                              h5("Step 2: Create an app with name and description temp, then find the client ID and Client Secret"),
-                             h5('Step 3: Go to \"Edit Settings\", set \"Redirect URLs\" to http://localhost:1410/.'),
+                             h5('Step 3: Go to \"Edit Settings\", set \"Redirect URLs\" to http://localhost:1410/'),
                              h5("Step 4: Copy and paste the ID and Secret into the designated dialog boxes, and click validate. If a string jumps out below, it means you have successfully acquired the access token."),
                              h5("Step 5: Allow spotify to authenticate your account"),
                              h5("Now you should be good to go! Click one of the tabs above and learn more about your music")
@@ -149,17 +149,13 @@ shinyUI(
                         collapsible = TRUE,
                         collapsed = FALSE,
                         tags$span(
-                          tags$strong("·"),"How do the most popular songs’ feature trends change over time?",
-                          br(),
-                          tags$strong("·"), "What are the significant musical features of my favorite artist?",
-                          br(),
-                          tags$strong("·"),"How do the two albums of the same artist have different musical features?",
-                          br(),
-                          tags$strong("·")," What is my personal taste in music?",
-                          br(),
-                          tags$strong("·"),"  Who is my most-frequently listening artist?",
-                          br(),
-                          br(),
+                          tags$ul(
+                            tags$li("How do the most popular songs’ feature trends change over time?"),
+                            tags$li("What are the significant musical features of my favorite artist?"),
+                            tags$li("How do the two albums of the same artist have different musical features?"),
+                            tags$li("What is my personal taste in music?"),
+                            tags$li("Who is my most-frequently listening artist?")
+                          ),
                           br(),
                           "We are using",tags$strong(" Times Series Analysis and Text Analysis"), "in our application. We are using:",
                           tags$ul(
@@ -213,15 +209,6 @@ shinyUI(
             strong("Music Trends of Songs: Top Hits Spotify", class="trends-h2")
           ),
           box(
-            title=a("Data Overview (click to visit the dataset at Kaggle.com)",href="https://www.kaggle.com/datasets/paradisejoy/top-hits-spotify-from-20002019"),
-            status="success",
-            background = "black",
-            width="100%",
-            DT::dataTableOutput("songs_table"),
-            plotlyOutput("songs_overview",width="100%")
-          ),
-          
-          box(
             title="Musical Trend",
             status="success",
             background = "black",
@@ -239,17 +226,21 @@ shinyUI(
               format=wNumbFormat(decimals=0)
             ),
             fluidRow(
-              column(6,plotlyOutput("songs_features_lineplot",height="400px",width="100%")),
-              column(6,plotOutput("songs_key",height="400px",width="100%"))
+              column(6,
+                     h2("Musical Features Trends"),
+                     plotlyOutput("songs_features_lineplot",height="400px",width="100%")
+                     ),
+              column(6,
+                     h2("Most Common Keys in Those Songs"),
+                     plotOutput("songs_key",height="400px",width="100%")
+                     )
             )
-          )
-          ,
+          ),
           box(
             title="Compare Two Years",
             status="success",
             background = "black",
             width="100%",
-            
             fluidRow(
               column(6,
                      selectInput(
@@ -267,13 +258,23 @@ shinyUI(
                        selected = 2019
                      ))
             ),
+            h2("Musical Features and Most Common Keys in Selected Years"),
             plotOutput("songs_compare",height="400px",width = "100%"),
             fluidRow(
               column(6,valueBoxOutput("songs_comparekey1",width="100%")),
               column(6,valueBoxOutput("songs_comparekey2",width="100%"))
             )
           ),
-          
+          box(
+            title=a("Data Overview (click to visit the dataset at Kaggle.com)",href="https://www.kaggle.com/datasets/paradisejoy/top-hits-spotify-from-20002019"),
+            status="success",
+            background = "black",
+            width="100%",
+            h2("Data Table"),
+            DT::dataTableOutput("songs_table"),
+            h2("Number of Songs Included in the Dataset in Each Year"),
+            plotlyOutput("songs_overview",width="100%")
+          )
         ),
         #################### Trend page - Albums ####################
         tabItem(
@@ -282,15 +283,6 @@ shinyUI(
             class="top-container",
             strong("Music Trends of Albums: Top 5000 Albums of All Time", class="trends-h2")
           ),
-          box(
-            title=a("Data Overview (click to visit the dataset at Kaggle.com)",href="https://www.kaggle.com/datasets/lucascantu/top-5000-albums-of-all-time-spotify-features"),
-            status="success",
-            background = "black",
-            width="100%",
-            DT::dataTableOutput("albums_table"),
-            plotlyOutput("albums_overview",width="100%")
-          ),
-          
           box(
             title="Musical Trend",
             status="success",
@@ -308,12 +300,12 @@ shinyUI(
               color="#000000",
               format=wNumbFormat(decimals=0)
             ),
-            fluidRow(
-              column(6,plotlyOutput("albums_features_lineplot",height="400px",width="100%")),
-              column(6,plotOutput("albums_key",height="400px",width="100%"))
-            )
-          )
-          ,
+            h2("Musical Features Trends of These Albums"),
+            plotlyOutput("albums_features_lineplot",height="400px",width="100%"),
+            h2("Genres in these years: "),
+            actionButton("album_botton","Click to Show WordCloud (May take 10 seconds)"),
+            wordcloud2Output("albums_genres",height="400px",width="100%")
+          ),
           box(
             title="Compare Two Years",
             status="success",
@@ -337,13 +329,23 @@ shinyUI(
                        selected = 2021
                      ))
             ),
+            h2("Musical Features and Most Common Keys in Selected Years"),
             plotOutput("albums_compare",height="400px",width = "100%"),
             fluidRow(
-              column(6,valueBoxOutput("albums_comparekey1",width="100%")),
-              column(6,valueBoxOutput("albums_comparekey2",width="100%"))
+              column(6,valueBoxOutput("albums_genres1",width="100%")),
+              column(6,valueBoxOutput("albums_genres2",width="100%"))
             )
           ),
-          
+          box(
+            title=a("Data Overview (click to visit the dataset at Kaggle.com)",href="https://www.kaggle.com/datasets/lucascantu/top-5000-albums-of-all-time-spotify-features"),
+            status="success",
+            background = "black",
+            width="100%",
+            h2("Data Table"),
+            DT::dataTableOutput("albums_table"),
+            h2("Number of Songs Included in the Dataset in Each Year"),
+            plotlyOutput("albums_overview",width="100%")
+          )
         ),
         # Artist page##########
         tabItem(tabName = "artSum",
@@ -351,8 +353,11 @@ shinyUI(
                   class="top-container",
                   strong("Artist Analysis", class="trends-h2")),
                 
-                textInput("artSearch", "Please enter the name of an artist:","Ariana Grande"),
-                actionButton("button","Submit"),
+                span(
+                  textInput("artSearch", "Please enter the name of an artist:","Ariana Grande"),
+                  class="artsearch"
+                ),
+                span(actionButton("button","Submit")),
                 
                 br(),
                 
@@ -390,13 +395,13 @@ shinyUI(
                            plotOutput("artFeatSum", height = "400px"))),
                 
                 
-                fluidRow(
+                #fluidRow(
                   box(width = "100%",
                       title="Let's take a closer look",
                       status="success",
                       background="black",
                       solidHeader = TRUE,
-                      
+                      height="500px",
                       column(3,
                              
                              selectInput("featByX", label="Feature on the X-axis",
@@ -410,7 +415,7 @@ shinyUI(
                       
                       column(9, plotlyOutput("artFeatScatter", height="400px"))
                   )
-                )
+                #)
         ),
         
         
@@ -418,23 +423,23 @@ shinyUI(
         tabItem(tabName = "albComp",
                 div(
                   class="top-container",
-                  strong("Artist's Album Comparison", class="trends-h2")),
-                
-                fluidRow(                           
-                  box(
-                    width = "100%",
-                    title="Feature Differences Between Two Albums",
-                    status="success",
-                    background="black",
-                    solidHeader = TRUE,
-                    
-                    
-                    column(3,
-                           selectInput("album1", "Select the first album:", choice=""),
-                           selectInput("album2", "select the second album:", choice="")),
-                    
-                    column(9, plotOutput("albComp", height = "400px"))
-                  ))
+                  strong("Artist's Album Comparison", class="trends-h2")
+                  ),
+                box(
+                  width = "100%",
+                  height="500px",
+                  title="Feature Differences Between Two Albums",
+                  status="success",
+                  background="black",
+                  solidHeader = TRUE,
+                  
+                  
+                  column(3,
+                         selectInput("album1", "Select the first album:", choice=""),
+                         selectInput("album2", "select the second album:", choice="")),
+                  
+                  column(9, plotOutput("albComp", height = "400px"))
+                )
         ),
         
         
@@ -445,18 +450,16 @@ shinyUI(
                   class="top-container",
                   strong("Sample Artist's Feature Data", class="trends-h2")),
                 
-                fluidRow(
-                  box(
-                    width="100%",
-                    title="Data table of audio features",
-                    status="success",
-                    background="black",
-                    solidHeader=TRUE,
-                    column(12,
-                           h5("note: row name is the track id"),
-                           DT::dataTableOutput("table")
-                    )
-                    
+                box(
+                  width="100%",
+                  title="Data table of audio features",
+                  height="600px",
+                  status="success",
+                  background="black",
+                  solidHeader=TRUE,
+                  column(12,
+                         h5("note: row name is the track id"),
+                         DT::dataTableOutput("table")
                   )
                 )
         ),
@@ -478,20 +481,20 @@ shinyUI(
                     formattableOutput("topTra"),
                     style = "overflow-x: scroll;"),
                 
-                fluidRow(
-                  box(width="100%",
-                      status="success",
-                      background = "black",
-                      title="One Song's Feature vs. Your Average Music Taste",
-                      solidHeader = TRUE,
-                      column(3,
-                             selectInput("topTraList",
-                                         "Pick a song:",
-                                         choice="")),
-                      
-                      column(9,
-                             plotlyOutput("userTraFeat"))
-                  ))
+                box(width="100%",
+                    height="600px",
+                    status="success",
+                    background = "black",
+                    title="One Song's Feature vs. Your Average Music Taste",
+                    solidHeader = TRUE,
+                    column(3,
+                           selectInput("topTraList",
+                                       "Pick a song:",
+                                       choice="")),
+                    
+                    column(9,
+                           plotlyOutput("userTraFeat"))
+                )
         ),
         
         
@@ -508,12 +511,14 @@ shinyUI(
                   valueBoxOutput("favArt3")
                 ),
                 
-                fluidRow(
-                  box(
-                    width="100%",
-                    status="success",
-                    background = "black",
-                    wordcloud2Output("userFavGen"))
+                
+                box(
+                  title="Your Prefered Genres",
+                  width="100%",
+                  status="success",
+                  background = "black",
+                  actionButton("profile_botton","Click to Show WordCloud (May take 10 seconds)"),
+                  wordcloud2Output("userFavGen")
                 )
         ),
         
@@ -646,7 +651,7 @@ shinyUI(
                     tags$li(a("Inserting an image to ggplot2",href="https://stackoverflow.com/questions/9917049/inserting-an-image-to-ggplot2")),
                     tags$li(a("Combining Spotify and R — An Interactive Rshiny App + Spotify Dashboard Tutorial",href="https://towardsdatascience.com/combining-spotify-and-r-an-interactive-rshiny-app-spotify-dashboard-tutorial-af48104cb6e9")),
                     tags$li(a("How to create Radar Charts in R with Plotly",href="https://plotly.com/r/radar-chart/")),
-                    tags$li(a("Inserting an image to ggplot2",href="https://stackoverflow.com/questions/9917049/inserting-an-image-to-ggplot2")),
+                    tags$li(a("Convert list of list object to dataframe in R",href="https://stackoverflow.com/questions/50777607/convert-list-of-list-object-to-dataframe-in-r")),
                     tags$li(a("BEAUTIFUL RADAR CHART IN R USING FMSB AND GGPLOT PACKAGES"),href="https://www.datanovia.com/en/blog/beautiful-radar-chart-in-r-using-fmsb-and-ggplot-packages/"),
                     tags$li(a("spotifyr overview"),href="https://www.rcharlie.com/spotifyr/")
                   )
@@ -664,5 +669,3 @@ shinyUI(
     
   )
 )
-
-1

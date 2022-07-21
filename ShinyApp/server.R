@@ -79,7 +79,6 @@ shinyServer(function(input, output,session) {
       filter(year>=2000&year<=2019)%>%
       ggplot(aes(x=year))+
       geom_bar()+
-      labs(title="Number of Songs in Each Year",y="songs")+
       theme_light()
     ggplotly(g)
   })
@@ -88,10 +87,10 @@ shinyServer(function(input, output,session) {
     
     g= songs %>%
       filter(year<=input$songs_years[2] & year >=input$songs_years[1]) %>%
-      ggplot(aes(x=year,y=Score,color=Features))+
-      geom_line()+
-      theme_light()+
-      labs(title="Musical Features Trends")
+      ggplot(mapping=aes(x=year,y=Score,color=Features))+
+      #geom_point(shape=4,size=1)+
+      geom_smooth()+
+      theme_light()
     ggplotly(g)
   })
   
@@ -102,8 +101,7 @@ shinyServer(function(input, output,session) {
       geom_point(shape="♪",size=10)+
       scale_y_continuous(breaks=c(0:11),labels=musical_keys)+
       scale_color_gradient(low = "red",high = "cyan")+
-      theme_light()+
-      labs(title="Most Common Keys by Popular Songs")
+      theme_light()
   })
   
   
@@ -129,6 +127,103 @@ shinyServer(function(input, output,session) {
     valueBox(
       musical_keys[key2+1],
       paste0("Most Common Key in ",as.character(input$songs_compare2)),
+      icon = icon("music",lib='glyphicon'),
+      color = "green")
+  })
+  
+  ######## Spotify Trend - albums ############
+  
+  
+  ####### data processing
+  albums_all = read_csv("data/albums.csv",show_col_types = FALSE)
+  albums = read_csv("data/albums_clean.csv",show_col_types = FALSE)
+  musical_keys=c("C","C#","D","D#","E","F","F#","G","G#","A","A#","B")
+  
+  output$albums_table = DT::renderDT({
+    albums_dt = albums_all %>%
+      filter(year<=2021 & year >=1960) %>%
+      select(album,ars_name,rel_date,gens,danceability,energy,speechiness,acousticness,instrumentalness,liveness,valence)
+    albums_dt[,5:11] = round(albums_dt[,5:11],2)
+    albums_dt
+  })
+  
+  output$albums_overview = renderPlotly({
+    g = albums_all%>%
+      filter(year>=1960&year<=2021)%>%
+      ggplot(aes(x=year))+
+      geom_bar()+
+      labs(title="Number of albums in Each Year",y="albums")+
+      theme_light()
+    ggplotly(g)
+  })
+  
+  output$albums_features_lineplot = renderPlotly({
+    
+    g1 = albums %>%
+      filter(year<=input$albums_years[2] & year >=input$albums_years[1]) %>%
+      ggplot(aes(x=year,y=Score,color=Features))+
+      geom_smooth()+
+      theme_light()+
+      labs(title="Musical Features Trends")
+    ggplotly(g1)
+  })
+  
+  words = eventReactive(input$album_botton, {
+    tmp=albums_all%>%
+      filter(year<=input$albums_years[2] & year >=input$albums_years[1]) %>%
+      pull(gens)%>%
+      str_split(pattern=", ")%>%
+      map_df(as_tibble)%>%
+      group_by(value)%>%
+      summarise(freq=n())%>%
+      arrange(desc(freq))%>%
+      slice(1:50)
+    return(tmp)})
+  
+  output$albums_genres = renderWordcloud2({
+    words=words()
+    wordcloud2(words,size=1.5,color=brewer.pal(12, "Paired"))
+  })
+  
+  output$albums_compare = renderPlot({
+    albums %>% 
+      pivot_wider(names_from = Features,values_from = Score)%>%
+      filter(year==input$albums_compare1 | year ==input$albums_compare2) %>%
+      ggradar()
+  })
+  
+  
+  output$albums_genres1 = renderValueBox({
+    tmp=albums_all%>%
+      filter(year==input$albums_compare1) %>%
+      pull(gens)%>%
+      str_split(pattern=", ")%>%
+      map_df(as_tibble)%>%
+      group_by(value)%>%
+      summarise(freq=n())%>%
+      arrange(desc(freq))%>%
+      slice(1)
+    valueBox(
+      tmp,
+      paste0("Genres in ",as.character(input$albums_compare1)),
+      icon = icon("music",lib='glyphicon'),
+      color = "green")
+  })
+  
+  
+  output$albums_genres2 = renderValueBox({
+    tmp=albums_all%>%
+      filter(year==input$albums_compare2) %>%
+      pull(gens)%>%
+      str_split(pattern=", ")%>%
+      map_df(as_tibble)%>%
+      group_by(value)%>%
+      summarise(freq=n())%>%
+      arrange(desc(freq))%>%
+      slice(1)
+    valueBox(
+      tmp,
+      paste0("Genres in ",as.character(input$albums_compare2)),
       icon = icon("music",lib='glyphicon'),
       color = "green")
   })
@@ -379,7 +474,7 @@ shinyServer(function(input, output,session) {
   #################################################################
   ################top 50 artists' genres ################
   
-  artist_ids <- eventReactive(input$valid, {
+  artist_ids <- eventReactive(input$valid&input$profile_botton, {
     
     # Get user's top 50 songs and their artist
     top_50_track <- get_my_top_artists_or_tracks(type="tracks",

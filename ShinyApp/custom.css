@@ -22,7 +22,22 @@
   background-image: linear-gradient(to right, rgba(255,255,255,0),rgba(255,255,255,0.75),rgba(255,255,255,0));
 }
 
+table.dataTable thead th, table.dataTable thead td{
+  color:#ffffff;
+}
 
+.dataTables_wrapper .dataTables_length{
+  color:#ffffff;
+}
+.dataTables_wrapper .dataTables_info{
+  color:#ffffff;
+}
+.dataTables_wrapper .dataTables_processing{
+  color:#ffffff;
+}
+.dataTables_wrapper .dataTables_paginate{
+  color:#ffffff;
+}
 .top-container{
   padding:0;
   margin:0;
@@ -56,6 +71,7 @@
 
 .body .skin-black .sidebar{
   font-family: "Press Start 2P", cursive;
+
 }
 
 .sidebar{
@@ -63,7 +79,12 @@
   font-size: 10px;
 }
 
-
+.artsearch{
+  display:inline;
+}
+.form-control{
+  color:inherit;
+}
 .content{
   padding-bottom:30%;
   margin:0;

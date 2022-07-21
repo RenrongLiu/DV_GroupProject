@@ -3,7 +3,10 @@ library(tidyverse)
 library(dplyr)
 library(ggplot2)
 library(ggradar)
-
+library(png)
+library(jpeg)
+library(RCurl)
+library(grid)
 
 ################ songs #######################
 
@@ -81,6 +84,43 @@ albums_num = albums%>%
 write_csv(albums_num,"ShinyApp/data/albums_num.csv")
 write_csv(albums_clean,"ShinyApp/data/albums_clean.csv")
 
+tmp=albums%>%
+  filter(year<=2021 & year >=1960) %>%
+  pull(gens)%>%
+  str_split(pattern=", ")%>%
+  map_df(as_tibble)%>%
+  group_by(value)%>%
+  summarise(freq=n())%>%
+  arrange(desc(freq))%>%
+  slice(1:20)
+
+wordcloud2(tmp,size=1.5,color=brewer.pal(12, "Paired"))
+
+
+############## artists ##############
+
 artists = read_csv("ShinyApp/data/artists.csv")
 #artists = artists%>%pivot_longer(c("1","2","3","4","5"),names_to = "rank",values_to = "artist")
 #artists %>% write_csv("ShinyApp/data/artists.csv")
+
+g=qplot()+
+  scale_x_continuous(expand = c(0, 0))+
+  scale_y_continuous(expand = c(0, 0))+
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank(),
+    axis.title = element_blank(),
+    axis.text = element_blank(),
+    axis.ticks = element_blank()
+  ) 
+for(i in 1:45){
+  artist_image = readJPEG(getURLContent(artists[i,4]))
+  ymin=(artists[i,]$Year-2013)/9
+  xmin=(artists[i,]$rank-1)/5
+  print("ymin")
+  print(ymin)
+  g=g+annotation_raster(artist_image, ymin = ymin,ymax= ymin+1/9,xmin = xmin,xmax = xmin+1/5)
+  print(g)
+}
+my_image <-  readJPEG(getURLContent(artists[3,4]))
