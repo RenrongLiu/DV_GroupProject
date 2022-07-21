@@ -616,7 +616,8 @@ shinyUI(
                            p("I am Renrong Liu, a full-time MS BARM student at Carey."),
                            p("My undergrad major is marketing, and I worked as an analyst in an investment consulting firm in Beijing afterward. I am interested in data visualization because I hope this course could help me learn more techniques for interactive visualizations. In my spare time, I watch TV series like GoT and HoC."),
                            br(),
-                           strong("Email: rliu57@jh.edu")
+                           p(a("github",href="https://github.com/RenrongLiu/")),
+                           strong("Email: renrong.lau@gmail.com")
                            )
                   ),
                   
@@ -683,6 +684,7 @@ shinyUI(
                            strong("Email: jzhu81@jhu.edu")
                            )
                   ))),
+        
         ######## Reference ###########
         tabItem(tabName = "reference",
                 div(
@@ -692,18 +694,33 @@ shinyUI(
                   width="100%",
                   status="success",
                   background = "black",
-                  tags$ol(
-                    tags$li(a("ggplot2 gradient color (in Chinese)", href="https://www.cnblogs.com/mmtinfo/p/12105987.html")),
-                    tags$li(a("Spotify most streamed songs by ChartMaster",href="https://chartmasters.org/spotify-most-streamed-songs/")),
-                    tags$li(a("Spotify most streamed albums by ChartMaster",href="https://chartmasters.org/spotify-most-streamed-albums/?y=alltime")),
-                    tags$li(a("Inserting an image to ggplot2",href="https://stackoverflow.com/questions/9917049/inserting-an-image-to-ggplot2")),
-                    tags$li(a("Combining Spotify and R — An Interactive Rshiny App + Spotify Dashboard Tutorial",href="https://towardsdatascience.com/combining-spotify-and-r-an-interactive-rshiny-app-spotify-dashboard-tutorial-af48104cb6e9")),
-                    tags$li(a("How to create Radar Charts in R with Plotly",href="https://plotly.com/r/radar-chart/")),
-                    tags$li(a("Convert list of list object to dataframe in R",href="https://stackoverflow.com/questions/50777607/convert-list-of-list-object-to-dataframe-in-r")),
-                    tags$li(a("BEAUTIFUL RADAR CHART IN R USING FMSB AND GGPLOT PACKAGES"),href="https://www.datanovia.com/en/blog/beautiful-radar-chart-in-r-using-fmsb-and-ggplot-packages/"),
-                    tags$li(a("Spotifyr overview",href="https://www.rcharlie.com/spotifyr/")),
-                    tags$li(a("Remove ggplot's background and grid (in Chinese)",href="https://blog.csdn.net/aspirinvagrant/article/details/39672635")),
-                    tags$li(a("ggplot2 - axis (in Chinese)", href="https://blog.csdn.net/Bone_ACE/article/details/47427453"))
+                  tags$ul(
+                    p("Data:"),
+                    tags$li(a("KAGGLE: top hits spotify 2000 - 2019",href="https://www.kaggle.com/datasets/paradisejoy/top-hits-spotify-from-20002019")),
+                    tags$li(a("KAGGLE: top 5000 albums of all time spotify features",href="https://www.kaggle.com/datasets/lucascantu/top-5000-albums-of-all-time-spotify-features")),
+                    tags$li(a("WIKI: List of most-streamed artists on Spotify",href="https://en.wikipedia.org/wiki/List_of_most-streamed_artists_on_Spotify")),
+                    tags$li(a("CHARTMASTERS: Spotify most streamed songs by ChartMaster",href="https://chartmasters.org/spotify-most-streamed-songs/")),
+                    tags$li(a("CHARTMASTERS: Spotify most streamed albums by ChartMaster",href="https://chartmasters.org/spotify-most-streamed-albums/?y=alltime")),
+                    br(),
+                    p("SpotifyR: "),
+                    tags$li(a("TowardsDataScience: Combining Spotify and R — An Interactive Rshiny App + Spotify Dashboard Tutorial",href="https://towardsdatascience.com/combining-spotify-and-r-an-interactive-rshiny-app-spotify-dashboard-tutorial-af48104cb6e9")),
+                    tags$li(a("RCHARLIE: Spotifyr overview",href="https://www.rcharlie.com/spotifyr/")),
+                    br(),
+                    p("rshiny:"),
+                    tags$li(a("STACKOVERFLOW: How to listen for more than one event expression within a Shiny observeEvent",href="https://stackoverflow.com/questions/41960953/how-to-listen-for-more-than-one-event-expression-within-a-shiny-observeevent")),
+                    tags$li(a("STACKOVERFLOW: R Shiny variable ordered or unordered list",href="https://stackoverflow.com/questions/50413716/r-shiny-variable-ordered-or-unordered-list")),
+                    tags$li(a("shinyWidgets",href="http://shinyapps.dreamrs.fr/shinyWidgets/")),
+                    br(),
+                    p("ggplot2 & plotly: "),
+                    tags$li(a("STACKOVERFLOW: Inserting an image to ggplot2",href="https://stackoverflow.com/questions/9917049/inserting-an-image-to-ggplot2")),
+                    tags$li(a("STACKOVERFLOW: Convert list of list object to dataframe in R",href="https://stackoverflow.com/questions/50777607/convert-list-of-list-object-to-dataframe-in-r")),
+                    tags$li(a("DATANOVIA: Beautiful radar chart in R using FMSB and ggplot packages"),href="https://www.datanovia.com/en/blog/beautiful-radar-chart-in-r-using-fmsb-and-ggplot-packages/"),
+                    tags$li(a("CSDN: Remove ggplot's background and grid (in Chinese)",href="https://blog.csdn.net/aspirinvagrant/article/details/39672635")),
+                    tags$li(a("CSDN: ggplot2 - axis (in Chinese)", href="https://blog.csdn.net/Bone_ACE/article/details/47427453")),
+                    tags$li(a("CNBLOGS: ggplot2 gradient color (in Chinese)", href="https://www.cnblogs.com/mmtinfo/p/12105987.html")),
+                    tags$li(a("PLOTLY: How to create Radar Charts in R with Plotly",href="https://plotly.com/r/radar-chart/")),
+                    tags$li(a("GITHUB: ggplot2 extensions: ggradar",href="https://github.com/ricardo-bion/ggradar"))
+                    
                   )
                   
                   
