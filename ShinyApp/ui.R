@@ -129,9 +129,9 @@ shinyUI(
                       column(6,
                              h3(strong("Instructions")),
                              br(),
-                             h5("Step 1: Go to", tags$a("https://developer.spotify.com/dashboard/"), "and login with your Spotify information"),
+                             h5("Step 1: Go to", tags$a("https://developer.spotify.com/dashboard/",href="https://developer.spotify.com/dashboard/ "), "and login with your Spotify information"),
                              h5("Step 2: Create an app with name and description temp, then find the client ID and Client Secret"),
-                             h5('Step 3: Go to \"Edit Settings\", set \"Redirect URLs\" to http://localhost:1410/.'),
+                             h5('Step 3: Go to \"Edit Settings\", set \"Redirect URLs\" to http://localhost:1410/'),
                              h5("Step 4: Copy and paste the ID and Secret into the designated dialog boxes, and click validate. If a string jumps out below, it means you have successfully acquired the access token."),
                              h5("Step 5: Allow spotify to authenticate your account"),
                              h5("Now you should be good to go! Click one of the tabs above and learn more about your music")
@@ -149,17 +149,13 @@ shinyUI(
                         collapsible = TRUE,
                         collapsed = FALSE,
                         tags$span(
-                          tags$strong("·"),"How do the most popular songs’ feature trends change over time?",
-                          br(),
-                          tags$strong("·"), "What are the significant musical features of my favorite artist?",
-                          br(),
-                          tags$strong("·"),"How do the two albums of the same artist have different musical features?",
-                          br(),
-                          tags$strong("·")," What is my personal taste in music?",
-                          br(),
-                          tags$strong("·"),"  Who is my most-frequently listening artist?",
-                          br(),
-                          br(),
+                          tags$ul(
+                            tags$li("How do the most popular songs’ feature trends change over time?"),
+                            tags$li("What are the significant musical features of my favorite artist?"),
+                            tags$li("How do the two albums of the same artist have different musical features?"),
+                            tags$li("What is my personal taste in music?"),
+                            tags$li("Who is my most-frequently listening artist?")
+                          ),
                           br(),
                           "We are using",tags$strong(" Times Series Analysis and Text Analysis"), "in our application. We are using:",
                           tags$ul(
@@ -232,10 +228,6 @@ shinyUI(
             fluidRow(
               column(6,plotlyOutput("songs_features_lineplot",height="400px",width="100%")),
               column(6,plotOutput("songs_key",height="400px",width="100%"))
-            ),
-            fluidRow(
-              column(6,p("")),
-              column(6,p("C & G groups are the most common keys "))
             )
           ),
           box(
@@ -243,7 +235,6 @@ shinyUI(
             status="success",
             background = "black",
             width="100%",
-            
             fluidRow(
               column(6,
                      selectInput(
@@ -388,13 +379,13 @@ shinyUI(
                            plotOutput("artFeatSum", height = "400px"))),
                 
                 
-                fluidRow(
+                #fluidRow(
                   box(width = "100%",
                       title="Let's take a closer look",
                       status="success",
                       background="black",
                       solidHeader = TRUE,
-                      
+                      height="800px",
                       column(3,
                              
                              selectInput("featByX", label="Feature on the X-axis",
@@ -408,7 +399,7 @@ shinyUI(
                       
                       column(9, plotlyOutput("artFeatScatter", height="400px"))
                   )
-                )
+                #)
         ),
         
         
@@ -506,12 +497,12 @@ shinyUI(
                   valueBoxOutput("favArt3")
                 ),
                 
-                fluidRow(
-                  box(
-                    width="100%",
-                    status="success",
-                    background = "black",
-                    wordcloud2Output("userFavGen"))
+                
+                box(
+                  width="100%",
+                  status="success",
+                  background = "black",
+                  wordcloud2Output("userFavGen")
                 )
         ),
         
