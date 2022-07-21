@@ -197,7 +197,7 @@ shinyUI(
                             tags$li("instrumentalness: Predicts whether a track contains no vocals"),
                             tags$li("valence: the musical positiveness conveyed by a track")
                           ),
-                          "The other two tabs( Artist Analyst and User Profile) are grabbing the dataset from Spotify API, the Artist Analyst tab have the page of you searching artist name, which including the information of artist on Spotiry and his/her songs' musical features"
+                          "The other two tabs( Artist Analyst and User Profile) are grabbing the dataset from Spotify API, the Artist Analyst tab have the page of you searching artist name, which includes his or her songs' information and musical features on Spotify  "
                           
                         )
                         
