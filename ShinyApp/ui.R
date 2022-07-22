@@ -22,7 +22,7 @@ shinyUI(
   dashboardPage(
     skin="black",
   
-    dashboardHeader(title="MusicTrend.com"),
+    dashboardHeader(title="MusicFeatures"),
 
     #################### Dashboard siderbar ####################
       dashboardSidebar(
